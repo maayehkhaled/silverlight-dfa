@@ -17,10 +17,10 @@ namespace SilverlightApplication6
     {
         /*constructor get a list of nodes*/
         public List<Node> nodes;
-        public List<Button> buttons;
+        
 
-        const double NODE_WIDTH = 100.0;
-        const double NODE_HEIGHT = 100.0;
+        double NODE_WIDTH = 20.0;
+        double NODE_HEIGHT = 20.0;
 
         public GraphDrawer(List<Node> nodes)
         {
@@ -31,18 +31,18 @@ namespace SilverlightApplication6
         {
             foreach ( Node i in nodes)
             {
-                /*construct graphic element, which presents the node on cavas*/
-                Button nodePresentor = createButton(i);
+				c.Children.Add(i.presentor);
+				i.presentor.SetValue(Canvas.TopProperty, i.y);
+				i.presentor.SetValue(Canvas.LeftProperty, i.x);
             }
         }
 
-        private Button createButton(Node i)
-        {
-            Button button = new Button();
-            button.Content = i.nodeLabel;
-            button.Width = NODE_WIDTH;
-            button.Height = NODE_HEIGHT;
-            return button;
-        }
+		private void setPosition(Button nodePresentor,Node i)
+		{
+			/*simplst case: use direct the infor from Node i without any computation*/
+			nodePresentor.SetValue(Canvas.TopProperty, i.y);
+			nodePresentor.SetValue(Canvas.LeftProperty, i.x);
+		}
+
     }
 }
