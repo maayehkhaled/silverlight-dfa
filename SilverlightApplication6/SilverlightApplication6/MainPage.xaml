@@ -8,64 +8,26 @@
     d:DesignHeight="354" d:DesignWidth="553" HorizontalContentAlignment="Left">
 
     <Grid x:Name="LayoutRoot" Background="White" Width="572">
-        <Canvas Height="214" HorizontalAlignment="Left" Margin="12,132,0,0" x:Name="canvas1" VerticalAlignment="Top" Width="529" >
-        	<Ellipse Height="40" Canvas.Left="107" Canvas.Top="37" Width="40" Fill="#FF3DE318"/>
-        	<Ellipse Height="40" Canvas.Left="212" Canvas.Top="37" Width="40" Fill="#FF3DE318"/>
-        	<ed:LineArrow Fill="#FF3DE318" Height="0.005" Canvas.Left="128.518" Canvas.Top="37.102" Width="101.798" Stroke="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
-        		<ed:LineArrow.RenderTransform>
-        			<CompositeTransform Rotation="-0.113"/>
-        		</ed:LineArrow.RenderTransform>
-        	</ed:LineArrow>
-        	<!--<ed:LineArrow Fill="#FFF4F4F5" Height="100" Canvas.Left="202" Stroke="Black" Canvas.Top="57" Width="100" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
-        		<ed:LineArrow.RenderTransform>
-        			<CompositeTransform Rotation="-40.573"/>
-        		</ed:LineArrow.RenderTransform>
-        	</ed:LineArrow>
-        	<ed:Arc ArcThicknessUnit="Pixel" EndAngle="360" Height="100" Canvas.Left="79.5" Stretch="None" Stroke="Black" StartAngle="0" Canvas.Top="54.5" UseLayoutRounding="False" Width="100">
-        		<ed:Arc.Fill>
-        			<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-        				<GradientStop Color="Black" Offset="0"/>
-        				<GradientStop Color="White" Offset="1"/>
-        				<GradientStop Color="#FF7F7F7F" Offset="0.5"/>
-        				<GradientStop Color="#FFB7B7B7" Offset="0.721"/>
-        				<GradientStop Color="#FF575757" Offset="0.346"/>
-        				<GradientStop Color="#FF2C2C2C" Offset="0.177"/>
-        			</LinearGradientBrush>
-        		</ed:Arc.Fill>
-        	</ed:Arc>
-        	<ed:Arc ArcThicknessUnit="Pixel" EndAngle="360" Height="100" Canvas.Left="321.5" Stretch="None" Stroke="Black" StartAngle="0" Canvas.Top="54.5" UseLayoutRounding="False" Width="100">
-        		<ed:Arc.Fill>
-        			<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-        				<GradientStop Color="Black" Offset="0"/>
-        				<GradientStop Color="White" Offset="1"/>
-        				<GradientStop Color="#FF7F7F7F" Offset="0.5"/>
-        				<GradientStop Color="#FFB7B7B7" Offset="0.721"/>
-        				<GradientStop Color="#FF575757" Offset="0.346"/>
-        				<GradientStop Color="#FF2C2C2C" Offset="0.177"/>
-        			</LinearGradientBrush>
-        		</ed:Arc.Fill>
-        	</ed:Arc>-->
-        </Canvas>
+        
+        <!-- Graph area -->
+        <Canvas Height="214" HorizontalAlignment="Left" Margin="12,132,0,0" x:Name="playboard" VerticalAlignment="Top" Width="529" />
 
-            <Grid Height="108" HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="grid1" VerticalAlignment="Top" Width="529">
-            
-            <Line X1="1" X2="100" Y1="1" Y2="100" ></Line>
-                <sdk:Label Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" x:Name="inputLabel" VerticalAlignment="Top" Width="43" Content="Input" FontSize="13" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="55,6,0,0" x:Name="inputTextBox" VerticalAlignment="Top" Width="468" />
+        <!-- Controls -->
+        <Grid Height="108" HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="grid1" VerticalAlignment="Top" Width="529">
+            <sdk:Label Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" x:Name="inputLabel" VerticalAlignment="Top" Width="43" Content="Input" FontSize="13" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
+            <TextBox Height="23" HorizontalAlignment="Left" Margin="55,6,0,0" x:Name="inputTextBox" VerticalAlignment="Top" Width="468" />
 
-                <Button Content="Open" Height="23" HorizontalAlignment="Right" Margin="0,37,448,0" x:Name="openButton" VerticalAlignment="Top" Width="75" />
-                <Button Content="Start" Height="23" HorizontalAlignment="Left" Margin="88,37,0,0" x:Name="startButton" VerticalAlignment="Top" Width="75" Click="startButton_Click" />
-                <Button Content="Stop" Height="23" HorizontalAlignment="Right" Margin="0,37,284,0" x:Name="stopButton" VerticalAlignment="Top" Width="75" />
-                <Button Content="Reset" Height="23" HorizontalAlignment="Right" Margin="0,37,202,0" x:Name="resetButton" VerticalAlignment="Top" Width="75" />
+            <Button Content="Open" Height="23" HorizontalAlignment="Right" Margin="0,37,448,0" x:Name="openButton" VerticalAlignment="Top" Width="75" />
+            <Button Content="Start" Height="23" HorizontalAlignment="Left" Margin="88,37,0,0" x:Name="startButton" VerticalAlignment="Top" Width="75" Click="startButton_Click" />
+            <Button Content="Stop" Height="23" HorizontalAlignment="Right" Margin="0,37,284,0" x:Name="stopButton" VerticalAlignment="Top" Width="75" />
+            <Button Content="Reset" Height="23" HorizontalAlignment="Right" Margin="0,37,202,0" x:Name="resetButton" VerticalAlignment="Top" Width="75" />
 
-                <sdk:Label Height="23" HorizontalAlignment="Left" Margin="334,37,0,0" x:Name="speedLabel" VerticalAlignment="Top" Width="43" Content="Speed" />
-                <Slider Height="23" HorizontalAlignment="Right" Margin="0,37,6,0" x:Name="speedSlider" VerticalAlignment="Top" Width="139" />
+            <sdk:Label Height="23" HorizontalAlignment="Left" Margin="334,37,0,0" x:Name="speedLabel" VerticalAlignment="Top" Width="43" Content="Speed" />
+            <Slider Height="23" HorizontalAlignment="Right" Margin="0,37,6,0" x:Name="speedSlider" VerticalAlignment="Top" Width="139" />
 
-                <sdk:Label Height="22" HorizontalAlignment="Left" Margin="6,68,0,0" x:Name="steplineLabel" VerticalAlignment="Top" Width="57" Content="Stepline" />
-                <Slider Height="23" HorizontalAlignment="Left" Margin="55,68,0,0" x:Name="steplineSlider" VerticalAlignment="Top" Width="468" />
-            
-            </Grid>
+            <sdk:Label Height="22" HorizontalAlignment="Left" Margin="6,68,0,0" x:Name="steplineLabel" VerticalAlignment="Top" Width="57" Content="Stepline" />
+            <Slider Height="23" HorizontalAlignment="Left" Margin="55,68,0,0" x:Name="steplineSlider" VerticalAlignment="Top" Width="468" />
+        </Grid>
 
     </Grid>
-    <!-- dummy change to test svn -->
 </UserControl>
