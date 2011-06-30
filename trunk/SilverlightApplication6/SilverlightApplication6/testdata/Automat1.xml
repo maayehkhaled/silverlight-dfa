@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FiniteAutomaton>
+  Animation eines DFA - 29. Juli 2009 3
+  <InputAlphabet>
+    <Symbol>abc</Symbol>
+    <Symbol>bbbb</Symbol>
+  </InputAlphabet>
+  <States>
+    <State start="string">string</State>
+    <State accept="string">string</State>
+
+  </States>
+  <Transitions>
+    <Transition from="string" symbol="c" to="string" />
+
+  </Transitions>
+</FiniteAutomaton>
