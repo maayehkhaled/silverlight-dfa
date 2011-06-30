@@ -14,6 +14,6 @@ namespace SilverlightApplication6
     public class Tuple
     {
         Node node;
-        EdgeLabel el;
+        string edgeLabel;
     }
 }
