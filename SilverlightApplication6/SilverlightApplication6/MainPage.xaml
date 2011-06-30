@@ -8,7 +8,14 @@
     d:DesignHeight="354" d:DesignWidth="553" HorizontalContentAlignment="Left">
 
     <Grid x:Name="LayoutRoot" Background="White" Width="572">
-        <Canvas Height="214" HorizontalAlignment="Left" Margin="12,128,0,0" x:Name="canvas1" VerticalAlignment="Top" Width="529" >
+        <Canvas Height="214" HorizontalAlignment="Left" Margin="12,132,0,0" x:Name="canvas1" VerticalAlignment="Top" Width="529" >
+        	<Ellipse Height="40" Canvas.Left="107" Canvas.Top="37" Width="40" Fill="#FF3DE318"/>
+        	<Ellipse Height="40" Canvas.Left="212" Canvas.Top="37" Width="40" Fill="#FF3DE318"/>
+        	<ed:LineArrow Fill="#FF3DE318" Height="0.005" Canvas.Left="128.518" Canvas.Top="37.102" Width="101.798" Stroke="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
+        		<ed:LineArrow.RenderTransform>
+        			<CompositeTransform Rotation="-0.113"/>
+        		</ed:LineArrow.RenderTransform>
+        	</ed:LineArrow>
         	<!--<ed:LineArrow Fill="#FFF4F4F5" Height="100" Canvas.Left="202" Stroke="Black" Canvas.Top="57" Width="100" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
         		<ed:LineArrow.RenderTransform>
         			<CompositeTransform Rotation="-40.573"/>
@@ -39,10 +46,10 @@
         		</ed:Arc.Fill>
         	</ed:Arc>-->
         </Canvas>
-        <Border BorderThickness="2" BorderBrush="Black">
+
             <Grid Height="108" HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="grid1" VerticalAlignment="Top" Width="529">
             
-            
+            <Line X1="1" X2="100" Y1="1" Y2="100" ></Line>
                 <sdk:Label Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" x:Name="inputLabel" VerticalAlignment="Top" Width="43" Content="Input" FontSize="13" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
                 <TextBox Height="23" HorizontalAlignment="Left" Margin="55,6,0,0" x:Name="inputTextBox" VerticalAlignment="Top" Width="468" />
 
@@ -58,7 +65,7 @@
                 <Slider Height="23" HorizontalAlignment="Left" Margin="55,68,0,0" x:Name="steplineSlider" VerticalAlignment="Top" Width="468" />
             
             </Grid>
-        </Border>
+
     </Grid>
     <!-- dummy change to test svn -->
 </UserControl>
