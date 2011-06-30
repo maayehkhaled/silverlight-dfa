@@ -15,7 +15,7 @@ namespace SilverlightApplication6
 {
     public partial class MainPage : UserControl
     {
-        private Brush originalPlayboardColor;
+        private Color originalPlayboardColor;
 
         public MainPage()
         {
@@ -69,12 +69,13 @@ namespace SilverlightApplication6
 
         private void playboard_DragEnter(object sender, DragEventArgs e)
         {
-            originalPlayboardColor = playboard.c
+            originalPlayboardColor = (Color) playboard.GetValue(Canvas.BackgroundProperty);
+            playboard.SetValue(Canvas.BackgroundProperty, Colors.Green);
         }
 
         private void playboard_DragLeave(object sender, DragEventArgs e)
         {
-
+            playboard.SetValue(Canvas.BackgroundProperty, originalPlayboardColor);
         }
     }
 }
