@@ -9,13 +9,13 @@ namespace SilverlightApplication6
     * doc: Real programmers don't comment their code.  It was hard to write, it
       should be hard to understand and even harder to modify.
     */
-    class Node
+    public class Node
     {
         public string nodeLabel;
         public List<Tuple> adjacent ;
-        double x;
-        double y;
-        bool isEnd;
+        public double x;
+        public double y;
+        public bool isEnd;
         
         public Node(string label, double x, double y, bool isEnd)
         {
