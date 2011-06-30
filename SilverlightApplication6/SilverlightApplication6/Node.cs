@@ -11,13 +11,13 @@ namespace SilverlightApplication6
     */
     class Node
     {
-        public String nodeLabel;
+        public string nodeLabel;
         public List<Tuple> adjacent ;
         double x;
         double y;
         bool isEnd;
         
-        public Node(String label, double x, double y, bool isEnd)
+        public Node(string label, double x, double y, bool isEnd)
         {
             this.nodeLabel = label;
             this.x = x;
