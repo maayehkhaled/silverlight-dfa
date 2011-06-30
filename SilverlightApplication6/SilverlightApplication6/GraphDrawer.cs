@@ -17,10 +17,6 @@ namespace SilverlightApplication6
     {
         /*constructor get a list of nodes*/
         public List<Node> nodes;
-        
-
-        double NODE_WIDTH = 20.0;
-        double NODE_HEIGHT = 20.0;
 
         public GraphDrawer(List<Node> nodes)
         {
