@@ -34,10 +34,12 @@ namespace SilverlightApplication6
             LineArrow a = new LineArrow();
             a.Height = 100;
             a.Width = 100;
-            a.Stroke = new SolidColorBrush(Color.FromArgb(0xD0, 0xD0, 0xD0, 0xD0));
+            a.Stroke = new SolidColorBrush(Colors.Black);
             a.StrokeThickness = 2;
-           
+
             canvas1.Children.Add(a);
+            a.SetValue(Canvas.TopProperty, 100.0);
+            a.SetValue(Canvas.LeftProperty, 100.0);
 
 
 
