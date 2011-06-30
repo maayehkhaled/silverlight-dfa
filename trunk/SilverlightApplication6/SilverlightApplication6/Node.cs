@@ -12,7 +12,7 @@ namespace SilverlightApplication6
     public class Node
     {
         public string nodeLabel;
-        public List<Tuple> adjacent ;
+        public List< Tuple<Node,string> > adjacent ;
         public double x;
         public double y;
         public bool isEnd;
