@@ -10,7 +10,7 @@
     <Grid x:Name="LayoutRoot" Background="White" Width="572">
         
         <!-- Graph area -->
-        <Canvas Height="214" HorizontalAlignment="Left" Margin="12,132,0,0" x:Name="playboard" VerticalAlignment="Top" Width="529" />
+        <Canvas Height="214" HorizontalAlignment="Left" Margin="12,132,0,0" x:Name="playboard" VerticalAlignment="Top" Width="529" AllowDrop="True" DragEnter="playboard_DragEnter" DragLeave="playboard_DragLeave" DragOver="playboard_DragOver" />
 
         <!-- Controls -->
         <Grid Height="108" HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="grid1" VerticalAlignment="Top" Width="529">
