@@ -11,6 +11,8 @@ using System.Windows.Shapes;
 
 using System.Collections.Generic;
 
+using Microsoft.Expression.Controls;
+
 namespace SilverlightApplication6
 {
     public class GraphDrawer
@@ -24,21 +26,32 @@ namespace SilverlightApplication6
         }
 
         public void drawNodes(Canvas c)
+		/* draw all nodes on the Canvas c */
         {
             foreach ( Node i in nodes)
             {
 				c.Children.Add(i.presentor);
-				i.presentor.SetValue(Canvas.TopProperty, i.y);
-				i.presentor.SetValue(Canvas.LeftProperty, i.x);
+				/* postioning */
+				i.justifyPostion();
             }
         }
 
-		private void setPosition(Button nodePresentor,Node i)
+		public void drawEdges(Canvas c)
+		/* draw edges on the Canvas c */
 		{
-			/*simplst case: use direct the infor from Node i without any computation*/
-			nodePresentor.SetValue(Canvas.TopProperty, i.y);
-			nodePresentor.SetValue(Canvas.LeftProperty, i.x);
+			foreach (Node i in nodes)
+			{
+				List<Grid> outEdges = i.outEdges;
+				foreach ( Grid edge in outEdges)
+				{
+					c.Children.Add(edge); /* insert line */
+				}
+
+				i.justifyOutEdges();
+			}
 		}
+
+		
 
     }
 }

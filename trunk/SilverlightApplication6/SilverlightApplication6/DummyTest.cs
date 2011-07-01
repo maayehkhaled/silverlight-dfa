@@ -10,6 +10,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 
+using Microsoft.Expression.Controls;
+
+
 namespace SilverlightApplication6
 {
     public class DummyTest
@@ -48,9 +51,26 @@ namespace SilverlightApplication6
 			GraphDrawer gd = new GraphDrawer(dummyDFA);
 			gd.drawNodes(c);
 
+			/*
+			string x = "flip";
+			string y = "flip";
+			if (x.Equals(y))
+			{
+				TextBlock tb = new TextBlock(); tb.Text = "Equals";
+				c.Children.Add(tb);
+			}
+			*/
 
-			Representor x = new Representor();
-			x.Width = 100.0;
+			LineArrow x = new LineArrow();
+			x.Width = 100; x.Height = 100;
+			string y = "a";
+			Tuple<LineArrow, string> z = new Tuple<LineArrow, string>(x, y);
+			var newStr = z.Item2 + "|" + "b";
+			
+			
+
+
 		}
+
     }
 }
