@@ -79,6 +79,7 @@ namespace SilverlightApplication6
 		/* if a node can reach another node with a edge label, add it in adjacent list
 		 * (with the edge label) */
 		{
+			var isAdded = false;
 			foreach (Tuple<Node, string> a in adjacent)
 			{
 				string l = a.Item1.nodeLabel;
@@ -92,14 +93,20 @@ namespace SilverlightApplication6
 						Tuple<Node, string> newAdjcent = new Tuple<Node, string>(a.Item1, newEdgeLabel);
 						adjacent.Add(newAdjcent);
 						adjacent.Remove(a);
+						isAdded = true;
 						break;
 					}else // same node and same edge label; nothing to do
 					{
-						Console.Write("Nothing todo");
+						isAdded = true;
 						break;
 					}
 
 				}
+			}
+			if (!isAdded)
+			{
+				Tuple<Node, string> t = new Tuple<Node, string>(node, label);
+				adjacent.Add(t);
 			}
 
 			/* create a LineArrow and a TextBlock for the outedge */
