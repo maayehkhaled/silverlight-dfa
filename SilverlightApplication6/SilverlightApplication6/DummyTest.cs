@@ -30,6 +30,7 @@ namespace SilverlightApplication6
 			 * 4 -> 1 [b]
 			 * <4 -> 3 [a]
  			 */
+			GenerateGrid(c, 25.0);
 			Node one = new Node("1", 0,   0, false);
 			Node two = new Node("2", 100, 0, false);
 			Node three = new Node("3", 0, 100, false);
@@ -63,14 +64,75 @@ namespace SilverlightApplication6
 
 			LineArrow x = new LineArrow();
 			x.Width = 100; x.Height = 100;
-			string y = "a";
-			Tuple<LineArrow, string> z = new Tuple<LineArrow, string>(x, y);
-			var newStr = z.Item2 + "|" + "b";
+
+			x.Stroke = new SolidColorBrush(Colors.Black);
+			x.StrokeThickness = 2;
+			x.Opacity = 0.5;
 			
 			
 
+			RotateTransform t = new RotateTransform();
+			t.Angle=-180;
+			t.CenterX = x.Width/2;
+			t.CenterY = x.Height / 2;
+			x.RenderTransform = t;
+
+			c.Children.Add(x);
+			x.SetValue(Canvas.TopProperty, 20.0);
+			x.SetValue(Canvas.LeftProperty, 50.0);
+
+			
+		
+			var bz = new BezierSegment();
+			var p1 = new Point(100,30);
+			bz.Point1 = p1;
+			var p2 = new Point(200,30);
+			bz.Point2 = p2;
+			var p3 = new Point(300,-40);
+			bz.Point3 = p3;
+			
+			var pc = new PathSegmentCollection();
+			pc.Add(bz);
+
+			var pf = new PathFigure();
+			pf.StartPoint = new Point(0, 0);
+			pf.Segments = pc;
+			var pfc = new PathFigureCollection();
+			pfc.Add(pf);
+			var pg = new PathGeometry();
+			pg.Figures = pfc;
+
+			var path = new Path();
+			path.Data = pg;
+			path.Stroke = new SolidColorBrush(Colors.Black);
+
+ 			c.Children.Add(path);
+			/* now move bz */
+			path.SetValue(Canvas.TopProperty, 50.0);
+			path.SetValue(Canvas.LeftProperty, 30.0);
 
 		}
 
+		private void GenerateGrid(Canvas panel, double gap)
+		{
+			double row = panel.Height / gap;
+			double col = panel.Width / gap;
+
+			for (int i = 0; i <= Convert.ToInt32(row); i++)
+			{
+				StackPanel sp = new StackPanel();
+				sp.Orientation = System.Windows.Controls.Orientation.Horizontal;
+
+				for (int j = 0; j <= Convert.ToInt32(col); j++)
+				{
+					sp.Children.Add(new Border { BorderBrush = new SolidColorBrush(Colors.Gray), 
+						BorderThickness = new Thickness(.1), Width = gap, Height = gap });
+				}
+
+				panel.Children.Add(sp);
+				sp.SetValue(Canvas.TopProperty, i * gap);
+
+			}
+		}
     }
 }
