@@ -2,6 +2,7 @@
 <!-- Hopcroft/Motwani/Ullman S. 60 -->
 <!-- schema validation is not supported in silverlight! what an evidence of incapacity!!! -->
 <!--<FiniteAutomaton xmlns="http://silverlight.dfa/Input.xsd">-->
+<!DOCTYPE FiniteAutomaton SYSTEM "../Input.dtd">
 <FiniteAutomaton>
   <InputAlphabet>
     <Symbol>0</Symbol>

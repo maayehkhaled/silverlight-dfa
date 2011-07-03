@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml.Linq;
 using System.Xml;
+using System.Xml.Resolvers;
 using System;
 using System.Windows.Controls;
 using System.Diagnostics;
@@ -11,10 +12,24 @@ namespace SilverlightApplication6
     public class XmlParser
     {
         // schema validation is not supported in silverlight! what an evidence of incapacity!!!
+        private static XmlPreloadedResolver resolver = new XmlPreloadedResolver();
+        private static XmlReaderSettings settings = new XmlReaderSettings();
+        private static bool initialized = false;
+        private static Uri dtd = new Uri("Input.dtd", UriKind.Relative);
 
         public static List<Node> parse(FileInfo file)
         {
-            XElement root = XElement.Load(file.OpenRead());
+            // TODO static initalization block
+            if (!initialized)
+            {
+                resolver.Add(dtd,
+                    App.GetResourceStream(dtd).Stream);
+                settings.XmlResolver = resolver;
+                settings.DtdProcessing = DtdProcessing.Parse;
+                initialized = true;
+            }
+
+            XElement root = XElement.Load(XmlReader.Create(file.OpenRead(), settings));
             IDictionary<string, Node> nodes = new Dictionary<string, Node>();
 
             foreach (XElement state in root.Elements("States").Elements("State"))
