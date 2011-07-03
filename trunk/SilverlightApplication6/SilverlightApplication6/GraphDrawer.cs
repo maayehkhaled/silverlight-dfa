@@ -19,18 +19,21 @@ namespace SilverlightApplication6
     {
         /*constructor get a list of nodes*/
         public List<Node> nodes;
+		public Canvas dfaDiplay;
 
-        public GraphDrawer(List<Node> nodes)
+        public GraphDrawer(List<Node> nodes, Canvas c)
         {
             this.nodes = nodes;
+			dfaDiplay = new Canvas();
+			c.Children.Add(dfaDiplay);
         }
 
-        public void drawNodes(Canvas c)
+        public void drawNodes(/*Canvas c*/)
 		/* draw all nodes on the Canvas c */
         {
             foreach ( Node i in nodes)
             {
-				c.Children.Add(i.presentor);
+				dfaDiplay.Children.Add(i.presentor);
 				/* postioning */
 				justifyPostion(i);
             }
@@ -41,20 +44,32 @@ namespace SilverlightApplication6
 		{
 			foreach (Node i in nodes)
 			{
-				List<Tuple<Node,string>> outNode = i.adjacent;
-				foreach ( Node j in outNode)
+				List<Tuple<Node,string>> adjacent = i.adjacent;
+				foreach ( Tuple<Node,string> j in adjacent)
 				{
-					Tuple<double, double, double, double> coordinate = computeEdge(i, j);
+					Tuple<Point, Point, Point, Point> coordinate = computeEdge(i, j.Item1);
 
 				}
 			}
 		}
 
 		public void justifyPostion(Node i)
+		/*justify the position of the node i in canvas*/
 		{
 			i.presentor.SetValue(Canvas.TopProperty, i.y);
 			i.presentor.SetValue(Canvas.LeftProperty, i.x);
 		}
 
+		public Tuple<Point, Point, Point, Point> computeEdge(Node i, Node j)
+		/* compute 4 point to draw  */
+		{
+			Point beginPoint = new Point();
+			Point endPoint = new Point();
+			Point m1Point = new Point();
+			Point m2Point = new Point();
+
+
+			return new Tuple<Point, Point, Point, Point>(beginPoint, m1Point, m2Point, endPoint);
+		}
     }
 }
