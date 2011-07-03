@@ -108,8 +108,8 @@ namespace SilverlightApplication6
 
  			c.Children.Add(path);
 			/* now move bz */
-			path.SetValue(Canvas.TopProperty, 50.0);
-			path.SetValue(Canvas.LeftProperty, 30.0);
+			path.SetValue(Canvas.TopProperty, 0.0);
+			path.SetValue(Canvas.LeftProperty, 0.0);
 
 		}
 

@@ -83,11 +83,11 @@ namespace SilverlightApplication6
 			foreach (Tuple<Node, string> a in adjacent)
 			{
 				string l = a.Item1.nodeLabel;
-				if ( l.Equals(node.nodeLabel) )// same node is already in list
+				if (l.Equals(node.nodeLabel))// same node is already in list
 				{
-					/*node is allready in the adjacent list, so check if the label is the same
+					/* node is allready in the adjacent list, so check if the label is the same
 					 or newer */
-					if (!a.Item2.Equals(label))// new label for edge
+					if (!a.Item2.Equals(label))// same node with new label for edge
 					{
 						var newEdgeLabel = a.Item2 + "|" + label;
 						Tuple<Node, string> newAdjcent = new Tuple<Node, string>(a.Item1, newEdgeLabel);
@@ -95,7 +95,8 @@ namespace SilverlightApplication6
 						adjacent.Remove(a);
 						isAdded = true;
 						break;
-					}else // same node and same edge label; nothing to do
+					}
+					else // same node and same edge label; nothing to do
 					{
 						isAdded = true;
 						break;
@@ -108,22 +109,6 @@ namespace SilverlightApplication6
 				Tuple<Node, string> t = new Tuple<Node, string>(node, label);
 				adjacent.Add(t);
 			}
-
-			/* create a LineArrow and a TextBlock for the outedge */
-			LineArrow line = new LineArrow();
-			line.Width = Math.Abs(x - node.x);
-			line.Height = Math.Abs(y - node.y);
-		}
-
-		public void justifyPostion()
-		{
-			presentor.SetValue(Canvas.TopProperty, y);
-			presentor.SetValue(Canvas.LeftProperty, x);
-		}
-
-		public void justifyOutEdges()
-		{
-			/*TODO*/
 		}
 	}
 }
