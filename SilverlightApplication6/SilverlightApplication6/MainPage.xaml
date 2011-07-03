@@ -5,27 +5,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" x:Class="SilverlightApplication6.MainPage"
     mc:Ignorable="d"
-    d:DesignHeight="354" d:DesignWidth="553" HorizontalContentAlignment="Left">
+    d:DesignHeight="600" d:DesignWidth="553" HorizontalContentAlignment="Left">
 
     <Grid x:Name="LayoutRoot" Background="White" Width="572">
         
         <!-- Graph area -->
-        <Canvas Height="214" HorizontalAlignment="Left" 
-				Margin="12,132,0,0" 
-				x:Name="playboard" 
-				VerticalAlignment="Top" 
-				Width="529" 
-				AllowDrop="True" 
-				DragEnter="playboard_DragEnter" 
-				DragLeave="playboard_DragLeave" 
-				DragOver="playboard_DragOver" />
+        <Canvas Height="414" HorizontalAlignment="Left" Margin="12,132,0,0" x:Name="playboard" VerticalAlignment="Top" Width="529" AllowDrop="True" DragEnter="playboard_DragEnter" DragLeave="playboard_DragLeave" DragOver="playboard_DragOver" Drop="playboard_Drop" Background="DarkGray">
+        </Canvas>
 
         <!-- Controls -->
         <Grid Height="108" HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="grid1" VerticalAlignment="Top" Width="529">
             <sdk:Label Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" x:Name="inputLabel" VerticalAlignment="Top" Width="43" Content="Input" FontSize="13" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
             <TextBox Height="23" HorizontalAlignment="Left" Margin="55,6,0,0" x:Name="inputTextBox" VerticalAlignment="Top" Width="468" />
 
-            <Button Content="Open" Height="23" HorizontalAlignment="Right" Margin="0,37,448,0" x:Name="openButton" VerticalAlignment="Top" Width="75" />
+            <Button Content="Open" Height="23" HorizontalAlignment="Right" Margin="0,37,448,0" x:Name="openButton" VerticalAlignment="Top" Width="75" Click="openButton_Click" />
             <Button Content="Start" Height="23" HorizontalAlignment="Left" Margin="88,37,0,0" x:Name="startButton" VerticalAlignment="Top" Width="75" Click="startButton_Click" />
             <Button Content="Stop" Height="23" HorizontalAlignment="Right" Margin="0,37,284,0" x:Name="stopButton" VerticalAlignment="Top" Width="75" />
             <Button Content="Reset" Height="23" HorizontalAlignment="Right" Margin="0,37,202,0" x:Name="resetButton" VerticalAlignment="Top" Width="75" />
@@ -36,6 +29,6 @@
             <sdk:Label Height="22" HorizontalAlignment="Left" Margin="6,68,0,0" x:Name="steplineLabel" VerticalAlignment="Top" Width="57" Content="Stepline" />
             <Slider Height="23" HorizontalAlignment="Left" Margin="55,68,0,0" x:Name="steplineSlider" VerticalAlignment="Top" Width="468" />
         </Grid>
-
+        <TextBox Height="45" HorizontalAlignment="Left" Margin="12,555,0,0" Name="logbox" VerticalAlignment="Top" Width="529" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" />
     </Grid>
 </UserControl>
