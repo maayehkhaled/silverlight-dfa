@@ -22,6 +22,7 @@ namespace SilverlightApplication6
 			this.x = x; this.y = y;
 		}
 		public EPoint():this(0.0,0.0){}
+		public EPoint(Point p) : this(p.X, -p.Y) { }
 
 		public void transformCoordinate(EVector v)
 		/* compute the new coordinate in new transform coordiante system. 
@@ -39,6 +40,8 @@ namespace SilverlightApplication6
 		 * of a angle phi, cos(phi) = (v1 * v2) / abs(a) * abs(b)
 		 */
 		{
+			var phi = Math.Acos( v1 * v2 / (v1.abs() * v2.abs()) );
+			rotateCoordinate(phi);
 		}
 
 		public void rotateCoordinate(double phi)
@@ -70,11 +73,16 @@ namespace SilverlightApplication6
 		}
 
 		public static double operator *(EVector v, EVector u)
-		/*todo: get information about operator oveloading*/
+		/*compute scale production of v und u*/
 		{
-			double X = u.x * v.x;
-			double Y = u.y * v.y;
+			double X = v.x * u.x;
+			double Y = v.y * u.y;
 			return Math.Sqrt(X * X + Y * Y);
+		}
+
+		public double abs()
+		{
+			return Math.Sqrt(x * x + y * y);
 		}
 	}
 }
