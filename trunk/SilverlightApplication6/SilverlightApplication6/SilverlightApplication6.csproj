@@ -80,6 +80,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DummyTest.cs" />
+    <Compile Include="EPoint.cs" />
     <Compile Include="GraphDrawer.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
