@@ -48,9 +48,14 @@ namespace SilverlightApplication6
 				foreach ( Tuple<Node,string> j in adjacent)
 				{
 					Tuple<Point, Point, Point, Point> coordinate = computeEdge(i, j.Item1);
-
+					constructBezier(coordinate);
 				}
 			}
+		}
+
+		private void constructBezier(Tuple<Point, Point, Point, Point> coordinate)
+		{
+			
 		}
 
 		public void justifyPostion(Node i)
