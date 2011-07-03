@@ -41,7 +41,7 @@ namespace SilverlightApplication6
                 Node toNode;
                 nodes.TryGetValue(from, out toNode);
 
-                fromNode.adjacent.Add(new Tuple<Node, string>(toNode, symbol));
+                fromNode.addAdjcent(toNode, symbol);
             }
 
             return new List<Node>(nodes.Values);
