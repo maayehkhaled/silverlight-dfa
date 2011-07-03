@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace SilverlightApplication6
 {
-	public struct EPoint
+	public class EPoint
 	/* use normal coordinate system (standard Euclid Coordinate System) */
 	{
 		public double x = 0;
@@ -53,7 +53,7 @@ namespace SilverlightApplication6
 		}
 	}
 
-	public struct EVector
+	public class EVector
 	{
 		public double x = 0;
 		public double y = 0;

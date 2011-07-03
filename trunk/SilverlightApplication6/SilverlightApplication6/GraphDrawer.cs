@@ -73,7 +73,9 @@ namespace SilverlightApplication6
 			Point m1Point = new Point();
 			Point m2Point = new Point();
 
-
+			/*EPoint begin = new EPoint(i.x, -i.y);
+			begin.transformCoordinate(
+			*/
 			return new Tuple<Point, Point, Point, Point>(beginPoint, m1Point, m2Point, endPoint);
 		}
     }
