@@ -19,13 +19,17 @@ namespace SilverlightApplication6
 
             foreach (XElement state in root.Elements("States").Elements("State"))
             {
-                Node node = new Node(state.Value);
+                double x = double.Parse(state.Attribute("x").Value);
+                double y = double.Parse(state.Attribute("y").Value);
+                bool isEnd = false;
 
                 if (state.Attribute("accept") != null
                     && state.Attribute("accept").Value.ToUpper().Equals("Y"))
                 {
-                    node.isEnd = true;
+                    isEnd = true;
                 }
+
+                Node node = new Node(state.Value, x, y, isEnd);
 
                 nodes.Add(state.Value, node);
             }

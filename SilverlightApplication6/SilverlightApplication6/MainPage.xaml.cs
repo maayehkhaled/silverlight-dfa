@@ -68,18 +68,18 @@ namespace SilverlightApplication6
             if (args.Data != null)
             {
                 FileInfo[] files = args.Data.GetData(DataFormats.FileDrop) as FileInfo[];
-                logbox.Text += files.Length + " files dropped (only the first one will be read)...\n";
+                writeLog(files.Length + " files dropped (only the first one will be read)...");
 
                 try
                 {
                     List<Node> nodes = XmlParser.parse(files[0]);
                     // ...
                     playboard.Background = originalPlayboardColor;
-                    logbox.Text += "File loaded.\n";
+                    writeLog("File loaded.");
                 }
                 catch (Exception e)
                 {
-                    logbox.Text += e.ToString() + "\n";
+                    writeLog(e.ToString());
                     playboard.Background = new SolidColorBrush(Colors.Red);
                 }
             }
@@ -116,11 +116,11 @@ namespace SilverlightApplication6
                     List<Node> nodes = XmlParser.parse(openFileDialog.File);
                     // ...
                     playboard.Background = originalPlayboardColor;
-                    logbox.Text += "File loaded.\n";
+                    writeLog("File loaded.");
                 }
                 catch (Exception e)
                 {
-                    logbox.Text += e.ToString() + "\n";
+                    writeLog(e.ToString());
                     playboard.Background = new SolidColorBrush(Colors.Red);
                 }
             }
@@ -128,6 +128,19 @@ namespace SilverlightApplication6
             {
                 playboard.Background = new SolidColorBrush(Colors.Red);
             }
+        }
+
+        private void writeLog(string s) {
+            if (logbox.Text.Length > 0)
+            {
+                logbox.Text += Environment.NewLine + s;
+            }
+            else
+            {
+                logbox.Text += s;
+            }
+            
+            logbox.SelectionStart = logbox.Text.Length;
         }
     }
 }
