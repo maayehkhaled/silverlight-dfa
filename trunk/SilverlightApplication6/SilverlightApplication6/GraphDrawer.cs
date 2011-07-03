@@ -32,7 +32,7 @@ namespace SilverlightApplication6
             {
 				c.Children.Add(i.presentor);
 				/* postioning */
-				i.justifyPostion();
+				justifyPostion(i);
             }
         }
 
@@ -41,17 +41,20 @@ namespace SilverlightApplication6
 		{
 			foreach (Node i in nodes)
 			{
-				List<Grid> outEdges = i.outEdges;
-				foreach ( Grid edge in outEdges)
+				List<Tuple<Node,string>> outNode = i.adjacent;
+				foreach ( Node j in outNode)
 				{
-					c.Children.Add(edge); /* insert line */
-				}
+					Tuple<double, double, double, double> coordinate = computeEdge(i, j);
 
-				i.justifyOutEdges();
+				}
 			}
 		}
 
-		
+		public void justifyPostion(Node i)
+		{
+			i.presentor.SetValue(Canvas.TopProperty, i.y);
+			i.presentor.SetValue(Canvas.LeftProperty, i.x);
+		}
 
     }
 }
