@@ -70,18 +70,18 @@ namespace SilverlightApplication6
                 FileInfo[] files = args.Data.GetData(DataFormats.FileDrop) as FileInfo[];
                 writeLog(files.Length + " files dropped (only the first one will be read)...");
 
-                try
-                {
+                //try
+                //{
                     List<Node> nodes = XmlParser.parse(files[0]);
-                    // ...
+                    // TODO ...
                     playboard.Background = originalPlayboardColor;
                     writeLog("File loaded.");
-                }
-                catch (Exception e)
-                {
-                    writeLog(e.ToString());
-                    playboard.Background = new SolidColorBrush(Colors.Red);
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    writeLog(e.ToString());
+                //    playboard.Background = new SolidColorBrush(Colors.Red);
+                //}
             }
             else
             {
@@ -111,18 +111,18 @@ namespace SilverlightApplication6
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-                try
-                {
+                //try
+                //{
                     List<Node> nodes = XmlParser.parse(openFileDialog.File);
-                    // ...
+                    // TODO ...
                     playboard.Background = originalPlayboardColor;
                     writeLog("File loaded.");
-                }
-                catch (Exception e)
-                {
-                    writeLog(e.ToString());
-                    playboard.Background = new SolidColorBrush(Colors.Red);
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    writeLog(e.ToString());
+                //    playboard.Background = new SolidColorBrush(Colors.Red);
+                //}
             }
             else
             {

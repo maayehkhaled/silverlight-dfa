@@ -1,0 +1,15 @@
+﻿<!ELEMENT FiniteAutomaton (InputAlphabet, States, Transitions)>
+<!ELEMENT InputAlphabet (Symbol, Symbol)>
+<!ELEMENT Symbol (#PCDATA)>
+<!ELEMENT States (State+)>
+<!ELEMENT State (#PCDATA)>
+<!ATTLIST State x CDATA #REQUIRED>
+<!ATTLIST State y CDATA #REQUIRED>
+<!ATTLIST State start (Y|y|N|n) "N">
+<!ATTLIST State accept (Y|y|N|n) "N">
+<!ELEMENT Transitions (Transition, Transition+)>
+<!ELEMENT Transition EMPTY>
+<!-- TODO: is it possible to have a refernce to the content of 'Symbol' here? -->
+<!ATTLIST Transition from CDATA #REQUIRED>
+<!ATTLIST Transition symbol CDATA #REQUIRED>
+<!ATTLIST Transition to CDATA #REQUIRED>
