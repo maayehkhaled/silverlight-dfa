@@ -3,39 +3,7 @@
              x:Class="SilverlightApplication6.App"
              >
     <Application.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Styles.xaml" />
-			</ResourceDictionary.MergedDictionaries>
-
-			<Style x:Key="DAF" TargetType="Button">
-				<Setter Property="Background">
-					<Setter.Value>
-						<Ellipse Width="50" Height="50" Fill="AliceBlue"></Ellipse>
-					</Setter.Value>
-				</Setter>
-			</Style>
-
-			<Style x:Key="Blurred" TargetType="Button">
-				<Setter Property="Effect">
-					<Setter.Value>
-						<BlurEffect Radius="8" />
-					</Setter.Value>
-				</Setter>
-			</Style>
-			
-			
-			<Style x:Key="BlurredAndRotated" TargetType="Button"
-					BasedOn="{StaticResource Blurred}">
-				<Setter Property="RenderTransform">
-					<Setter.Value>
-						<RotateTransform Angle="10" />
-					</Setter.Value>
-				</Setter>
-			</Style>
-			
-			
-		</ResourceDictionary>
+		
 	</Application.Resources>
 	
 </Application>

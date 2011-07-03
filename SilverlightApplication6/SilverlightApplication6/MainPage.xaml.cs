@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+
 using Microsoft.Expression.Controls;
 
 namespace SilverlightApplication6
@@ -20,10 +21,13 @@ namespace SilverlightApplication6
         public MainPage()
         {
             InitializeComponent();
+			DummyTest dt = new DummyTest();
+			dt.drawDummyDFA(playboard);
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
+			/*
             Ellipse e1 = new Ellipse();
             e1.Height = 40;
             e1.Width = 40;
@@ -32,6 +36,7 @@ namespace SilverlightApplication6
             
             double y1 = 100.0;
             double x1 = 100.0;
+            e1.DataContext = "inf loop";
             e1.SetValue(Canvas.TopProperty, y1);
             e1.SetValue(Canvas.LeftProperty, x1);
 
@@ -55,6 +60,7 @@ namespace SilverlightApplication6
             playboard.Children.Add(a);
             a.SetValue(Canvas.TopProperty, y1 + e1.Height /1);
             a.SetValue(Canvas.LeftProperty, x1 + e1.Width / 1);
+			*/ 
         }
 
         private void playboard_Drop(object sender, DragEventArgs e)
@@ -69,8 +75,10 @@ namespace SilverlightApplication6
 
         private void playboard_DragEnter(object sender, DragEventArgs e)
         {
+
             originalPlayboardColor = (Color) playboard.GetValue(Canvas.BackgroundProperty);
             playboard.SetValue(Canvas.BackgroundProperty, Colors.Green);
+
         }
 
         private void playboard_DragLeave(object sender, DragEventArgs e)
