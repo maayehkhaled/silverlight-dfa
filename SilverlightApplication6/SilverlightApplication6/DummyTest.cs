@@ -49,8 +49,8 @@ namespace SilverlightApplication6
 			dummyDFA.Add(three);
 			dummyDFA.Add(four);
 
-			GraphDrawer gd = new GraphDrawer(dummyDFA);
-			gd.drawNodes(c);
+			GraphDrawer gd = new GraphDrawer(dummyDFA, c);
+			gd.drawNodes();
 
 			/*
 			string x = "flip";
