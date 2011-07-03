@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Input"
+    targetNamespace="http://silverlight.dfa/Input.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://silverlight.dfa/Input.xsd"
+    xmlns:mstns="http://silverlight.dfa/Input.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="InputAlphabet">
+    <xs:sequence>
+      <xs:element name="Symbol" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="YesOrNo">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Y" />
+      <xs:enumeration value="y" />
+      <xs:enumeration value="N" />
+      <xs:enumeration value="n" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="State">
+    <xs:attribute name="start" type="YesOrNo" use="optional"></xs:attribute>
+    <xs:attribute name="accept" type="YesOrNo" use="optional"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="States">
+    <xs:sequence>
+      <xs:element name="State" type="State" minOccurs="1" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Transition">
+    <!-- Wie kann man bei z.B. 'from' erzwingen, dass dort nur ein Wert aus obigem 'State' steht??? -->
+    <xs:attribute name="from" type="xs:string" use="required"></xs:attribute>
+    <xs:attribute name="symbol" type="xs:string" use="required"></xs:attribute>
+    <xs:attribute name="to" type="xs:string" use="required"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Transitions">
+    <xs:sequence>
+      <xs:element name="Transition" type="Transition" minOccurs="1" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="FiniteAutomaton">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="InputAlphabet"></xs:element>
+        <xs:element name="States"></xs:element>
+        <xs:element name="Transitions"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>
