@@ -29,6 +29,6 @@
             <sdk:Label Height="22" HorizontalAlignment="Left" Margin="6,68,0,0" x:Name="steplineLabel" VerticalAlignment="Top" Width="57" Content="Stepline" />
             <Slider Height="23" HorizontalAlignment="Left" Margin="55,68,0,0" x:Name="steplineSlider" VerticalAlignment="Top" Width="468" />
         </Grid>
-        <TextBox Height="45" HorizontalAlignment="Left" Margin="12,555,0,0" Name="logbox" VerticalAlignment="Top" Width="529" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" />
+        <TextBox Height="45" HorizontalAlignment="Left" Margin="12,555,0,0" Name="logbox" Width="529" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" VerticalContentAlignment="Bottom" AcceptsReturn="False" />
     </Grid>
 </UserControl>

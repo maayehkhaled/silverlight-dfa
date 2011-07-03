@@ -8,10 +8,10 @@
     <Symbol>1</Symbol>
   </InputAlphabet>
   <States>
-    <State start="Y" accept="Y">q0</State>
-    <State>q1</State>
-    <State>q2</State>
-    <State>q3</State>
+    <State x="100" y="100" start="Y" accept="Y">q0</State>
+    <State x="100" y="200">q1</State>
+    <State x="200" y="100">q2</State>
+    <State x="200" y="200">q3</State>
   </States>
   <Transitions>
     <Transition from="q0" symbol="0" to="q2" />
