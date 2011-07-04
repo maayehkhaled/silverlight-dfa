@@ -20,7 +20,8 @@ namespace SilverlightApplication6
 	 * this class is created to use to quick and dirty debug
 	 */
     {
-		public void drawDummyDFA(Canvas c)
+		public void makeSmall(Canvas c) { c.Height = c.Height / 2; }
+		public void drawDummyDFA(Canvas c, TextBox log)
 		{
 			/*
 			 * >1 -> 2 [a]
@@ -37,11 +38,12 @@ namespace SilverlightApplication6
 			Node four = new Node("4", 100, 100, true);
 			
 			one.addAdjcent(two, "a");
-			one.addAdjcent(three, "b");
+			/*one.addAdjcent(three, "b");
 			two.addAdjcent(three, "a");
 			two.addAdjcent(four, "b");
 			four.addAdjcent(one, "b");
 			four.addAdjcent(three, "a");
+			*/
 
 			List <Node> dummyDFA = new List<Node> ();
 			dummyDFA.Add(one);
@@ -51,17 +53,13 @@ namespace SilverlightApplication6
 
 			GraphDrawer gd = new GraphDrawer(dummyDFA, c);
 			gd.drawNodes();
-
-			/*
-			string x = "flip";
-			string y = "flip";
-			if (x.Equals(y))
-			{
-				TextBlock tb = new TextBlock(); tb.Text = "Equals";
-				c.Children.Add(tb);
-			}
+			//gd.drawEdges();
+			/*Tuple<EPoint,EPoint,EPoint,EPoint> coordinate = gd.computeEdge(one, two, log);
+			log.Text += "p1, x: " + coordinate.Item1.x + "\n";
+ 			log.Text += "p1, y: " + coordinate.Item1.y + "\n";
 			*/
 
+			/*
 			LineArrow x = new LineArrow();
 			x.Width = 100; x.Height = 100;
 
@@ -107,10 +105,10 @@ namespace SilverlightApplication6
 			path.Stroke = new SolidColorBrush(Colors.Black);
 
  			c.Children.Add(path);
-			/* now move bz */
+			//* now move bz 
 			path.SetValue(Canvas.TopProperty, 0.0);
 			path.SetValue(Canvas.LeftProperty, 0.0);
-
+			*/
 		}
 
 		private void GenerateGrid(Canvas panel, double gap)
@@ -133,6 +131,21 @@ namespace SilverlightApplication6
 				sp.SetValue(Canvas.TopProperty, i * gap);
 
 			}
+		}
+
+
+		public void testVector(TextBox log)
+		{
+			log.Text = "log\n";
+			EVector v1 = new EVector(0, 3);
+			EVector v2 = new EVector(0, 2);
+
+			EPoint p1 = new EPoint(3,4);
+
+ 			p1.rotateCoordinate(v1,v2);
+			log.Text +="p1.x" + p1.x + "\n";
+			log.Text +="p1.y" + p1.y + "\n";
+
 		}
     }
 }
