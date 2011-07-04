@@ -21,8 +21,8 @@ namespace DummyProject
 	{
 		static void Main(string[] args)
 		{
-			Node q1 = new Node("q1", 0, 0, false);
-			Node q2 = new Node("q2", 100, 0, true);
+			Node q1 = new Node("q1", 100, 100, false);
+			Node q2 = new Node("q2", 100, 300, true);
 
 			Tuple<EPoint, EPoint, EPoint, EPoint> points = LayoutComputer.computeEdge(q1, q2);
 			Console.Write("result:\n");
