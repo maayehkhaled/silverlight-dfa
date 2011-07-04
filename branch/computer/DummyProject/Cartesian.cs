@@ -124,9 +124,8 @@ namespace SilverlightApplication6
 
 		public static EVector operator -(EVector v)
 		{
-			v.x = -v.x;
-			v.y = -v.y;
-			return v;
+			var u = new EVector(-v.x, -v.y);
+			return u;
 		}
 	}
 }

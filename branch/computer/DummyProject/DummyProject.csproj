@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cartesian.cs" />
-    <Compile Include="LayoutCompute.cs" />
+    <Compile Include="LayoutComputer.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

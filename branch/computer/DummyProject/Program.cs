@@ -23,14 +23,14 @@ namespace DummyProject
 		{
 			Node q1 = new Node("q1", 0, 0, false);
 			Node q2 = new Node("q2", 100, 0, true);
+
+			Tuple<EPoint, EPoint, EPoint, EPoint> points = LayoutComputer.computeEdge(q1, q2);
+			Console.Write("result:\n");
+			Console.Write("p1.x " + points.Item1.x + "\n");
+			Console.Write("p1.y " + points.Item1.y + "\n");
+			Console.Write("p4.x " + points.Item4.x + "\n");
+			Console.Write("p4.y " + points.Item4.y + "\n");
 			
-			EPoint p1 = new EPoint(25/2, -25/2);
-			
-			EVector transform = new EVector(25 / 2, -25 / 2);
-			p1.transformCoordinate(transform);
-			Console.Write("after transform:\n");
-			Console.Write("                p1.x " + p1.x + "\n");
-			Console.Write("                p1.y " + p1.y + "\n");
 			Console.ReadKey();
 		}
 	}
