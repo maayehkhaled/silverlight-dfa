@@ -81,14 +81,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Cartesian.cs" />
+    <Compile Include="LayoutComputer.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="DummyTest.cs" />
-    <Compile Include="EPoint.cs" />
-    <Compile Include="GraphDrawer.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
