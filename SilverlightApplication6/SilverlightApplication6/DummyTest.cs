@@ -37,13 +37,13 @@ namespace SilverlightApplication6
 			Node three = new Node("3", 0, 100, false);
 			Node four = new Node("4", 100, 100, true);
 			
-			one.addAdjcent(two, "a");
-			/*one.addAdjcent(three, "b");
-			two.addAdjcent(three, "a");
-			two.addAdjcent(four, "b");
-			four.addAdjcent(one, "b");
-			four.addAdjcent(three, "a");
-			*/
+			one.addAdjacent(two, "a");
+			one.addAdjacent(three, "b");
+			two.addAdjacent(three, "a");
+			two.addAdjacent(four, "b");
+			four.addAdjacent(one, "b");
+			four.addAdjacent(three, "a");
+			
 
 			List <Node> dummyDFA = new List<Node> ();
 			dummyDFA.Add(one);

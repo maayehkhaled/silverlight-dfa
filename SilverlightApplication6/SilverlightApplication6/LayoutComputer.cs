@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
+
 
 namespace SilverlightApplication6
 {
@@ -74,6 +76,9 @@ namespace SilverlightApplication6
 			p2.y = -p2.y;
 			p3.y = -p3.y;
 			p4.y = -p4.y;
+			Debug.WriteLine("Point 1:");
+			Debug.WriteLine("      x: " + p1.x);
+			Debug.WriteLine("      y: " + p1.y);
 			return new Tuple<EPoint, EPoint, EPoint, EPoint>(p1, p2, p3, p4);
 		}
 	}

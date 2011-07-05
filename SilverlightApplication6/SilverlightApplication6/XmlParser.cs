@@ -60,7 +60,7 @@ namespace SilverlightApplication6
                 Node toNode;
                 nodes.TryGetValue(from, out toNode);
 
-                fromNode.addAdjcent(toNode, symbol);
+                fromNode.addAdjacent(toNode, symbol);
             }
 
             return new List<Node>(nodes.Values);
