@@ -50,7 +50,9 @@ namespace SilverlightApplication6
 			dummyDFA.Add(three);
 			dummyDFA.Add(four);
 
-			LayoutComputer.computeEdge(one, two);
+			GraphDrawer gd = new GraphDrawer(dummyDFA,c);
+			gd.drawDFA();
+			
 		}
 
 		private void GenerateGrid(Canvas panel, double gap)
@@ -76,18 +78,6 @@ namespace SilverlightApplication6
 		}
 
 
-		public void testVector(TextBox log)
-		{
-			log.Text = "log\n";
-			EVector v1 = new EVector(0, 3);
-			EVector v2 = new EVector(0, 2);
-
-			EPoint p1 = new EPoint(3,4);
-
- 			p1.rotateCoordinate(v1,v2);
-			log.Text +="p1.x" + p1.x + "\n";
-			log.Text +="p1.y" + p1.y + "\n";
-
-		}
+		
     }
 }

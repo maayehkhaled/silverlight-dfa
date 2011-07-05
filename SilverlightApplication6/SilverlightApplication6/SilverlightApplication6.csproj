@@ -85,6 +85,7 @@
     <Compile Include="GraphDrawer.cs" />
     <Compile Include="LayoutComputer.cs" />
     <Compile Include="Node.cs" />
+    <Compile Include="Visual.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="DummyTest.cs" />
     <Compile Include="MainPage.xaml.cs">
