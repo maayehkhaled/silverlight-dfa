@@ -20,8 +20,7 @@ namespace SilverlightApplication6
 	 * this class is created to use to quick and dirty debug
 	 */
     {
-		public void makeSmall(Canvas c) { c.Height = c.Height / 2; }
-		public void drawDummyDFA(Canvas c, TextBox log)
+		public void drawDummyDFA(Canvas c)
 		{
 			/*
 			 * >1 -> 2 [a]
@@ -51,63 +50,7 @@ namespace SilverlightApplication6
 			dummyDFA.Add(three);
 			dummyDFA.Add(four);
 
-			
-			//gd.drawEdges();
-			/*Tuple<EPoint,EPoint,EPoint,EPoint> coordinate = gd.computeEdge(one, two, log);
-			log.Text += "p1, x: " + coordinate.Item1.x + "\n";
- 			log.Text += "p1, y: " + coordinate.Item1.y + "\n";
-			*/
-
-			/*
-			LineArrow x = new LineArrow();
-			x.Width = 100; x.Height = 100;
-
-			x.Stroke = new SolidColorBrush(Colors.Black);
-			x.StrokeThickness = 2;
-			x.Opacity = 0.5;
-			
-			
-
-			RotateTransform t = new RotateTransform();
-			t.Angle=-180;
-			t.CenterX = x.Width/2;
-			t.CenterY = x.Height / 2;
-			x.RenderTransform = t;
-
-			c.Children.Add(x);
-			x.SetValue(Canvas.TopProperty, 20.0);
-			x.SetValue(Canvas.LeftProperty, 50.0);
-
-			
-		
-			var bz = new BezierSegment();
-			var p1 = new Point(100,30);
-			bz.Point1 = p1;
-			var p2 = new Point(200,30);
-			bz.Point2 = p2;
-			var p3 = new Point(300,-40);
-			bz.Point3 = p3;
-			
-			var pc = new PathSegmentCollection();
-			pc.Add(bz);
-
-			var pf = new PathFigure();
-			pf.StartPoint = new Point(0, 0);
-			pf.Segments = pc;
-			var pfc = new PathFigureCollection();
-			pfc.Add(pf);
-			var pg = new PathGeometry();
-			pg.Figures = pfc;
-
-			var path = new Path();
-			path.Data = pg;
-			path.Stroke = new SolidColorBrush(Colors.Black);
-
- 			c.Children.Add(path);
-			//* now move bz 
-			path.SetValue(Canvas.TopProperty, 0.0);
-			path.SetValue(Canvas.LeftProperty, 0.0);
-			*/
+			LayoutComputer.computeEdge(one, two);
 		}
 
 		private void GenerateGrid(Canvas panel, double gap)
