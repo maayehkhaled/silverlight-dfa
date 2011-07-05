@@ -50,7 +50,7 @@ namespace SilverlightApplication6
 		public Node(String label, double x, double y, bool isEnd) :
 			this(label, x, y, isEnd, defaultSize, defaultSize) { }
 
-		public void addAdjcent(Node node, string label)
+		public void addAdjacent(Node node, string label)
 		/* if a node can reach another node with a edge label, add it in adjacent list
 		 * (with the edge label) */
 		{
