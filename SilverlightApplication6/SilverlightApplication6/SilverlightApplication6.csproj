@@ -81,6 +81,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Cartersian.cs" />
     <Compile Include="Cartesian.cs" />
     <Compile Include="LayoutComputer.cs" />
     <Compile Include="Node.cs" />
