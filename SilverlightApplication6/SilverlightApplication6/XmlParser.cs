@@ -12,24 +12,27 @@ namespace SilverlightApplication6
     public class XmlParser
     {
         // schema validation is not supported in silverlight! what an evidence of incapacity!!!
-        private static XmlPreloadedResolver resolver = new XmlPreloadedResolver();
-        private static XmlReaderSettings settings = new XmlReaderSettings();
-        private static bool initialized = false;
-        private static Uri dtd = new Uri("Input.dtd", UriKind.Relative);
+        //private static XmlPreloadedResolver resolver = new XmlPreloadedResolver();
+        //private static XmlReaderSettings settings = new XmlReaderSettings();
+        //private static bool initialized = false;
+        //private static Uri dtd = new Uri("Input.dtd", UriKind.Relative);
 
         public static List<Node> parse(FileInfo file)
         {
             // TODO static initalization block
-            if (!initialized)
-            {
-                resolver.Add(dtd,
-                    App.GetResourceStream(dtd).Stream);
-                settings.XmlResolver = resolver;
-                settings.DtdProcessing = DtdProcessing.Parse;
-                initialized = true;
-            }
+            //if (!initialized)
+            //{
+            //    resolver.Add(dtd,
+            //        App.GetResourceStream(dtd).Stream);
+            //    settings.XmlResolver = resolver;
+            //    settings.DtdProcessing = DtdProcessing.Parse;
+            //    initialized = true;
+            //    Debug.WriteLine("init done");
+            //}
 
-            XElement root = XElement.Load(XmlReader.Create(file.OpenRead(), settings));
+            //XElement root = XElement.Load(XmlReader.Create(file.OpenRead(), settings));
+
+            XElement root = XElement.Load(file.OpenRead());
             IDictionary<string, Node> nodes = new Dictionary<string, Node>();
 
             foreach (XElement state in root.Elements("States").Elements("State"))
