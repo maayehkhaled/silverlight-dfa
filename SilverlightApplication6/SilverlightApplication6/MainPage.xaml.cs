@@ -22,7 +22,11 @@ namespace SilverlightApplication6
             InitializeComponent();
             originalPlayboardColor = playboard.Background;
 			DummyTest dt = new DummyTest();
-			dt.drawDummyDFA(playboard);
+			dt.makeSmall(playboard);
+			
+			//dt.drawDummyDFA(playboard,logbox);
+			
+			dt.testVector(logbox);
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
@@ -62,7 +66,7 @@ namespace SilverlightApplication6
             a.SetValue(Canvas.LeftProperty, x1 + e1.Width / 1);
 			*/ 
         }
-
+		
         private void playboard_Drop(object sender, DragEventArgs args)
         {
             if (args.Data != null)

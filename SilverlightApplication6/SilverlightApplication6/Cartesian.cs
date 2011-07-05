@@ -14,7 +14,9 @@ namespace SilverlightApplication6
 	public class EPoint
 	/* use normal coordinate system (standard Euclid Coordinate System) */
 	{
+		/*x-coordinate on Catesian Coordinate system */
 		public double x = 0;
+		/*y-coordinate on Catesian Coordinate system */
 		public double y = 0;
 
 		public EPoint(double x, double y)
@@ -22,7 +24,7 @@ namespace SilverlightApplication6
 			this.x = x; this.y = y;
 		}
 		public EPoint():this(0.0,0.0){}
-		public EPoint(Point p) : this(p.X, -p.Y) { }
+		
 
 		public void transformCoordinate(EVector v)
 		/* compute the new coordinate in new transform coordiante system. 
@@ -62,10 +64,7 @@ namespace SilverlightApplication6
 		{
 			return Math.Sqrt( (x - p.x)*(x-p.x) + (y-p.y)*(y-p.y) );
 		}
-		public Point makeSPoint()
-		{
-			return new Point(x, -y);
-		}
+		
 	}
 
 	public class EVector
@@ -125,9 +124,8 @@ namespace SilverlightApplication6
 
 		public static EVector operator -(EVector v)
 		{
-			v.x = -v.x;
-			v.y = -v.y;
-			return v;
+			var u = new EVector(-v.x, -v.y);
+			return u;
 		}
 	}
 }
