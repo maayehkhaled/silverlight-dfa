@@ -51,8 +51,7 @@ namespace SilverlightApplication6
 			dummyDFA.Add(three);
 			dummyDFA.Add(four);
 
-			GraphDrawer gd = new GraphDrawer(dummyDFA, c);
-			gd.drawNodes();
+			
 			//gd.drawEdges();
 			/*Tuple<EPoint,EPoint,EPoint,EPoint> coordinate = gd.computeEdge(one, two, log);
 			log.Text += "p1, x: " + coordinate.Item1.x + "\n";
