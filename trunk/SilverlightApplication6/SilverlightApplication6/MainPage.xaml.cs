@@ -21,12 +21,9 @@ namespace SilverlightApplication6
         {
             InitializeComponent();
             originalPlayboardColor = playboard.Background;
-			DummyTest dt = new DummyTest();
-			dt.makeSmall(playboard);
-			
-			//dt.drawDummyDFA(playboard,logbox);
-			
-			dt.testVector(logbox);
+			Node n1 = new Node("n1", 0, 0, false);
+			Node n2 = new Node("n2", 100, 100, false);
+			LayoutComputer.computeEdge(n1, n2);
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
