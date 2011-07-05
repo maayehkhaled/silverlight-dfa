@@ -83,6 +83,7 @@
     </Compile>
     <Compile Include="Cartesian.cs" />
     <Compile Include="LayoutComputer.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="DummyTest.cs" />
     <Compile Include="MainPage.xaml.cs">
