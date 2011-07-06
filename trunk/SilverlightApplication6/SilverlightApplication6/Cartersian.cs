@@ -46,12 +46,20 @@ namespace SilverlightApplication6
 		 * is positive, else negativ.
 		 */
 		{
-			var phi = Math.Acos( v1 * v2 / (v1.abs() * v2.abs()) );
-			if (v1.orientationWith(v2) < 0)
+			double phi = Math.Acos( v1 * v2 / (v1.abs() * v2.abs()) );
+			if (! double.IsNaN(phi) )
 			{
-				phi = -phi;
-			}
-			rotateCoordinate(phi);
+				Debug.WriteLine(">>>>>>>>>>>>>>>good it is not NaN<<<<<<<<<<<<<<<");
+				if (v1.orientationWith(v2) < 0)
+				{
+					phi = -phi;
+				}
+				rotateCoordinate(phi);
+				return;
+			}else
+			{
+				return;
+			}			
 		}
 
 		public void rotateCoordinate(double phi)

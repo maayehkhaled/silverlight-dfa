@@ -51,16 +51,17 @@ namespace SilverlightApplication6
 		{
 			foreach (Tuple<Node,string> m in vn.node.adjacent)
 			{
-				Line edge = createOutEdge(vn.node, m);
+				Path edge = createOutEdge(vn.node, m);
 
 				dfaCanvas.Children.Add(edge);
 
 			}
 		}
 
-		Line createOutEdge(Node node, Tuple<Node, string> m)
+		Path createOutEdge(Node node, Tuple<Node, string> m)
 		{
 			Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints = LayoutComputer.computeEdge(node, m.Item1);
+			/*
 			Line path = new Line();
 			
 			path.X1 = bezierPoints.Item1.x;
@@ -68,21 +69,42 @@ namespace SilverlightApplication6
 
 			path.X2 = bezierPoints.Item4.x;
 			path.Y2 = bezierPoints.Item4.y;
-			
-			/*
-			path.X1 = 0;
-			path.Y1 = 0;
-			path.X2 = 200;
-			path.Y2 = 200;
-			*/
 
 			SolidColorBrush edgeColor = new SolidColorBrush(Colors.Brown);
 			path.Fill = edgeColor;
 			path.StrokeThickness = 3;
 			path.Stroke = edgeColor;
-
+			*/
+			Path path = createBezier(bezierPoints);
 			return path;
 		}
 
+
+		Path createBezier(Tuple<EPoint,EPoint,EPoint,EPoint> bezierPoints)
+		{
+			BezierSegment bz = new BezierSegment();
+			bz.Point1 = new Point(bezierPoints.Item2.x, bezierPoints.Item2.y);
+			bz.Point2 = new Point(bezierPoints.Item3.x, bezierPoints.Item3.y);
+			bz.Point3 = new Point(bezierPoints.Item4.x, bezierPoints.Item4.y);
+
+			PathSegmentCollection psCollection = new PathSegmentCollection();
+			psCollection.Add(bz);
+
+			PathFigure bezierFigure = new PathFigure();
+			bezierFigure.StartPoint = new Point(bezierPoints.Item1.x, bezierPoints.Item1.y);
+			bezierFigure.Segments = psCollection;
+
+			PathFigureCollection pathFigCollection = new PathFigureCollection();
+			pathFigCollection.Add(bezierFigure);
+
+			PathGeometry pathGeo = new PathGeometry();
+			pathGeo.Figures = pathFigCollection;
+
+			SolidColorBrush edgeColor = new SolidColorBrush(Colors.Brown);
+			Path path = new Path();
+			path.Data = pathGeo;
+			path.Stroke = edgeColor;
+			return path;
+		}
 	}
 }
