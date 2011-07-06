@@ -37,12 +37,8 @@ namespace SilverlightApplication6
 			Node four = new Node("4", 100, 100, true);
 			
 			one.addAdjacent(two, "a");
-			one.addAdjacent(three, "b");
-			two.addAdjacent(three, "a");
-			two.addAdjacent(four, "b");
-			four.addAdjacent(one, "b");
-			four.addAdjacent(three, "a");
-			
+			one.addAdjacent(one, "b");
+			two.addAdjacent(one, "c");
 
 			List <Node> dummyDFA = new List<Node> ();
 			dummyDFA.Add(one);
