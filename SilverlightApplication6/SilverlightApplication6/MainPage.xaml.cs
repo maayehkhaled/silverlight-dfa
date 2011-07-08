@@ -22,7 +22,8 @@ namespace SilverlightApplication6
             InitializeComponent();
             originalPlayboardColor = playboard.Background;
 			DummyTest dt = new DummyTest();
-			dt.drawDummyDFA(playboard);
+			dt.PrintArrow(playboard);
+			//dt.drawDummyDFA(playboard);
 
         }
 

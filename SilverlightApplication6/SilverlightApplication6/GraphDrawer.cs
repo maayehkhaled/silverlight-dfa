@@ -18,6 +18,8 @@ namespace SilverlightApplication6
 		List<VisualNode> visualNodes;
 		public Canvas dfaCanvas;
 
+		
+
 		public GraphDrawer(List<Node> nodes, Canvas c)
 		{
 			this.nodes = nodes;
@@ -29,6 +31,7 @@ namespace SilverlightApplication6
 				visualNodes.Add(new VisualNode(n));
 			}
 
+			
 		}
 
 		public void drawDFA()
@@ -61,20 +64,7 @@ namespace SilverlightApplication6
 		Path createOutEdge(Node node, Tuple<Node, string> m)
 		{
 			Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints = LayoutComputer.computeEdge(node, m.Item1);
-			/*
-			Line path = new Line();
 			
-			path.X1 = bezierPoints.Item1.x;
-			path.Y1 = bezierPoints.Item1.y;
-
-			path.X2 = bezierPoints.Item4.x;
-			path.Y2 = bezierPoints.Item4.y;
-
-			SolidColorBrush edgeColor = new SolidColorBrush(Colors.Brown);
-			path.Fill = edgeColor;
-			path.StrokeThickness = 3;
-			path.Stroke = edgeColor;
-			*/
 			Path path = createBezier(bezierPoints);
 			return path;
 		}
@@ -107,4 +97,6 @@ namespace SilverlightApplication6
 			return path;
 		}
 	}
+
+	
 }
