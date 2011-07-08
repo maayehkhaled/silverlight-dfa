@@ -73,7 +73,27 @@ namespace SilverlightApplication6
 			}
 		}
 
+		public void PrintArrow(Canvas c)
+		{
+			Path arrow = new Path();
+			arrow.Width = 56.6147;
+			arrow.Height = 56.6146;
+			arrow.Stretch = Stretch.Fill;
 
+			//arrow.Data = ArrowFactory.createArrow(ArrowType.Arrow_27);
+			var datastring = "F1 M 77.2798,42.312L 62.3771,30.448L 57.4118,36.6814L 65.8771,43.4214L 42.6131,43.4214L 42.6131,51.392L 65.8745,51.392L 57.4118,58.1294L 62.3771,64.3654L 77.2798,52.5L 83.6771,47.4053L 77.2798,42.312 Z ";
+			var geodata = new PathGeometry();
+			geodata.SetValue(System.Windows.Shapes.Path.DataProperty, datastring);
+
+			SolidColorBrush edgeColor = new SolidColorBrush(Colors.Brown);
+			arrow.Stroke = edgeColor;
+			arrow.Stroke = edgeColor;
+			c.Children.Add(arrow);
+			
+
+			arrow.SetValue(Canvas.TopProperty, 0.0);
+			arrow.SetValue(Canvas.LeftProperty, 0.0);
+		}
 		
     }
 }

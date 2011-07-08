@@ -81,10 +81,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ArrowFactory.cs" />
     <Compile Include="Cartersian.cs" />
     <Compile Include="GraphDrawer.cs" />
     <Compile Include="LayoutComputer.cs" />
     <Compile Include="Node.cs" />
+    <Compile Include="StringToPathGeometryConverter.cs" />
     <Compile Include="Visual.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="DummyTest.cs" />
@@ -101,6 +103,10 @@
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="segd-arrow-symbols-icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
