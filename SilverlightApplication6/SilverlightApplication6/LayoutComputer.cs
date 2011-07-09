@@ -1,7 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Windows;
+using System.Windows.Browser;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Diagnostics;
 
 
@@ -11,13 +15,22 @@ namespace SilverlightApplication6
 	{
 		public static Tuple<EPoint, EPoint, EPoint, EPoint> computeEdge(Node i, Node j)
 		{
-			EPoint begin = new EPoint(i.x + i.width / 2, -(i.y + i.height / 2));
-			EPoint end = new EPoint(j.x + j.width / 2, -(j.y + j.height / 2));
+			EPoint begin = new EPoint(
+				i.x + i.width / 2, 
+				-(i.y + i.height / 2)
+			);
+			EPoint end = new EPoint(
+				j.x + j.width / 2, 
+				-(j.y + j.height / 2)
+			);
 			/* move the coordinate base to begin */
-			EVector transform = new EVector(i.x + i.width / 2,
-				-(i.y + i.height / 2));
+			EVector transform = new EVector(
+				i.x + i.width / 2,
+				-(i.y + i.height / 2)
+			);
 			begin.transformCoordinate(transform);
 			end.transformCoordinate(transform);
+
 			/* rotate the coordinate, so that the vector <begin->end> is the x-axes */
 			EVector v1 = new EVector(1, 0);
 			EVector v2 = new EVector(begin, end);
@@ -108,6 +121,35 @@ namespace SilverlightApplication6
 			Debug.WriteLine("*******************      y: " + p4.y);
 			return new Tuple<EPoint, EPoint, EPoint, EPoint>(p1, p2, p3, p4);
 		}
-		
+
+		public static Tuple<EPoint, EPoint> computeArrow(EPoint target, EPoint direction)
+		{
+			EPoint target2 = new EPoint(target.x, -target.y);
+			EPoint direction2 = new EPoint(direction.x, -direction.y);
+			EVector transformer = new EVector(target2);
+			target2.transformCoordinate(transformer);
+			direction2.transformCoordinate(transformer);
+
+			EVector v1 = new EVector(1, 0);
+			EVector v2 = new EVector(target2, direction2);
+			target2.rotateCoordinate(v1, v2);
+			direction2.rotateCoordinate(v1, v2);
+
+			var angel = Math.PI / 6;
+			var radius = 10;
+			EPoint begin = new EPoint(radius * Math.Cos(angel), radius * Math.Sin(angel));
+			EPoint end = new EPoint(begin.x, -begin.y);
+
+			begin.rotateCoordinate(v2, v1);
+			end.rotateCoordinate(v2, v1);
+
+			begin.transformCoordinate(-transformer);
+			end.transformCoordinate(-transformer);
+			
+			begin.y = -begin.y;
+			end.y = -end.y;
+
+			return new Tuple<EPoint, EPoint>(begin, end);
+		}
 	}
 }

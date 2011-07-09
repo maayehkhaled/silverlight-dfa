@@ -72,23 +72,40 @@ namespace SilverlightApplication6
 
 		Path createBezier(Tuple<EPoint,EPoint,EPoint,EPoint> bezierPoints)
 		{
+			PathFigure bezierFigure = new PathFigure();
+			bezierFigure.StartPoint = new Point(
+				bezierPoints.Item1.x, 
+				bezierPoints.Item1.y);
 			BezierSegment bz = new BezierSegment();
 			bz.Point1 = new Point(bezierPoints.Item2.x, bezierPoints.Item2.y);
 			bz.Point2 = new Point(bezierPoints.Item3.x, bezierPoints.Item3.y);
 			bz.Point3 = new Point(bezierPoints.Item4.x, bezierPoints.Item4.y);
+			bezierFigure.Segments.Add(bz);
 
-			PathSegmentCollection psCollection = new PathSegmentCollection();
-			psCollection.Add(bz);
+			Tuple<EPoint, EPoint> arrowInfo = LayoutComputer.computeArrow(bezierPoints.Item4, bezierPoints.Item3);
+			PathFigure arrowFigure = new PathFigure();
+			arrowFigure.StartPoint = new Point(
+				arrowInfo.Item1.x,
+				arrowInfo.Item1.y
+				);
+			
+			LineSegment wing1 = new LineSegment();
+			wing1.Point = new Point(
+				bezierPoints.Item4.x,
+				bezierPoints.Item4.y
+				);
+			arrowFigure.Segments.Add(wing1);
 
-			PathFigure bezierFigure = new PathFigure();
-			bezierFigure.StartPoint = new Point(bezierPoints.Item1.x, bezierPoints.Item1.y);
-			bezierFigure.Segments = psCollection;
-
-			PathFigureCollection pathFigCollection = new PathFigureCollection();
-			pathFigCollection.Add(bezierFigure);
+			LineSegment wing2 = new LineSegment();
+			wing2.Point = new Point(
+				arrowInfo.Item2.x,
+				arrowInfo.Item2.y
+				);
+			arrowFigure.Segments.Add(wing2);
 
 			PathGeometry pathGeo = new PathGeometry();
-			pathGeo.Figures = pathFigCollection;
+			pathGeo.Figures.Add(bezierFigure);  //= pathFigCollection;
+			pathGeo.Figures.Add(arrowFigure);
 
 			SolidColorBrush edgeColor = new SolidColorBrush(Colors.Brown);
 			Path path = new Path();
@@ -96,6 +113,8 @@ namespace SilverlightApplication6
 			path.Stroke = edgeColor;
 			return path;
 		}
+
+
 	}
 
 	
