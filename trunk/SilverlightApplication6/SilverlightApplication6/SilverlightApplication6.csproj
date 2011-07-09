@@ -81,12 +81,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ArrowFactory.cs" />
     <Compile Include="Cartersian.cs" />
     <Compile Include="GraphDrawer.cs" />
     <Compile Include="LayoutComputer.cs" />
     <Compile Include="Node.cs" />
-    <Compile Include="StringToPathGeometryConverter.cs" />
     <Compile Include="Visual.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="DummyTest.cs" />
