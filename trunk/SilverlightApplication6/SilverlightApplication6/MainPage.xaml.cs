@@ -10,21 +10,40 @@ using System.Windows.Shapes;
 using Microsoft.Expression.Controls;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SilverlightApplication6
 {
     public partial class MainPage : UserControl
     {
+        private static Uri defaultFile = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
+
+        private GraphDrawer drawer;
         private Brush originalPlayboardColor;
 
         public MainPage()
         {
             InitializeComponent();
             originalPlayboardColor = playboard.Background;
-			DummyTest dt = new DummyTest();
+            //DummyTest dt = new DummyTest();
 			
-			dt.drawDummyDFA(playboard);
+            //dt.drawDummyDFA(playboard);
 
+            List<Node> nodes = XmlParser.parse(App.GetResourceStream(defaultFile).Stream);
+            writeLog("Default file loaded.");
+            Debug.WriteLine("*** nodes:");
+            foreach (Node n in nodes)
+            {
+                Debug.WriteLine("*** node: " + n.nodeLabel + ", isEnd: " + n.isEnd + ", x: " +  n.x + ", y: " + n.y);
+                foreach (Tuple<Node, string> t in n.adjacent)
+                {
+                    Debug.WriteLine("*** to node: " + ((Node) t.Item1).nodeLabel + ", with: " + t.Item2);
+                }
+            }
+
+            drawer = new GraphDrawer(nodes, playboard);
+            drawer.drawDFA();
+            writeLog("Graph drawn.");
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
@@ -75,9 +94,11 @@ namespace SilverlightApplication6
                 //try
                 //{
                     List<Node> nodes = XmlParser.parse(files[0]);
-                    // TODO ...
-                    playboard.Background = originalPlayboardColor;
                     writeLog("File loaded.");
+                    drawer = new GraphDrawer(nodes, playboard);
+                    drawer.drawDFA();
+                    writeLog("Graph drawn.");
+                    playboard.Background = originalPlayboardColor;
                 //}
                 //catch (Exception e)
                 //{
@@ -116,9 +137,11 @@ namespace SilverlightApplication6
                 //try
                 //{
                     List<Node> nodes = XmlParser.parse(openFileDialog.File);
-                    // TODO ...
-                    playboard.Background = originalPlayboardColor;
                     writeLog("File loaded.");
+                    drawer = new GraphDrawer(nodes, playboard);
+                    drawer.drawDFA();
+                    writeLog("Graph drawn.");
+                    playboard.Background = originalPlayboardColor;
                 //}
                 //catch (Exception e)
                 //{

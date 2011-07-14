@@ -17,7 +17,7 @@ namespace SilverlightApplication6
         //private static bool initialized = false;
         //private static Uri dtd = new Uri("Input.dtd", UriKind.Relative);
 
-        public static List<Node> parse(FileInfo file)
+        public static List<Node> parse(Stream stream)
         {
             // TODO static initalization block
             //if (!initialized)
@@ -29,10 +29,9 @@ namespace SilverlightApplication6
             //    initialized = true;
             //    Debug.WriteLine("init done");
             //}
-
             //XElement root = XElement.Load(XmlReader.Create(file.OpenRead(), settings));
 
-            XElement root = XElement.Load(file.OpenRead());
+            XElement root = XElement.Load(stream);
             IDictionary<string, Node> nodes = new Dictionary<string, Node>();
 
             foreach (XElement state in root.Elements("States").Elements("State"))
@@ -49,6 +48,8 @@ namespace SilverlightApplication6
 
                 Node node = new Node(state.Value, x, y, isEnd);
 
+                Debug.WriteLine("*** node read: " + node.nodeLabel + ", isEnd: " + node.isEnd + ", x: " + node.x + ", y: " + node.y);
+
                 nodes.Add(state.Value, node);
             }
 
@@ -58,15 +59,28 @@ namespace SilverlightApplication6
                 string symbol = transition.Attribute("symbol").Value;
                 string to = transition.Attribute("to").Value;
 
+                Debug.WriteLine("*** transition read: from: " + from + ", symbol: " + symbol + ", to: " + to);
+
                 Node fromNode;
                 nodes.TryGetValue(from, out fromNode);
+                
                 Node toNode;
-                nodes.TryGetValue(from, out toNode);
+                nodes.TryGetValue(to, out toNode);
 
                 fromNode.addAdjacent(toNode, symbol);
+
+                foreach (Tuple<Node, string> t in fromNode.adjacent)
+                {
+                    Debug.WriteLine("*** added: src node: " + fromNode.nodeLabel + ", dst node: " + ((Node) t.Item1).nodeLabel + ", with: " + t.Item2);
+                }
             }
 
             return new List<Node>(nodes.Values);
+        }
+
+        public static List<Node> parse(FileInfo file)
+        {
+            return parse(file.OpenRead());
         }
     }
 }
