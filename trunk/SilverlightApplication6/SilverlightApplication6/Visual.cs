@@ -27,6 +27,7 @@ namespace SilverlightApplication6
 
 		public VisualNode(Node n)
 		{
+            outEdges = new List<Tuple<Path, VisualSymbol>>();
 			node = n;
 			state = new Grid();
 			state.Width = node.width;

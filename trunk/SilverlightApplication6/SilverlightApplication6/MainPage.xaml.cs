@@ -11,20 +11,30 @@ using Microsoft.Expression.Controls;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace SilverlightApplication6
 {
     public partial class MainPage : UserControl
     {
         private static Uri defaultFile = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
+        private static string logMessages;
 
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
 
+        private BackgroundWorker bw = new BackgroundWorker();
+
         public MainPage()
         {
             InitializeComponent();
+
             originalPlayboardColor = playboard.Background;
+
+            bw.WorkerSupportsCancellation = true;
+            bw.WorkerReportsProgress = true;
+
+
             //DummyTest dt = new DummyTest();
 			
             //dt.drawDummyDFA(playboard);
@@ -39,40 +49,7 @@ namespace SilverlightApplication6
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-			/*
-            Ellipse e1 = new Ellipse();
-            e1.Height = 40;
-            e1.Width = 40;
-            e1.Fill = new SolidColorBrush(Color.FromArgb(0xFF, 0x3D, 0xE3, 0x18));
-            playboard.Children.Add(e1);
-            
-            double y1 = 100.0;
-            double x1 = 100.0;
-            e1.DataContext = "inf loop";
-            e1.SetValue(Canvas.TopProperty, y1);
-            e1.SetValue(Canvas.LeftProperty, x1);
 
-            Ellipse e2 = new Ellipse();
-            e2.Height = 40;
-            e2.Width = 40;
-            e2.Fill = new SolidColorBrush(Color.FromArgb(0xFF, 0x3D, 0xE3, 0x18));
-            playboard.Children.Add(e2);
-            double y2 = 200.0;
-            double x2 = 200.0;
-            e2.SetValue(Canvas.TopProperty, y2);
-            e2.SetValue(Canvas.LeftProperty, x2);
-
-            LineArrow a = new LineArrow();
-            a.Height = Math.Abs(y1 -y2) - e2.Width/4 ;
-            a.Width = Math.Abs(x1-x2) -e2.Height/4 ;
-            a.Stroke = new SolidColorBrush(Colors.Black);
-            a.StrokeThickness = 2;
-            a.Opacity = 0.5;
-
-            playboard.Children.Add(a);
-            a.SetValue(Canvas.TopProperty, y1 + e1.Height /1);
-            a.SetValue(Canvas.LeftProperty, x1 + e1.Width / 1);
-			*/ 
         }
 		
         private void playboard_Drop(object sender, DragEventArgs args)
@@ -157,6 +134,29 @@ namespace SilverlightApplication6
             }
             
             logbox.SelectionStart = logbox.Text.Length;
+        }
+
+        public void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if ((e.Cancelled == true))
+            {
+                writeLog("Stopped.");
+            }
+
+            else if (!(e.Error == null))
+            {
+                writeLog("Error: " + e.Error.Message);
+            }
+
+            else
+            {
+                writeLog("Done.");
+            }
+        }
+
+        public void ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.steplineSlider.Value = e.ProgressPercentage;
         }
     }
 }
