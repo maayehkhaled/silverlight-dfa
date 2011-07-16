@@ -30,8 +30,6 @@ namespace SilverlightApplication6
 			{
 				visualNodes.Add(new VisualNode(n));
 			}
-
-			
 		}
 
 		public void drawDFA()
@@ -54,19 +52,26 @@ namespace SilverlightApplication6
 		{
 			foreach (Tuple<Node,string> m in vn.node.adjacent)
 			{
-				Path edge = createOutEdge(vn.node, m);
+				Tuple<Path,VisualSymbol> outEdge = createOutEdge(vn.node, m);
+				dfaCanvas.Children.Add(outEdge.Item1);
 
-				dfaCanvas.Children.Add(edge);
+				dfaCanvas.Children.Add(outEdge.Item2.label );
+				outEdge.Item2.label.SetValue(Canvas.TopProperty, outEdge.Item2.coordinate.y);
+				outEdge.Item2.label.SetValue(Canvas.LeftProperty, outEdge.Item2.coordinate.x);
 
+				/* Now insert the new created outEdge in the list of outEdge of VisualNote */
+				//vn.outEdges.Add(outEdge);
 			}
 		}
 
-		Path createOutEdge(Node node, Tuple<Node, string> m)
+		Tuple<Path,VisualSymbol> createOutEdge(Node node, Tuple<Node, string> m)
 		{
 			Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints = LayoutComputer.computeEdge(node, m.Item1);
 			
 			Path path = createBezier(bezierPoints);
-			return path;
+			EPoint labelCoordinate = LayoutComputer.computeEdgeLabel(bezierPoints.Item2, bezierPoints.Item3);
+			VisualSymbol edgeSymbol = new VisualSymbol(m.Item2, labelCoordinate);
+			return new Tuple<Path,VisualSymbol>(path, edgeSymbol);
 		}
 
 
@@ -107,14 +112,13 @@ namespace SilverlightApplication6
 			pathGeo.Figures.Add(bezierFigure);  //= pathFigCollection;
 			pathGeo.Figures.Add(arrowFigure);
 
+			/* TODO: use a static class to choose color (see Visual.cs) */
 			SolidColorBrush edgeColor = new SolidColorBrush(Colors.Brown);
 			Path path = new Path();
 			path.Data = pathGeo;
 			path.Stroke = edgeColor;
 			return path;
 		}
-
-
 	}
 
 	

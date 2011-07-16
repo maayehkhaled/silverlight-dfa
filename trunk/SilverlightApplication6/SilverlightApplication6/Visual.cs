@@ -16,8 +16,9 @@ namespace SilverlightApplication6
 	{
 		public readonly Node node;
 		public Grid state;
-		public List<Grid> outEdges;
+		public List<Tuple<Path,VisualSymbol> > outEdges;
 
+		/* TODO: move this code to a static classe as a configuration */
 		static SolidColorBrush normalState = new SolidColorBrush(Colors.Blue);
 		static SolidColorBrush endState = new SolidColorBrush(Colors.Red);
 		static SolidColorBrush border = new SolidColorBrush(Colors.Black);
@@ -50,13 +51,6 @@ namespace SilverlightApplication6
 			state.Children.Add(label);
 			label.TextAlignment = TextAlignment.Center;
 			label.VerticalAlignment = VerticalAlignment.Center;
-
-			/*
-			foreach (Tuple<Node,string> m in node.adjacent)
-			{
-				createOutEdge(m);
-			}
-			*/
 		}
 
 		/*
@@ -74,30 +68,33 @@ namespace SilverlightApplication6
 		
 	}
 
+	/** presents the label of the egde (input symbol)*/
+	public class VisualSymbol
+	{
+		static SolidColorBrush textColor = new SolidColorBrush(Colors.Blue);
+
+		private EPoint _coordinate;
+		public EPoint coordinate
+		{
+			get { return _coordinate; }
+			set { _coordinate = value; }
+		}
+
+		private TextBlock _label;
+		public TextBlock label 
+		{
+			get {return _label; }  
+			set {_label = value; } 
+		}
+		
+		public VisualSymbol(string edgeLabel, EPoint coordinate)
+		{
+			this.coordinate = coordinate;
+			this.label = new TextBlock();
+			label.Text = edgeLabel;
+		}
+
+	}
 }
 
 
-/*
- * 
- BezierSegment bz = new BezierSegment();
-			bz.Point1 = new Point(bezierPoints.Item2.x, bezierPoints.Item2.y);
-			bz.Point2 = new Point(bezierPoints.Item3.x, bezierPoints.Item3.y);
-			bz.Point3 = new Point(bezierPoints.Item4.x, bezierPoints.Item4.y);
-
-			PathSegmentCollection psCollection = new PathSegmentCollection();
-			psCollection.Add(bz);
-
-			PathFigure bezierFigure = new PathFigure();
-			bezierFigure.StartPoint = new Point(bezierPoints.Item1.x, bezierPoints.Item1.y);
-			bezierFigure.Segments = psCollection;
-
-			PathFigureCollection pathFigCollection = new PathFigureCollection();
-			pathFigCollection.Add(bezierFigure);
-
-			PathGeometry pathGeo = new PathGeometry();
-			pathGeo.Figures = pathFigCollection;
-
-			Path path = new Path();
-			path.Data = pathGeo;
-			path.Stroke = edgeColor;
-*/
