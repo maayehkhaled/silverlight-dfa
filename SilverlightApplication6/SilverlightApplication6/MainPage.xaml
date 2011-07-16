@@ -20,7 +20,7 @@
 
             <Button Content="Open" Height="23" HorizontalAlignment="Right" Margin="0,37,448,0" x:Name="openButton" VerticalAlignment="Top" Width="75" Click="openButton_Click" />
             <Button Content="Start" Height="23" HorizontalAlignment="Left" Margin="88,37,0,0" x:Name="startButton" VerticalAlignment="Top" Width="75" Click="startButton_Click" />
-            <Button Content="Stop" Height="23" HorizontalAlignment="Right" Margin="0,37,284,0" x:Name="stopButton" VerticalAlignment="Top" Width="75" />
+            <Button Content="Stop" Height="23" HorizontalAlignment="Right" Margin="0,37,284,0" x:Name="stopButton" VerticalAlignment="Top" Width="75" Click="stopButton_Click" />
             <Button Content="Reset" Height="23" HorizontalAlignment="Right" Margin="0,37,202,0" x:Name="resetButton" VerticalAlignment="Top" Width="75" />
 
             <sdk:Label Height="23" HorizontalAlignment="Left" Margin="334,37,0,0" x:Name="speedLabel" VerticalAlignment="Top" Width="43" Content="Speed" />

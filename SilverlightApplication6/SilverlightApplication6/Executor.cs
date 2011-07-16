@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace SilverlightApplication6
 {
@@ -17,28 +18,40 @@ namespace SilverlightApplication6
         private string remainingInput;
         private int inputLength;
         private VisualNode startNode;
+        private int delay;
 
-        public Executor(string input, VisualNode startNode)
+        public Executor(string input, VisualNode startNode, int delay)
         {
             this.remainingInput = input;
             inputLength = input.Length;
             this.startNode = startNode;
+            this.delay = delay;
         }
 
         public void doWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            if ((worker.CancellationPending == true))
+            while (!worker.CancellationPending && remainingInput.Length > 0)
             {
-                e.Cancel = true;
-                return;
+
+                if (remainingInput.Length > 1)
+                {
+                    remainingInput = remainingInput.Remove(1);
+                }
+                else
+                {
+                    remainingInput = "";
+                }
+
+                int remaining = inputLength - remainingInput.Length;
+                Debug.WriteLine("*** remaining: " + remaining);
+                worker.ReportProgress(remaining);
+
+                System.Threading.Thread.Sleep(delay);
             }
-            else
-            {
-                remainingInput.Remove(1);
-                worker.ReportProgress(remainingInput.Length - inputLength);
-            }
+
+            e.Cancel = true;
         }
     }
 }
