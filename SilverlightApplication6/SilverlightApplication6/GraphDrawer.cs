@@ -15,10 +15,14 @@ namespace SilverlightApplication6
 	public class GraphDrawer
 	{
 		List<Node> nodes;
-		List<VisualNode> visualNodes;
-		public Canvas dfaCanvas;
+		List<VisualNode> _visualNodes;
+		public List<VisualNode> visualNodes
+		{
+			set { _visualNodes = value; }
+			get { return _visualNodes; }
+		}
 
-		
+		public Canvas dfaCanvas;
 
 		public GraphDrawer(List<Node> nodes, Canvas c)
 		{

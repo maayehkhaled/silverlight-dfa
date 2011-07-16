@@ -60,6 +60,7 @@ namespace SilverlightApplication6
 
 		public void catchSymbol()
 		{
+			Animator.vibrateY(this, Animator.nodeCatcheSymbol);
 		}
 
 		public void throwSymbol()
