@@ -29,12 +29,13 @@ namespace SilverlightApplication6
             InitializeComponent();
 
             originalPlayboardColor = playboard.Background;
-
+			/*
             bw.WorkerSupportsCancellation = true;
             bw.WorkerReportsProgress = true;
+
             bw.ProgressChanged += new ProgressChangedEventHandler(bw_ProgressChanged);
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
-
+			*/
 
 
             //DummyTest dt = new DummyTest();
@@ -47,6 +48,12 @@ namespace SilverlightApplication6
             drawer = new GraphDrawer(nodes, playboard);
             drawer.drawDFA();
             writeLog("Graph drawn.");
+
+			/* Actung: test animation here, Kann entfernt werden. */
+			drawer.visualNodes[0].catchSymbol();
+			/* TODO: block the canvas until the animation finishes */
+			drawer.visualNodes[1].catchSymbol();
+
         }
 
         private void openButton_Click(object sender, RoutedEventArgs args)
