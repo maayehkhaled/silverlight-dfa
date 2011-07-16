@@ -10,23 +10,17 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace SilverlightApplication6
 {
     public class Executor
     {
-        private string remainingInput;
-        private int inputLength;
         private VisualNode startNode;
         private int delay;
 
-        public Executor(string input, VisualNode startNode, int delay)
-        {
-            this.remainingInput = input;
-            inputLength = input.Length;
-            this.startNode = startNode;
-            this.delay = delay;
-        }
+        private string remainingInput;
+        private int inputLength;
 
         public void doWork(object sender, DoWorkEventArgs e)
         {
@@ -37,21 +31,38 @@ namespace SilverlightApplication6
 
                 if (remainingInput.Length > 1)
                 {
-                    remainingInput = remainingInput.Remove(1);
+                    remainingInput = remainingInput.Remove(0, 1);
                 }
                 else
                 {
                     remainingInput = "";
                 }
 
-                int remaining = inputLength - remainingInput.Length;
-                Debug.WriteLine("*** remaining: " + remaining);
-                worker.ReportProgress(remaining);
+                int processed = inputLength - remainingInput.Length;
+                Debug.WriteLine("*** remaining: " + remainingInput.Length + " processed: " + processed);
+                worker.ReportProgress(processed);
 
                 System.Threading.Thread.Sleep(delay);
             }
 
             e.Cancel = true;
+        }
+
+        public void setStartNode(VisualNode startNode)
+        {
+            this.startNode = startNode;
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void setDelay(int delay)
+        {
+            this.delay = delay;
+        }
+
+        public void setInput(string input)
+        {
+            remainingInput = input;
+            inputLength = input.Length;
         }
     }
 }

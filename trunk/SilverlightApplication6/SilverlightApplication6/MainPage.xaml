@@ -16,26 +16,57 @@
 				AllowDrop="True" DragEnter="playboard_DragEnter" 
 				DragLeave="playboard_DragLeave" DragOver="playboard_DragOver" 
 				Drop="playboard_Drop" Background="DarkGray">
-			
-			
 		</Canvas>
 
         <!-- Controls -->
-        <Grid Height="108" HorizontalAlignment="Left" Margin="12,12,0,0" x:Name="grid1" VerticalAlignment="Top" Width="529">
-            <sdk:Label Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" x:Name="inputLabel" VerticalAlignment="Top" Width="43" Content="Input" FontSize="13" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
-            <TextBox Height="23" HorizontalAlignment="Left" Margin="55,6,0,0" x:Name="inputTextBox" VerticalAlignment="Top" Width="468" />
+        <Grid Height="108" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="529">
+            
+            <!-- Input label and textbox -->
+            <sdk:Label x:Name="inputLabel" Content="Input"
+                       Height="23" HorizontalAlignment="Left"
+                       Margin="6,6,0,0" VerticalAlignment="Top"
+                       Width="43" FontSize="13" HorizontalContentAlignment="Right"
+                       VerticalContentAlignment="Center" />
+            <TextBox x:Name="inputTextBox" Height="23" HorizontalAlignment="Left"
+                     Margin="55,6,0,0" VerticalAlignment="Top" Width="468" />
 
-            <Button Content="Open" Height="23" HorizontalAlignment="Right" Margin="0,37,448,0" x:Name="openButton" VerticalAlignment="Top" Width="75" Click="openButton_Click" />
-            <Button Content="Start" Height="23" HorizontalAlignment="Left" Margin="88,37,0,0" x:Name="startButton" VerticalAlignment="Top" Width="75" Click="startButton_Click" />
-            <Button Content="Stop" Height="23" HorizontalAlignment="Right" Margin="0,37,284,0" x:Name="stopButton" VerticalAlignment="Top" Width="75" Click="stopButton_Click" />
-            <Button Content="Reset" Height="23" HorizontalAlignment="Right" Margin="0,37,202,0" x:Name="resetButton" VerticalAlignment="Top" Width="75" />
+            <!-- Buttons -->
+            <Button x:Name="openButton" Content="Open" Height="23"
+                    HorizontalAlignment="Right" Margin="0,37,448,0"
+                    VerticalAlignment="Top" Width="75" Click="openButton_Click" />
+            <Button x:Name="startButton" Content="Start" Height="23"
+                    HorizontalAlignment="Right" Margin="0,37,366,0"
+                    VerticalAlignment="Top" Width="75" Click="startButton_Click" />
+            <Button x:Name="stopButton" Content="Stop" Height="23"
+                    HorizontalAlignment="Right" Margin="0,37,284,0"
+                    VerticalAlignment="Top" Width="75" Click="stopButton_Click" />
+            <Button x:Name="resetButton" Content="Reset" Height="23"
+                    HorizontalAlignment="Right" Margin="0,37,202,0"
+                    VerticalAlignment="Top" Width="75" />
 
-            <sdk:Label Height="23" HorizontalAlignment="Left" Margin="334,37,0,0" x:Name="speedLabel" VerticalAlignment="Top" Width="43" Content="Speed" />
-            <Slider Height="23" HorizontalAlignment="Right" Margin="0,37,6,0" x:Name="speedSlider" VerticalAlignment="Top" Width="139" />
+            <!-- Speed label and slider -->
+            <sdk:Label x:Name="speedLabel" Content="Speed" Height="23"
+                       HorizontalAlignment="Left" Margin="345,37,0,0"
+                       VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center" />
+            <Slider x:Name="speedSlider" Height="23" HorizontalAlignment="Right" Margin="0,37,6,0" VerticalAlignment="Top" Width="139" ValueChanged="speedSlider_ValueChanged">
+                <Slider.Minimum>0</Slider.Minimum>
+                <Slider.Maximum>5000</Slider.Maximum>
+                <Slider.Value>1500</Slider.Value>
+            </Slider>
 
-            <sdk:Label Height="22" HorizontalAlignment="Left" Margin="6,68,0,0" x:Name="steplineLabel" VerticalAlignment="Top" Width="57" Content="Stepline" />
-            <Slider Height="23" HorizontalAlignment="Left" Margin="55,68,0,0" x:Name="steplineSlider" VerticalAlignment="Top" Width="468" />
+            <!-- Stepline label and slider -->
+            <sdk:Label x:Name="steplineLabel" Content="Stepline" Height="23"
+                       HorizontalAlignment="Left" Margin="6,68,0,0"
+                       VerticalAlignment="Top" Width="57" HorizontalContentAlignment="Center" />
+            <Slider x:Name="steplineSlider" Height="23" HorizontalAlignment="Left"
+                    Margin="55,68,0,0" VerticalAlignment="Top" Width="468" />
+        
         </Grid>
-        <TextBox Height="45" HorizontalAlignment="Left" Margin="12,555,0,0" Name="logbox" Width="529" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" VerticalContentAlignment="Bottom" AcceptsReturn="False" />
+
+        <!-- Log textbox -->
+        <TextBox x:Name="logbox" Height="45" HorizontalAlignment="Left" Margin="12,555,0,0"
+                 Width="529" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
+                 TextWrapping="Wrap" VerticalContentAlignment="Bottom" AcceptsReturn="False" />
+    
     </Grid>
 </UserControl>
