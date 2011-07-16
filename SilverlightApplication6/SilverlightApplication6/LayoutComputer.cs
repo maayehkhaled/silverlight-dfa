@@ -151,5 +151,11 @@ namespace SilverlightApplication6
 
 			return new Tuple<EPoint, EPoint>(begin, end);
 		}
+
+		public static EPoint computeEdgeLabel(EPoint helper1, EPoint helper2)
+		{
+			EPoint labelCorordinate= new EPoint( (helper1.x+helper2.x)/2 , (helper1.y+helper2.y)/2);
+			return labelCorordinate;
+		}
 	}
 }
