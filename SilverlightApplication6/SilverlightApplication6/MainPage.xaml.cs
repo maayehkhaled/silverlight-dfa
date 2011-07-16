@@ -22,6 +22,7 @@ namespace SilverlightApplication6
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
         private Executor executor = new Executor();
+        private List<VisualNode> visualNodes;
 
         private BackgroundWorker bw = new BackgroundWorker();
 
@@ -169,7 +170,7 @@ namespace SilverlightApplication6
             List<Node> nodes = XmlParser.parse(stream);
             writeLog("File loaded.");
             drawer = new GraphDrawer(nodes, playboard);
-            drawer.drawDFA();
+            visualNodes = drawer.drawDFA();
             writeLog("Graph drawn.");
         }
     }

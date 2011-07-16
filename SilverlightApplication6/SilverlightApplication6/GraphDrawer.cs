@@ -36,13 +36,15 @@ namespace SilverlightApplication6
 			}
 		}
 
-		public void drawDFA()
+        public List<VisualNode> drawDFA()
 		{
 			foreach (VisualNode vn in visualNodes)
 			{
 				drawNode(vn);
 				drawOutEdge(vn);
 			}
+
+            return visualNodes;
 		}
 
 		private void drawNode(VisualNode n)
