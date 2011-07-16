@@ -11,12 +11,13 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Windows.Threading;
 
 namespace SilverlightApplication6
 {
     public class Executor
     {
-        private VisualNode startNode;
+        private VisualNode currentNode;
         private int delay;
 
         private string remainingInput;
@@ -28,21 +29,40 @@ namespace SilverlightApplication6
 
             while (!worker.CancellationPending && remainingInput.Length > 0)
             {
+                string symbol = remainingInput[0].ToString();
+                Debug.WriteLine("*** processing node: " + currentNode.node.nodeLabel + ", symbol: " + symbol);
+
+                VisualNode follower;
+                if (currentNode.TryGetFollower(symbol, out follower))
+                {
+                    Debug.WriteLine("*** follower is: " + follower.node.nodeLabel);
+
+                    worker.ReportProgress(0, currentNode);
+                    worker.ReportProgress(0, follower);
+                    currentNode = follower;
+                }
 
                 if (remainingInput.Length > 1)
                 {
                     remainingInput = remainingInput.Remove(0, 1);
+                    int processed = inputLength - remainingInput.Length;
+                    Debug.WriteLine("*** remaining: " + remainingInput.Length + " processed: " + processed);
+                    worker.ReportProgress(processed);
+
+                    System.Threading.Thread.Sleep(delay);
+                }
+                else if (currentNode.node.isEnd)
+                {
+                    Debug.WriteLine("*** accepting...");
+                    e.Result = "Accepted :-)";
+                    return;
                 }
                 else
                 {
-                    remainingInput = "";
+                    Debug.WriteLine("*** rejecting...");
+                    e.Result = "Rejected :-/";
+                    return;
                 }
-
-                int processed = inputLength - remainingInput.Length;
-                Debug.WriteLine("*** remaining: " + remainingInput.Length + " processed: " + processed);
-                worker.ReportProgress(processed);
-
-                System.Threading.Thread.Sleep(delay);
             }
 
             e.Cancel = true;
@@ -50,7 +70,7 @@ namespace SilverlightApplication6
 
         public void setStartNode(VisualNode startNode)
         {
-            this.startNode = startNode;
+            this.currentNode = startNode;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -63,6 +83,13 @@ namespace SilverlightApplication6
         {
             remainingInput = input;
             inputLength = input.Length;
+        }
+
+        private delegate void InvokeThrowSymbolDelegate(VisualNode node);
+
+        private void InvokeThrowSymbol(VisualNode node)
+        {
+            node.throwSymbol();
         }
     }
 }

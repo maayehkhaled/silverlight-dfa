@@ -17,6 +17,7 @@ namespace SilverlightApplication6
 		public readonly Node node;
 		public Grid state;
 		public List<Tuple<Path,VisualSymbol> > outEdges;
+        private IDictionary<string, VisualNode> followers = new Dictionary<string, VisualNode>();
 
 		/* TODO: move this code to a static classe as a configuration */
 		static SolidColorBrush normalState = new SolidColorBrush(Colors.Blue);
@@ -65,9 +66,18 @@ namespace SilverlightApplication6
 
 		public void throwSymbol()
 		{
+            Animator.vibrateY(this, Animator.nodeCatcheSymbol);
 		}
 
-		
+        public void addFollower(string symbol, VisualNode node)
+        {
+            followers.Add(symbol, node);
+        }
+
+        public bool TryGetFollower(string symbol, out VisualNode node)
+        {
+            return followers.TryGetValue(symbol, out node);
+        }
 	}
 
 	/** presents the label of the egde (input symbol)*/
