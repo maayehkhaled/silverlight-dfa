@@ -31,15 +31,6 @@ namespace SilverlightApplication6
 
             List<Node> nodes = XmlParser.parse(App.GetResourceStream(defaultFile).Stream);
             writeLog("Default file loaded.");
-            Debug.WriteLine("*** nodes:");
-            foreach (Node n in nodes)
-            {
-                Debug.WriteLine("*** node: " + n.nodeLabel + ", isEnd: " + n.isEnd + ", x: " +  n.x + ", y: " + n.y);
-                foreach (Tuple<Node, string> t in n.adjacent)
-                {
-                    Debug.WriteLine("*** to node: " + ((Node) t.Item1).nodeLabel + ", with: " + t.Item2);
-                }
-            }
 
             drawer = new GraphDrawer(nodes, playboard);
             drawer.drawDFA();
