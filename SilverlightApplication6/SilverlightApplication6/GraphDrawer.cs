@@ -60,7 +60,7 @@ namespace SilverlightApplication6
 				outEdge.Item2.label.SetValue(Canvas.LeftProperty, outEdge.Item2.coordinate.x);
 
 				/* Now insert the new created outEdge in the list of outEdge of VisualNote */
-				//vn.outEdges.Add(outEdge);
+                vn.outEdges.Add(outEdge);
 			}
 		}
 
