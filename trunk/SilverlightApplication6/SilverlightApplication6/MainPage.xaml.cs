@@ -18,7 +18,6 @@ namespace SilverlightApplication6
     public partial class MainPage : UserControl
     {
         private static Uri defaultFile = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
-        private static string logMessages;
 
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
@@ -33,8 +32,9 @@ namespace SilverlightApplication6
 
             bw.WorkerSupportsCancellation = true;
             bw.WorkerReportsProgress = true;
-            Executor e = new Executor("aaa", null);
-            //bw.DoWork = e.doWork;
+            bw.ProgressChanged += new ProgressChangedEventHandler(bw_ProgressChanged);
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+
 
 
             //DummyTest dt = new DummyTest();
@@ -49,9 +49,49 @@ namespace SilverlightApplication6
             writeLog("Graph drawn.");
         }
 
+        private void openButton_Click(object sender, RoutedEventArgs args)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "XML Files (*.xml)|*.xml";
+            openFileDialog.Multiselect = false;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                //try
+                //{
+                List<Node> nodes = XmlParser.parse(openFileDialog.File);
+                writeLog("File loaded.");
+                drawer = new GraphDrawer(nodes, playboard);
+                drawer.drawDFA();
+                writeLog("Graph drawn.");
+                playboard.Background = originalPlayboardColor;
+                //}
+                //catch (Exception e)
+                //{
+                //    writeLog(e.ToString());
+                //    playboard.Background = new SolidColorBrush(Colors.Red);
+                //}
+            }
+            else
+            {
+                playboard.Background = new SolidColorBrush(Colors.Red);
+            }
+        }
+
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
+            if (bw.IsBusy != true)
+            {
+                bw.DoWork += new DoWorkEventHandler(new Executor("aaa", null, 1000).doWork);
+                bw.RunWorkerAsync();
+            }
+        }
 
+        private void stopButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (bw.WorkerSupportsCancellation == true)
+            {
+                bw.CancelAsync();
+            }
         }
 		
         private void playboard_Drop(object sender, DragEventArgs args)
@@ -97,34 +137,6 @@ namespace SilverlightApplication6
             playboard.Background = originalPlayboardColor;
         }
 
-        private void openButton_Click(object sender, RoutedEventArgs args)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "XML Files (*.xml)|*.xml";
-            openFileDialog.Multiselect = false;
-            if (openFileDialog.ShowDialog() == true)
-            {
-                //try
-                //{
-                    List<Node> nodes = XmlParser.parse(openFileDialog.File);
-                    writeLog("File loaded.");
-                    drawer = new GraphDrawer(nodes, playboard);
-                    drawer.drawDFA();
-                    writeLog("Graph drawn.");
-                    playboard.Background = originalPlayboardColor;
-                //}
-                //catch (Exception e)
-                //{
-                //    writeLog(e.ToString());
-                //    playboard.Background = new SolidColorBrush(Colors.Red);
-                //}
-            }
-            else
-            {
-                playboard.Background = new SolidColorBrush(Colors.Red);
-            }
-        }
-
         private void writeLog(string s) {
             if (logbox.Text.Length > 0)
             {
@@ -138,7 +150,7 @@ namespace SilverlightApplication6
             logbox.SelectionStart = logbox.Text.Length;
         }
 
-        public void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        public void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if ((e.Cancelled == true))
             {
@@ -156,7 +168,7 @@ namespace SilverlightApplication6
             }
         }
 
-        public void ProgressChanged(object sender, ProgressChangedEventArgs e)
+        public void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             this.steplineSlider.Value = e.ProgressPercentage;
         }

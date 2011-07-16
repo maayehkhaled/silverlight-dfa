@@ -86,9 +86,8 @@
     <Compile Include="GraphDrawer.cs" />
     <Compile Include="LayoutComputer.cs" />
     <Compile Include="Node.cs" />
-    <Compile Include="Visual.cs" />
+    <Compile Include="VisualNode.cs" />
     <Compile Include="XmlParser.cs" />
-    <Compile Include="DummyTest.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -103,16 +102,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="segd-arrow-symbols-icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
-    <None Include="Input.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="testdata\Automat1.xml" />
