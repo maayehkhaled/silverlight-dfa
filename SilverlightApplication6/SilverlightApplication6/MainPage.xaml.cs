@@ -33,6 +33,8 @@ namespace SilverlightApplication6
 
             bw.WorkerSupportsCancellation = true;
             bw.WorkerReportsProgress = true;
+            Executor e = new Executor("aaa", null);
+            //bw.DoWork = e.doWork;
 
 
             //DummyTest dt = new DummyTest();
