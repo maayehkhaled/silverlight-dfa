@@ -35,6 +35,8 @@ namespace SilverlightApplication6
             bw.WorkerSupportsCancellation = true;
             bw.WorkerReportsProgress = true;
             bw.DoWork += new DoWorkEventHandler(executor.doWork);
+            bw.ProgressChanged += new ProgressChangedEventHandler(bw_ProgressChanged);
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
 
             loadAndDrawDFA(App.GetResourceStream(defaultFile).Stream);
 
@@ -70,7 +72,7 @@ namespace SilverlightApplication6
                 steplineSlider.Value = 0;
 
                 executor.setInput(inputTextBox.Text);
-                executor.setStartNode(null);
+                executor.setStartNode(visualNodes[0]);
                 setExecutorDelay(speedSlider.Value);
 
                 bw.RunWorkerAsync();
@@ -133,7 +135,7 @@ namespace SilverlightApplication6
         {
             if ((e.Cancelled == true))
             {
-                writeLog("Stopped.");
+                writeLog("Canceled.");
             }
             else if (e.Error != null)
             {
@@ -141,13 +143,21 @@ namespace SilverlightApplication6
             }
             else
             {
-                writeLog("Done.");
+                writeLog(e.Result.ToString());
             }
         }
 
         public void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            this.steplineSlider.Value = e.ProgressPercentage;
+            if (e.UserState == null)
+            {
+                this.steplineSlider.Value = e.ProgressPercentage;
+            }
+            else
+            {
+                ((VisualNode)e.UserState).throwSymbol();
+            }
+
         }
 
         private void speedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -167,10 +177,10 @@ namespace SilverlightApplication6
 
         private void loadAndDrawDFA(Stream stream)
         {
-            List<Node> nodes = XmlParser.parse(stream);
+            visualNodes = XmlParser.parse(stream);
             writeLog("File loaded.");
-            drawer = new GraphDrawer(nodes, playboard);
-            visualNodes = drawer.drawDFA();
+            drawer = new GraphDrawer(visualNodes, playboard);
+            drawer.drawDFA();
             writeLog("Graph drawn.");
         }
     }

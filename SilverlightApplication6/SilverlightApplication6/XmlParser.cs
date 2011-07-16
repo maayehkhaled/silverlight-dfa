@@ -17,7 +17,7 @@ namespace SilverlightApplication6
         //private static bool initialized = false;
         //private static Uri dtd = new Uri("Input.dtd", UriKind.Relative);
 
-        public static List<Node> parse(Stream stream)
+        public static List<VisualNode> parse(Stream stream)
         {
             // TODO static initalization block
             //if (!initialized)
@@ -32,7 +32,7 @@ namespace SilverlightApplication6
             //XElement root = XElement.Load(XmlReader.Create(file.OpenRead(), settings));
 
             XElement root = XElement.Load(stream);
-            IDictionary<string, Node> nodes = new Dictionary<string, Node>();
+            IDictionary<string, VisualNode> nodes = new Dictionary<string, VisualNode>();
 
             foreach (XElement state in root.Elements("States").Elements("State"))
             {
@@ -50,7 +50,7 @@ namespace SilverlightApplication6
 
                 Debug.WriteLine("*** node read: " + node.nodeLabel + ", isEnd: " + node.isEnd + ", x: " + node.x + ", y: " + node.y);
 
-                nodes.Add(state.Value, node);
+                nodes.Add(state.Value, new VisualNode(node));
             }
 
             foreach (XElement transition in root.Elements("Transitions").Elements("Transition"))
@@ -61,24 +61,25 @@ namespace SilverlightApplication6
 
                 Debug.WriteLine("*** transition read: from: " + from + ", symbol: " + symbol + ", to: " + to);
 
-                Node fromNode;
+                VisualNode fromNode;
                 nodes.TryGetValue(from, out fromNode);
-                
-                Node toNode;
+
+                VisualNode toNode;
                 nodes.TryGetValue(to, out toNode);
 
-                fromNode.addAdjacent(toNode, symbol);
+                fromNode.node.addAdjacent(toNode.node, symbol);
+                fromNode.addFollower(symbol, toNode);
 
-                foreach (Tuple<Node, string> t in fromNode.adjacent)
+                foreach (Tuple<Node, string> t in fromNode.node.adjacent)
                 {
-                    Debug.WriteLine("*** added: src node: " + fromNode.nodeLabel + ", dst node: " + ((Node) t.Item1).nodeLabel + ", with: " + t.Item2);
+                    Debug.WriteLine("*** added: src node: " + fromNode.node.nodeLabel + ", dst node: " + ((Node) t.Item1).nodeLabel + ", with: " + t.Item2);
                 }
             }
 
-            return new List<Node>(nodes.Values);
+            return new List<VisualNode>(nodes.Values);
         }
 
-        public static List<Node> parse(FileInfo file)
+        public static List<VisualNode> parse(FileInfo file)
         {
             return parse(file.OpenRead());
         }

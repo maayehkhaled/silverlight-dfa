@@ -14,7 +14,6 @@ namespace SilverlightApplication6
 {
 	public class GraphDrawer
 	{
-		List<Node> nodes;
 		List<VisualNode> _visualNodes;
 		public List<VisualNode> visualNodes
 		{
@@ -24,27 +23,20 @@ namespace SilverlightApplication6
 
 		public Canvas dfaCanvas;
 
-		public GraphDrawer(List<Node> nodes, Canvas c)
+        public GraphDrawer(List<VisualNode> nodes, Canvas c)
 		{
-			this.nodes = nodes;
 			//dfaCanvas = new Canvas();
 			dfaCanvas = c;
-			visualNodes = new List<VisualNode>();
-			foreach (Node n in nodes)
-			{
-				visualNodes.Add(new VisualNode(n));
-			}
+            visualNodes = nodes;
 		}
 
-        public List<VisualNode> drawDFA()
+        public void drawDFA()
 		{
 			foreach (VisualNode vn in visualNodes)
 			{
 				drawNode(vn);
 				drawOutEdge(vn);
 			}
-
-            return visualNodes;
 		}
 
 		private void drawNode(VisualNode n)
