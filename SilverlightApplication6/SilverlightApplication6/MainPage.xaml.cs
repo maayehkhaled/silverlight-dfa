@@ -21,6 +21,7 @@ namespace SilverlightApplication6
 
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
+        private Executor executor = new Executor();
 
         private BackgroundWorker bw = new BackgroundWorker();
 
@@ -29,25 +30,12 @@ namespace SilverlightApplication6
             InitializeComponent();
 
             originalPlayboardColor = playboard.Background;
-			/*
+			
             bw.WorkerSupportsCancellation = true;
             bw.WorkerReportsProgress = true;
+            bw.DoWork += new DoWorkEventHandler(executor.doWork);
 
-            bw.ProgressChanged += new ProgressChangedEventHandler(bw_ProgressChanged);
-            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
-			*/
-
-
-            //DummyTest dt = new DummyTest();
-			
-            //dt.drawDummyDFA(playboard);
-
-            List<Node> nodes = XmlParser.parse(App.GetResourceStream(defaultFile).Stream);
-            writeLog("Default file loaded.");
-
-            drawer = new GraphDrawer(nodes, playboard);
-            drawer.drawDFA();
-            writeLog("Graph drawn.");
+            loadAndDrawDFA(App.GetResourceStream(defaultFile).Stream);
 
 			/* Actung: test animation here, Kann entfernt werden. */
 			drawer.visualNodes[0].catchSymbol();
@@ -63,20 +51,8 @@ namespace SilverlightApplication6
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-                //try
-                //{
-                List<Node> nodes = XmlParser.parse(openFileDialog.File);
-                writeLog("File loaded.");
-                drawer = new GraphDrawer(nodes, playboard);
-                drawer.drawDFA();
-                writeLog("Graph drawn.");
+                loadAndDrawDFA(openFileDialog.File.OpenRead());
                 playboard.Background = originalPlayboardColor;
-                //}
-                //catch (Exception e)
-                //{
-                //    writeLog(e.ToString());
-                //    playboard.Background = new SolidColorBrush(Colors.Red);
-                //}
             }
             else
             {
@@ -88,7 +64,14 @@ namespace SilverlightApplication6
         {
             if (bw.IsBusy != true)
             {
-                bw.DoWork += new DoWorkEventHandler(new Executor("aaa", null, 1000).doWork);
+                steplineSlider.Minimum = 0;
+                steplineSlider.Maximum = inputTextBox.Text.Length;
+                steplineSlider.Value = 0;
+
+                executor.setInput(inputTextBox.Text);
+                executor.setStartNode(null);
+                setExecutorDelay(speedSlider.Value);
+
                 bw.RunWorkerAsync();
             }
         }
@@ -108,20 +91,8 @@ namespace SilverlightApplication6
                 FileInfo[] files = args.Data.GetData(DataFormats.FileDrop) as FileInfo[];
                 writeLog(files.Length + " files dropped (only the first one will be read)...");
 
-                //try
-                //{
-                    List<Node> nodes = XmlParser.parse(files[0]);
-                    writeLog("File loaded.");
-                    drawer = new GraphDrawer(nodes, playboard);
-                    drawer.drawDFA();
-                    writeLog("Graph drawn.");
-                    playboard.Background = originalPlayboardColor;
-                //}
-                //catch (Exception e)
-                //{
-                //    writeLog(e.ToString());
-                //    playboard.Background = new SolidColorBrush(Colors.Red);
-                //}
+                loadAndDrawDFA(files[0].OpenRead());
+                playboard.Background = originalPlayboardColor;
             }
             else
             {
@@ -163,12 +134,10 @@ namespace SilverlightApplication6
             {
                 writeLog("Stopped.");
             }
-
-            else if (!(e.Error == null))
+            else if (e.Error != null)
             {
                 writeLog("Error: " + e.Error.Message);
             }
-
             else
             {
                 writeLog("Done.");
@@ -178,6 +147,30 @@ namespace SilverlightApplication6
         public void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             this.steplineSlider.Value = e.ProgressPercentage;
+        }
+
+        private void speedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+            setExecutorDelay(e.NewValue);
+        }
+
+        private void setExecutorDelay(double d)
+        {
+            int delay;
+            if (Int32.TryParse(d.ToString(), out delay))
+            {
+                executor.setDelay(delay);
+            }
+        }
+
+        private void loadAndDrawDFA(Stream stream)
+        {
+            List<Node> nodes = XmlParser.parse(stream);
+            writeLog("File loaded.");
+            drawer = new GraphDrawer(nodes, playboard);
+            drawer.drawDFA();
+            writeLog("Graph drawn.");
         }
     }
 }
