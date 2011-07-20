@@ -177,6 +177,7 @@ namespace SilverlightApplication6
 
         private void loadAndDrawDFA(Stream stream)
         {
+            playboard.Children.Clear();
             visualNodes = XmlParser.parse(stream);
             writeLog("File loaded.");
             drawer = new GraphDrawer(visualNodes, playboard);

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- This is only an example I used for the "English Communications Skill" Course -->
+<!-- schema validation is not supported in silverlight! what an evidence of incapacity!!! -->
+<!--<FiniteAutomaton xmlns="http://silverlight.dfa/Input.xsd">-->
+<FiniteAutomaton>
+  <InputAlphabet>
+    <Symbol>m</Symbol>
+    <Symbol>a</Symbol>
+    <Symbol>z</Symbol>
+    <Symbol>e</Symbol>
+  </InputAlphabet>
+  <States>
+    <State x="100" y="100" start="Y">Start</State>
+    <State x="200" y="200">A</State>
+    <State x="300" y="100">B</State>
+    <State x="400" y="200">C</State>
+    <State x="500" y="100" accept="Y">End</State>
+  </States>
+  <Transitions>
+    <Transition from="Start" symbol="m" to="A" />
+    <Transition from="A" symbol="a" to="B" />
+    <Transition from="B" symbol="z" to="C" />
+    <Transition from="C" symbol="e" to="End" />
+  </Transitions>
+</FiniteAutomaton>
