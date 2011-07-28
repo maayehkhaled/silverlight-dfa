@@ -18,7 +18,8 @@ namespace SilverlightApplication6
 		public Grid state;
 		public List<Tuple<Path,VisualSymbol> > outEdges;
         private IDictionary<string, VisualNode> followers = new Dictionary<string, VisualNode>();
-		
+        public Ellipse e;
+
 		public VisualNode(Node n)
 		{
             outEdges = new List<Tuple<Path, VisualSymbol>>();
@@ -27,7 +28,7 @@ namespace SilverlightApplication6
 			state.Width = node.width;
 			state.Height = node.height;
 
-			Ellipse e = new Ellipse();
+            e = new Ellipse();
 			e.Width = node.width;
 			e.Height = node.height;
 

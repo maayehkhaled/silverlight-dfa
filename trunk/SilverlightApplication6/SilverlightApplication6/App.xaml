@@ -25,7 +25,7 @@
             <GradientStop Color='Black' Offset='1'/>
         </LinearGradientBrush>
         <SolidColorBrush x:Key="edgeBrush" Color="Green" />
-
+        
         <Storyboard x:Key="srcStateAnimation" AutoReverse="True">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="3"/>
