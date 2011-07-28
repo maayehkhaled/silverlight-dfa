@@ -26,7 +26,7 @@ namespace SilverlightApplication6
             {
                 string symbol = remainingInput[0].ToString();
                 Debug.WriteLine("*** processing node: " + currentNode.node.nodeLabel + ", symbol: " + symbol);
-
+if (remainingInput.Length <= 1) return storyboard; // !!!DEBUG ONLY!!!
                 VisualNode follower;
                 if (currentNode.TryGetFollower(symbol, out follower))
                 {
@@ -76,32 +76,6 @@ namespace SilverlightApplication6
         {
             int transConst = 4;
             int scaleConst = 8;
-
-            // translate grid x
-            DoubleAnimationUsingKeyFrames transX = new DoubleAnimationUsingKeyFrames();
-            transX.BeginTime = TimeSpan.FromSeconds(startSecond);
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(1, node.node.x - transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(2, node.node.x + transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(3, node.node.x - transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(4, node.node.x + transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(5, node.node.x - transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(6, node.node.x));
-            transX.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath("(Canvas.Left)"));
-            Storyboard.SetTarget(transX, node.state);
-            storyboard.Children.Add(transX);
-
-            // translate grid y
-            DoubleAnimationUsingKeyFrames transY = new DoubleAnimationUsingKeyFrames();
-            transY.BeginTime = TimeSpan.FromSeconds(startSecond);
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(1, node.node.y - transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(2, node.node.y + transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(3, node.node.y - transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(4, node.node.y + transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(5, node.node.y - transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(6, node.node.y));
-            transY.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath("(Canvas.Top)"));
-            Storyboard.SetTarget(transY, node.state);
-            storyboard.Children.Add(transY);
 
             // scale grid x
             DoubleAnimationUsingKeyFrames scaleX = new DoubleAnimationUsingKeyFrames();
@@ -155,6 +129,45 @@ namespace SilverlightApplication6
             Storyboard.SetTarget(scaleY2, node.e);
             storyboard.Children.Add(scaleY2);
 
+            // create new if node is a start node else append
+            DoubleAnimationUsingKeyFrames transX;
+            DoubleAnimationUsingKeyFrames transY;
+            if (node.node.isStart)
+            {
+                transX = new DoubleAnimationUsingKeyFrames();
+                transX.BeginTime = TimeSpan.FromSeconds(startSecond);
+                transX.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath("(Canvas.Left)"));
+                Storyboard.SetTarget(transX, node.state);
+                storyboard.Children.Add(transX);
+
+                transY = new DoubleAnimationUsingKeyFrames();
+                transY.BeginTime = TimeSpan.FromSeconds(startSecond);
+                transY.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath("(Canvas.Top)"));
+                Storyboard.SetTarget(transY, node.state);
+                storyboard.Children.Add(transY);
+            }
+            else
+            {
+                transX = storyboard.Children[storyboard.Children.Count - 2] as DoubleAnimationUsingKeyFrames;
+                transY = storyboard.Children[storyboard.Children.Count - 1] as DoubleAnimationUsingKeyFrames;
+            }
+
+            // translate grid x
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 1, node.node.x - transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 2, node.node.x + transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 3, node.node.x - transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 4, node.node.x + transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 5, node.node.x - transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 6, node.node.x));
+            
+            // translate grid y
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 1, node.node.y - transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 2, node.node.y + transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 3, node.node.y - transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 4, node.node.y + transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 5, node.node.y - transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 6, node.node.y));
+
             return startSecond + 6;
         }
 
@@ -163,22 +176,30 @@ namespace SilverlightApplication6
             int transConst = 4;
 
             // translate x
-            DoubleAnimationUsingKeyFrames transX = (DoubleAnimationUsingKeyFrames)storyboard.Children[0];
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 1, node.node.x - transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 2, node.node.x + transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 3, node.node.x - transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 4, node.node.x + transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 5, node.node.x - transConst));
-            transX.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 6, node.node.x));
+            DoubleAnimationUsingKeyFrames transX = new DoubleAnimationUsingKeyFrames();
+            transX.BeginTime = TimeSpan.FromSeconds(startSecond);
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(1, node.node.x - transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(2, node.node.x + transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(3, node.node.x - transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(4, node.node.x + transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(5, node.node.x - transConst));
+            transX.KeyFrames.Add(newEasingDoubleKeyFrame(6, node.node.x));
+            transX.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath("(Canvas.Left)"));
+            Storyboard.SetTarget(transX, node.state);
+            storyboard.Children.Add(transX);
 
             // translate y
-            DoubleAnimationUsingKeyFrames transY = (DoubleAnimationUsingKeyFrames)storyboard.Children[1];
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 1, node.node.y - transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 2, node.node.y + transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 3, node.node.y - transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 4, node.node.y + transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 5, node.node.y - transConst));
-            transY.KeyFrames.Add(newEasingDoubleKeyFrame(startSecond + 6, node.node.y));
+            DoubleAnimationUsingKeyFrames transY = new DoubleAnimationUsingKeyFrames();
+            transY.BeginTime = TimeSpan.FromSeconds(startSecond);
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(1, node.node.y - transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(2, node.node.y + transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(3, node.node.y - transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(4, node.node.y + transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(5, node.node.y - transConst));
+            transY.KeyFrames.Add(newEasingDoubleKeyFrame(6, node.node.y));
+            transY.SetValue(Storyboard.TargetPropertyProperty, new PropertyPath("(Canvas.Top)"));
+            Storyboard.SetTarget(transY, node.state);
+            storyboard.Children.Add(transY);
 
             return startSecond + 6;
         }
