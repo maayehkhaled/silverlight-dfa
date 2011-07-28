@@ -43,6 +43,7 @@ namespace SilverlightApplication6
             loadAndDrawDFA(App.GetResourceStream(defaultFile).Stream);
 
             // TODO add startup animation
+inputTextBox.Text = "0101";
         }
 
         private void openButton_Click(object sender, RoutedEventArgs args)
