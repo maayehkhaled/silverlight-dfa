@@ -24,6 +24,7 @@ namespace SilverlightApplication6
 		public double x;
 		/* y-coordinate of the topleft of the node on Silverlight Coordinate system */
 		public double y;
+        public bool isStart;
 		public bool isEnd;
 		public double width;
 		public double height;
@@ -32,11 +33,12 @@ namespace SilverlightApplication6
 
 		
 
-		public Node(string label, double x, double y, bool isEnd, double width, double height)
+		public Node(string label, double x, double y, bool isStart, bool isEnd, double width, double height)
 		{
 			this.nodeLabel = label;
 			this.x = x;
 			this.y = y;
+            this.isStart = isStart;
 			this.isEnd = isEnd;
 			this.adjacent = new List<Tuple<Node, string>>();
 
@@ -45,10 +47,10 @@ namespace SilverlightApplication6
 		}
 
 		public Node(String label) : 
-			this(label, 0, 0, false, defaultSize, defaultSize) { }
+			this(label, 0, 0, false, false, defaultSize, defaultSize) { }
 
-		public Node(String label, double x, double y, bool isEnd) :
-			this(label, x, y, isEnd, defaultSize, defaultSize) { }
+        public Node(String label, double x, double y, bool isStart, bool isEnd) :
+			this(label, x, y, isStart, isEnd, defaultSize, defaultSize) { }
 
 		public void addAdjacent(Node node, string label)
 		/* if a node can reach another node with a edge label, add it in adjacent list

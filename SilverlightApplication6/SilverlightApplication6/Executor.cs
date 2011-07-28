@@ -89,7 +89,7 @@ namespace SilverlightApplication6
 
         private void InvokeThrowSymbol(VisualNode node)
         {
-            node.throwSymbol();
+            //node.throwSymbol();
         }
     }
 }

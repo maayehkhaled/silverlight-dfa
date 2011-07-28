@@ -84,6 +84,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Cartersian.cs" />
+    <Compile Include="AnimationPlanner.cs" />
     <Compile Include="Executor.cs" />
     <Compile Include="GraphDrawer.cs" />
     <Compile Include="LayoutComputer.cs" />
@@ -100,6 +101,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <EmbeddedResource Include="StoryboardResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,7 +123,9 @@
     <Content Include="Input.dtd">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="testdata\EnglishCommunicationsSkills.xml" />
+    <Content Include="testdata\EnglishCommunicationsSkills.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
