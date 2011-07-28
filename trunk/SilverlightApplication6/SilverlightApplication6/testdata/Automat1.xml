@@ -1,17 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE FiniteAutomaton SYSTEM "../Input.dtd">
 <FiniteAutomaton>
-  Animation eines DFA - 29. Juli 2009 3
   <InputAlphabet>
-    <Symbol>abc</Symbol>
-    <Symbol>bbbb</Symbol>
+    <Symbol>0</Symbol>
+    <Symbol>1</Symbol>
   </InputAlphabet>
   <States>
-    <State start="string">string</State>
-    <State accept="string">string</State>
-
+    <State x="100" y="100" start="Y" accept="Y">q0</State>
+    <State x="300" y="400" start="y">q1</State>
+    <State x="400" y="200" accept="Y">q2</State>
+    <State x="400" y="300">q3</State>
   </States>
   <Transitions>
-    <Transition from="string" symbol="c" to="string" />
-
+    <Transition from="q0" symbol="0" to="q2" />
+    <Transition from="q0" symbol="1" to="q1" />
+    <Transition from="q1" symbol="0" to="q3" />
+    <Transition from="q1" symbol="1" to="q0" />
+    <Transition from="q2" symbol="0" to="q0" />
+    <Transition from="q2" symbol="1" to="q3" />
+    <Transition from="q3" symbol="0" to="q1" />
+    <Transition from="q3" symbol="1" to="q2" />
   </Transitions>
 </FiniteAutomaton>

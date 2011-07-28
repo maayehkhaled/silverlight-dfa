@@ -12,17 +12,19 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Windows.Media.Animation;
 
 namespace SilverlightApplication6
 {
     public partial class MainPage : UserControl
     {
-        private static Uri defaultFile = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
+        private static Uri defaultFile = new Uri("testdata/Automat1.xml", UriKind.Relative);
 
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
         private Executor executor = new Executor();
         private List<VisualNode> visualNodes;
+        private Storyboard storyboard;
 
         private BackgroundWorker bw = new BackgroundWorker();
 
@@ -40,11 +42,7 @@ namespace SilverlightApplication6
 
             loadAndDrawDFA(App.GetResourceStream(defaultFile).Stream);
 
-			/* Actung: test animation here, Kann entfernt werden. */
-			drawer.visualNodes[0].catchSymbol();
-			/* TODO: block the canvas until the animation finishes */
-			drawer.visualNodes[1].catchSymbol();
-
+            // TODO add startup animation
         }
 
         private void openButton_Click(object sender, RoutedEventArgs args)
@@ -65,18 +63,23 @@ namespace SilverlightApplication6
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-            if (bw.IsBusy != true)
-            {
-                steplineSlider.Minimum = 0;
-                steplineSlider.Maximum = inputTextBox.Text.Length;
-                steplineSlider.Value = 0;
+            //if (bw.IsBusy != true)
+            //{
+            //    steplineSlider.Minimum = 0;
+            //    steplineSlider.Maximum = inputTextBox.Text.Length;
+            //    steplineSlider.Value = 0;
 
-                executor.setInput(inputTextBox.Text);
-                executor.setStartNode(visualNodes[0]);
-                setExecutorDelay(speedSlider.Value);
+            //    executor.setInput(inputTextBox.Text);
+            //    executor.setStartNode(visualNodes[0]);
+            //    setExecutorDelay(speedSlider.Value);
 
-                bw.RunWorkerAsync();
-            }
+            //    bw.RunWorkerAsync();
+            //}
+
+            storyboard = AnimationPlanner.createStoryboard(inputTextBox.Text, visualNodes[0]);
+            Debug.WriteLine("*** starting animation...");
+            Debug.WriteLine(storyboard.Children.Count);
+            storyboard.Begin();
         }
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
@@ -155,7 +158,7 @@ namespace SilverlightApplication6
             }
             else
             {
-                ((VisualNode)e.UserState).throwSymbol();
+                //((VisualNode)e.UserState).throwSymbol();
             }
 
         }

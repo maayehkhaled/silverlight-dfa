@@ -18,14 +18,7 @@ namespace SilverlightApplication6
 		public Grid state;
 		public List<Tuple<Path,VisualSymbol> > outEdges;
         private IDictionary<string, VisualNode> followers = new Dictionary<string, VisualNode>();
-
-		/* TODO: move this code to a static classe as a configuration */
-		static SolidColorBrush normalState = new SolidColorBrush(Colors.Blue);
-		static SolidColorBrush endState = new SolidColorBrush(Colors.Red);
-		static SolidColorBrush border = new SolidColorBrush(Colors.Black);
-		static SolidColorBrush edgeColor = new SolidColorBrush(Colors.Brown);
 		
-
 		public VisualNode(Node n)
 		{
             outEdges = new List<Tuple<Path, VisualSymbol>>();
@@ -38,13 +31,25 @@ namespace SilverlightApplication6
 			e.Width = node.width;
 			e.Height = node.height;
 
-			if (node.isEnd)
-				e.Fill = endState;
-			else
-				e.Fill = normalState;
+            if (node.isStart && node.isEnd)
+            {
+                e.Fill = (LinearGradientBrush)Application.Current.Resources["startEndStateBrush"];
+            }
+            else if (node.isStart)
+            {
+                e.Fill = (LinearGradientBrush)Application.Current.Resources["startStateBrush"];
+            }
+            else if (node.isEnd)
+            {
+                e.Fill = (LinearGradientBrush)Application.Current.Resources["endStateBrush"];
+            }
+            else
+            {
+                e.Fill = (LinearGradientBrush)Application.Current.Resources["normalStateBrush"];
+            }
 
-			e.StrokeThickness = 2;
-			e.Stroke = border;
+            e.StrokeThickness = 1;
+            e.Stroke = (LinearGradientBrush)Application.Current.Resources["stateBorderBrush"];
 
 			state.Children.Add(e);
 
@@ -53,20 +58,6 @@ namespace SilverlightApplication6
 			state.Children.Add(label);
 			label.TextAlignment = TextAlignment.Center;
 			label.VerticalAlignment = VerticalAlignment.Center;
-		}
-
-		/*
-		
-		*/
-
-		public void catchSymbol()
-		{
-			Animator.vibrateY(this, Animator.nodeCatcheSymbol);
-		}
-
-		public void throwSymbol()
-		{
-            Animator.vibrateY(this, Animator.nodeCatcheSymbol);
 		}
 
         public void addFollower(string symbol, VisualNode node)

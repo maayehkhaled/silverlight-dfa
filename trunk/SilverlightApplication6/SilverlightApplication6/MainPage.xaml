@@ -15,7 +15,7 @@
 				VerticalAlignment="Top" Width="529" 
 				AllowDrop="True" DragEnter="playboard_DragEnter" 
 				DragLeave="playboard_DragLeave" DragOver="playboard_DragOver" 
-				Drop="playboard_Drop" Background="DarkGray">
+				Drop="playboard_Drop" Background="LightGray">
 		</Canvas>
 
         <!-- Controls -->

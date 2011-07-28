@@ -44,6 +44,7 @@ namespace SilverlightApplication6
 			dfaCanvas.Children.Add(n.state);
 			n.state.SetValue(Canvas.TopProperty, n.node.y);
 			n.state.SetValue(Canvas.LeftProperty, n.node.x);
+            n.state.SetValue(Canvas.ZIndexProperty, 1);
 		}
 
 		private void drawOutEdge(VisualNode vn)
@@ -51,9 +52,10 @@ namespace SilverlightApplication6
 			foreach (Tuple<Node,string> m in vn.node.adjacent)
 			{
 				Tuple<Path,VisualSymbol> outEdge = createOutEdge(vn.node, m);
+                outEdge.Item1.SetValue(Canvas.ZIndexProperty, -1);
 				dfaCanvas.Children.Add(outEdge.Item1);
 
-				dfaCanvas.Children.Add(outEdge.Item2.label );
+				dfaCanvas.Children.Add(outEdge.Item2.label);
 				outEdge.Item2.label.SetValue(Canvas.TopProperty, outEdge.Item2.coordinate.y);
 				outEdge.Item2.label.SetValue(Canvas.LeftProperty, outEdge.Item2.coordinate.x);
 
@@ -111,10 +113,10 @@ namespace SilverlightApplication6
 			pathGeo.Figures.Add(arrowFigure);
 
 			/* TODO: use a static class to choose color (see Visual.cs) */
-			SolidColorBrush edgeColor = new SolidColorBrush(Colors.Brown);
 			Path path = new Path();
 			path.Data = pathGeo;
-			path.Stroke = edgeColor;
+			path.Stroke = (SolidColorBrush)Application.Current.Resources["edgeBrush"];
+            path.StrokeThickness = 2;
 			return path;
 		}
 	}

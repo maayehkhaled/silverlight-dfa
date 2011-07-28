@@ -38,7 +38,14 @@ namespace SilverlightApplication6
             {
                 double x = double.Parse(state.Attribute("x").Value);
                 double y = double.Parse(state.Attribute("y").Value);
+                bool isStart = false;
                 bool isEnd = false;
+
+                if (state.Attribute("start") != null
+                    && state.Attribute("start").Value.ToUpper().Equals("Y"))
+                {
+                    isStart = true;
+                }
 
                 if (state.Attribute("accept") != null
                     && state.Attribute("accept").Value.ToUpper().Equals("Y"))
@@ -46,9 +53,9 @@ namespace SilverlightApplication6
                     isEnd = true;
                 }
 
-                Node node = new Node(state.Value, x, y, isEnd);
+                Node node = new Node(state.Value, x, y, isStart, isEnd);
 
-                Debug.WriteLine("*** node read: " + node.nodeLabel + ", isEnd: " + node.isEnd + ", x: " + node.x + ", y: " + node.y);
+                Debug.WriteLine("*** node read: " + node.nodeLabel + ", isStart: " + node.isStart + ", isEnd: " + node.isEnd + ", x: " + node.x + ", y: " + node.y);
 
                 nodes.Add(state.Value, new VisualNode(node));
             }

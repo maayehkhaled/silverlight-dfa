@@ -13,6 +13,21 @@ namespace SilverlightApplication6
 {
 	public class Animator
 	{
+        public static Storyboard createDestinationNodeAnimation(VisualNode vn, Storyboard storyboard)
+        {
+            DoubleAnimation animation = new DoubleAnimation();
+
+            BounceEase y = new BounceEase();
+            y.Bounces = 3;
+            y.Bounciness = 1.5;
+
+            BounceEase x = new BounceEase();
+            x.Bounces = 3;
+            x.Bounciness = 1.5;
+
+            return storyboard;
+        }
+
 		/*some settings*/
 		/* how many seconds take the animation for catch Symbol event */
 		private static double _nodeCatcheSymbol = 1;
