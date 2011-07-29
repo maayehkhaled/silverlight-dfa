@@ -1,0 +1,72 @@
+﻿<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      x:Key="visualNode" Name="visualNode">
+    
+    <Grid.Resources>
+        <Storyboard x:Name="srcAnimation" AutoReverse="True">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)">
+            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Top)">-->
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="-4"/>
+                <!--<EasingDoubleKeyFrame KeyTime="0:0:3" Value="4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="-4"/>-->
+            </DoubleAnimationUsingKeyFrames>
+            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)">-->
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Width)">
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="8"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="-8"/>
+                <!--<EasingDoubleKeyFrame KeyTime="0:0:3" Value="8"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="-8"/>-->
+            </DoubleAnimationUsingKeyFrames>
+
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)">
+            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.Left)">-->
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="-4"/>
+                <!--<EasingDoubleKeyFrame KeyTime="0:0:3" Value="4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="-4"/>-->
+            </DoubleAnimationUsingKeyFrames>
+            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)">-->
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Height)">
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="8"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="-8"/>
+                <!--<EasingDoubleKeyFrame KeyTime="0:0:3" Value="8"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="-8"/>-->
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="dstAnimation" AutoReverse="True">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)">
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="-4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="-4"/>
+            </DoubleAnimationUsingKeyFrames>
+
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)">
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="-4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="4"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="-4"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Grid.Resources>
+
+    <Ellipse Name="ellipse" StrokeThickness="1">
+        <Ellipse.Fill>
+            <LinearGradientBrush StartPoint='0.1,0.06' EndPoint='0.5,0.6'>
+                <GradientStop Color='White' Offset='0'/>
+                <GradientStop Color='LawnGreen' Offset='1'/>
+            </LinearGradientBrush>
+        </Ellipse.Fill>
+        <Ellipse.Stroke>
+            <LinearGradientBrush StartPoint='0.1,0.06' EndPoint='0.5,0.6'>
+                <GradientStop Color='White' Offset='0'/>
+                <GradientStop Color='Black' Offset='1'/>
+            </LinearGradientBrush>
+        </Ellipse.Stroke>
+    </Ellipse>
+
+    <TextBlock Name="label" TextAlignment="Center" VerticalAlignment="Center">
+    </TextBlock>
+</Grid>
