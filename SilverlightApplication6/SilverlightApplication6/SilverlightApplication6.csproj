@@ -79,16 +79,13 @@
     <Reference Include="System.Xml.Utils, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animator.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Cartersian.cs" />
     <Compile Include="AnimationPlanner.cs" />
-    <Compile Include="Executor.cs" />
     <Compile Include="GraphDrawer.cs" />
     <Compile Include="LayoutComputer.cs" />
-    <Compile Include="Node.cs" />
     <Compile Include="VisualNode.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -101,6 +98,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Content Include="VisualNodeGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,6 +119,7 @@
     </Content>
     <Content Include="Input.dtd">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="testdata\EnglishCommunicationsSkills.xml">
       <SubType>Designer</SubType>

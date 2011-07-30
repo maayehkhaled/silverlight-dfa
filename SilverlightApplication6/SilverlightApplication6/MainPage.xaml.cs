@@ -22,23 +22,14 @@ namespace SilverlightApplication6
 
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
-        private Executor executor = new Executor();
         private List<VisualNode> visualNodes;
-        private Storyboard storyboard;
-
-        private BackgroundWorker bw = new BackgroundWorker();
+        private Queue<Storyboard> animations;
 
         public MainPage()
         {
             InitializeComponent();
 
             originalPlayboardColor = playboard.Background;
-			
-            bw.WorkerSupportsCancellation = true;
-            bw.WorkerReportsProgress = true;
-            bw.DoWork += new DoWorkEventHandler(executor.doWork);
-            bw.ProgressChanged += new ProgressChangedEventHandler(bw_ProgressChanged);
-            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
 
             loadAndDrawDFA(App.GetResourceStream(defaultFile).Stream);
 
@@ -64,31 +55,28 @@ inputTextBox.Text = "0101";
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (bw.IsBusy != true)
-            //{
-            //    steplineSlider.Minimum = 0;
-            //    steplineSlider.Maximum = inputTextBox.Text.Length;
-            //    steplineSlider.Value = 0;
+            animations = AnimationPlanner.execute(inputTextBox.Text, visualNodes[0]);
+            Storyboard first = animations.Dequeue();
+            first.Completed += new EventHandler(animationCompleted);
+            first.Begin();
+        }
 
-            //    executor.setInput(inputTextBox.Text);
-            //    executor.setStartNode(visualNodes[0]);
-            //    setExecutorDelay(speedSlider.Value);
-
-            //    bw.RunWorkerAsync();
-            //}
-
-            storyboard = AnimationPlanner.createStoryboard(inputTextBox.Text, visualNodes[0]);
-            Debug.WriteLine("*** starting animation...");
-            Debug.WriteLine(storyboard.Children.Count);
-            storyboard.Begin();
+        private void animationCompleted(object sender, EventArgs e)
+        {
+            try
+            {
+                Storyboard next = animations.Dequeue();
+                next.Completed += new EventHandler(animationCompleted);
+                next.Begin();
+            }
+            catch (InvalidOperationException ioe)
+            {
+                writeLog("All done.");
+            }
         }
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (bw.WorkerSupportsCancellation == true)
-            {
-                bw.CancelAsync();
-            }
         }
 		
         private void playboard_Drop(object sender, DragEventArgs args)
@@ -135,48 +123,10 @@ inputTextBox.Text = "0101";
             logbox.SelectionStart = logbox.Text.Length;
         }
 
-        public void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if ((e.Cancelled == true))
-            {
-                writeLog("Canceled.");
-            }
-            else if (e.Error != null)
-            {
-                writeLog("Error: " + e.Error.Message);
-            }
-            else
-            {
-                writeLog(e.Result.ToString());
-            }
-        }
-
-        public void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (e.UserState == null)
-            {
-                this.steplineSlider.Value = e.ProgressPercentage;
-            }
-            else
-            {
-                //((VisualNode)e.UserState).throwSymbol();
-            }
-
-        }
-
         private void speedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
 
-            setExecutorDelay(e.NewValue);
-        }
-
-        private void setExecutorDelay(double d)
-        {
-            int delay;
-            if (Int32.TryParse(d.ToString(), out delay))
-            {
-                executor.setDelay(delay);
-            }
+            //setExecutorDelay(e.NewValue);
         }
 
         private void loadAndDrawDFA(Stream stream)

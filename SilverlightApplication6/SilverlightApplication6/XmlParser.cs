@@ -53,11 +53,11 @@ namespace SilverlightApplication6
                     isEnd = true;
                 }
 
-                Node node = new Node(state.Value, x, y, isStart, isEnd);
+                VisualNode node = new VisualNode(state.Value, x, y, isStart, isEnd);
 
-                Debug.WriteLine("*** node read: " + node.nodeLabel + ", isStart: " + node.isStart + ", isEnd: " + node.isEnd + ", x: " + node.x + ", y: " + node.y);
+                Debug.WriteLine("*** node read: " + node.getLabelText() + ", isStart: " + node.isStartNode + ", isEnd: " + node.isEndNode + ", x: " + node.x + ", y: " + node.y);
 
-                nodes.Add(state.Value, new VisualNode(node));
+                nodes.Add(state.Value, node);
             }
 
             foreach (XElement transition in root.Elements("Transitions").Elements("Transition"))
@@ -74,12 +74,12 @@ namespace SilverlightApplication6
                 VisualNode toNode;
                 nodes.TryGetValue(to, out toNode);
 
-                fromNode.node.addAdjacent(toNode.node, symbol);
-                fromNode.addFollower(symbol, toNode);
+                fromNode.addAdjacenceList(toNode, symbol);
+                fromNode.addDstNode(symbol, toNode);
 
-                foreach (Tuple<Node, string> t in fromNode.node.adjacent)
+                foreach (Tuple<VisualNode, string> t in fromNode.adjacenceList)
                 {
-                    Debug.WriteLine("*** added: src node: " + fromNode.node.nodeLabel + ", dst node: " + ((Node) t.Item1).nodeLabel + ", with: " + t.Item2);
+                    Debug.WriteLine("*** added: src node: " + fromNode.getLabelText() + ", dst node: " + ((VisualNode)t.Item1).getLabelText() + ", with: " + t.Item2);
                 }
             }
 
