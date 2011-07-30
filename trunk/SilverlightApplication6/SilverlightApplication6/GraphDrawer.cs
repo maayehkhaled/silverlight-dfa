@@ -9,13 +9,14 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SilverlightApplication6
 {
 	public class GraphDrawer
 	{
 		List<VisualNode> _visualNodes;
-		public List<VisualNode> visualNodes
+        public List<VisualNode> visualNodes
 		{
 			set { _visualNodes = value; }
 			get { return _visualNodes; }
@@ -32,46 +33,48 @@ namespace SilverlightApplication6
 
         public void drawDFA()
 		{
-			foreach (VisualNode vn in visualNodes)
+            foreach (VisualNode vn in visualNodes)
 			{
 				drawNode(vn);
-				drawOutEdge(vn);
+				drawOutEdges(vn);
 			}
 		}
 
-		private void drawNode(VisualNode n)
+        private void drawNode(VisualNode n)
 		{
-			dfaCanvas.Children.Add(n.state);
-			n.state.SetValue(Canvas.TopProperty, n.node.y);
-			n.state.SetValue(Canvas.LeftProperty, n.node.x);
-            n.state.SetValue(Canvas.ZIndexProperty, 1);
+            Debug.WriteLine("*** drawing node: " + n.getLabelText() + ", grid parent: " + n.getGrid().Parent );
+			dfaCanvas.Children.Add(n.getGrid());
+            n.getGrid().SetValue(Canvas.TopProperty, n.y);
+            n.getGrid().SetValue(Canvas.LeftProperty, n.x);
+            n.getGrid().SetValue(Canvas.ZIndexProperty, 1);
 		}
 
-		private void drawOutEdge(VisualNode vn)
+        private void drawOutEdges(VisualNode vn)
 		{
-			foreach (Tuple<Node,string> m in vn.node.adjacent)
+            Debug.WriteLine("*** drawing outEdges of node: " + vn.getLabelText());
+            foreach (Tuple<VisualNode, string> m in vn.adjacenceList)
 			{
-				Tuple<Path,VisualSymbol> outEdge = createOutEdge(vn.node, m);
+				Tuple<Path,VisualEdge> outEdge = createOutEdge(vn, m);
                 outEdge.Item1.SetValue(Canvas.ZIndexProperty, -1);
-				dfaCanvas.Children.Add(outEdge.Item1);
+                dfaCanvas.Children.Add(outEdge.Item1);
 
-				dfaCanvas.Children.Add(outEdge.Item2.label);
-				outEdge.Item2.label.SetValue(Canvas.TopProperty, outEdge.Item2.coordinate.y);
-				outEdge.Item2.label.SetValue(Canvas.LeftProperty, outEdge.Item2.coordinate.x);
+                dfaCanvas.Children.Add(outEdge.Item2.getTextBlock());
+                outEdge.Item2.getTextBlock().SetValue(Canvas.TopProperty, outEdge.Item2.coordinates.y);
+                outEdge.Item2.getTextBlock().SetValue(Canvas.LeftProperty, outEdge.Item2.coordinates.x);
 
-				/* Now insert the new created outEdge in the list of outEdge of VisualNote */
+				/* Now insert the new created outEdge in the list of outEdge of VisualNode */
 				vn.outEdges.Add(outEdge);
 			}
 		}
 
-		Tuple<Path,VisualSymbol> createOutEdge(Node node, Tuple<Node, string> m)
+        Tuple<Path, VisualEdge> createOutEdge(VisualNode node, Tuple<VisualNode, string> m)
 		{
 			Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints = LayoutComputer.computeEdge(node, m.Item1);
 			
 			Path path = createBezier(bezierPoints);
 			EPoint labelCoordinate = LayoutComputer.computeEdgeLabel(bezierPoints.Item2, bezierPoints.Item3);
-			VisualSymbol edgeSymbol = new VisualSymbol(m.Item2, labelCoordinate);
-			return new Tuple<Path,VisualSymbol>(path, edgeSymbol);
+			VisualEdge edgeSymbol = new VisualEdge(m.Item2, labelCoordinate);
+			return new Tuple<Path,VisualEdge>(path, edgeSymbol);
 		}
 
 
