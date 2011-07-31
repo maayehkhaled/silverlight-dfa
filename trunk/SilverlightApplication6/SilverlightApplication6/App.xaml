@@ -1,9 +1,27 @@
 ﻿<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-             x:Class="SilverlightApplication6.App">
+             x:Class="SilverlightApplication6.App"
+             xmlns:ec="http://schemas.microsoft.com/expression/2010/controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <Application.Resources>
         
         <SolidColorBrush x:Key="edgeBrush" Color="Green" />
+
+        <!--<ResourceDictionary>
+            
+            <ec:PathListBox x:Key="pathListBox">
+                <PathGeometry x:Name="arrowGeometry">
+                    <PathFigure x:Name="bezierFigure">
+                        <BezierSegment x:Name="bezierSegment"></BezierSegment>
+                    </PathFigure>
+                    <PathFigure x:Name="arrowFigure">
+                        <LineSegment x:Name="lineSegment1"></LineSegment>
+                        <LineSegment x:Name="lineSegment2"></LineSegment>
+                    </PathFigure>
+                </PathGeometry>
+            </ec:PathListBox>
+            
+        </ResourceDictionary>-->
 
     </Application.Resources>
 	

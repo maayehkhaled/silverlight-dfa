@@ -25,6 +25,7 @@ namespace SilverlightApplication6
         private List<VisualNode> visualNodes;
         private List<Storyboard> animations;
         private int step;
+        private string input;
 
         public MainPage()
         {
@@ -32,10 +33,10 @@ namespace SilverlightApplication6
 
             originalPlayboardColor = playboard.Background;
 
-            loadDrawAndPlan(App.GetResourceStream(defaultFile).Stream);
+            loadAndDraw(App.GetResourceStream(defaultFile).Stream);
 
             // TODO add startup animation
-inputTextBox.Text = "0101";
+//inputTextBox.Text = "0101";
         }
 
         private void openButton_Click(object sender, RoutedEventArgs args)
@@ -45,7 +46,7 @@ inputTextBox.Text = "0101";
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-                loadDrawAndPlan(openFileDialog.File.OpenRead());
+                loadAndDraw(openFileDialog.File.OpenRead());
                 playboard.Background = originalPlayboardColor;
             }
             else
@@ -62,8 +63,28 @@ inputTextBox.Text = "0101";
  
             //}
 
+            if (inputTextBox.Text == null || inputTextBox.Text.Equals(""))
+            {
+                writeLog("Give me input!");
+                return;
+            }
+            else if (!inputTextBox.Text.Equals(input))
+            {
+                input = inputTextBox.Text;
+                step = 0;
+                animations = AnimationPlanner.createPlan(input, visualNodes[0]);
+                writeLog("Plan created.");
+            }
+
+            steplineSlider.Minimum = 0;
+            steplineSlider.Maximum = animations.Count - 1;
+            steplineSlider.Value = step;
+            steplineSlider.SmallChange = 1;
+            steplineSlider.LargeChange = 1;
+
             setControlsEnabled(false, false, false, true, false, false);
 
+            writeLog("Starting animation...");
             Storyboard first = animations[step];
             Debug.WriteLine("*** first is: " + first.GetValue(Storyboard.TargetNameProperty));
             first.Begin();
@@ -89,9 +110,8 @@ inputTextBox.Text = "0101";
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
-            setControlsEnabled(true, true, true, false, true, true);
-
             animations[step].Stop();
+            setControlsEnabled(true, true, true, false, true, true);
         }
 		
         private void playboard_Drop(object sender, DragEventArgs args)
@@ -101,7 +121,7 @@ inputTextBox.Text = "0101";
                 FileInfo[] files = args.Data.GetData(DataFormats.FileDrop) as FileInfo[];
                 writeLog(files.Length + " files dropped (only the first one will be read)...");
 
-                loadDrawAndPlan(files[0].OpenRead());
+                loadAndDraw(files[0].OpenRead());
                 playboard.Background = originalPlayboardColor;
             }
             else
@@ -137,35 +157,28 @@ inputTextBox.Text = "0101";
             }
         }
 
-        private void steplineSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
+        private void steplineSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //step = e.NewValue;
+            step = (int)e.NewValue;
+            writeLog("Step choosen: " + step);
         }
 
-        private void loadDrawAndPlan(Stream stream)
+        private void loadAndDraw(Stream stream)
         {
             playboard.Children.Clear();
             step = 0;
 
             visualNodes = XmlParser.parse(stream);
-            writeLog("File loaded.");
-            drawer = new GraphDrawer(visualNodes, playboard);
-            drawer.drawDFA();
-            writeLog("Graph drawn.");
-
-            animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0]);
             foreach (VisualNode n in visualNodes)
             {
                 n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
                 n.getDstAnimation().Completed += new EventHandler(animationCompleted);
             }
-            writeLog("Plan created.");
+            writeLog("File loaded.");
+            drawer = new GraphDrawer(visualNodes, playboard);
+            drawer.drawDFA();
+            writeLog("Graph drawn.");
 
-            steplineSlider.Minimum = 0;
-            steplineSlider.Maximum = animations.Count;
-            steplineSlider.Value = step;
-            steplineSlider.SmallChange = 1;
-            steplineSlider.LargeChange = 1;
             setControlsEnabled(true, true, true, false, true, true);
         }
 

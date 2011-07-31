@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Expression.Controls;
 
 namespace SilverlightApplication6
 {
@@ -120,6 +121,15 @@ namespace SilverlightApplication6
 			path.Data = pathGeo;
 			path.Stroke = (SolidColorBrush)Application.Current.Resources["edgeBrush"];
             path.StrokeThickness = 2;
+
+            PathListBox pbl = new PathListBox();
+            LayoutPath lp = new LayoutPath();
+            lp.SourceElement = path;
+            pbl.LayoutPaths.Add(lp);
+            pbl.ItemsSource = "0";
+            lp.Orientation = Microsoft.Expression.Controls.Orientation.OrientToPath;
+            dfaCanvas.Children.Add(pbl);
+
 			return path;
 		}
 	}
