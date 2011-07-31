@@ -15,9 +15,9 @@ namespace SilverlightApplication6
 {
     public static class AnimationPlanner
     {
-        public static Queue<Storyboard> execute(string input, VisualNode currentNode)
+        public static List<Storyboard> createPlan(string input, VisualNode currentNode)
         {
-            Queue<Storyboard> animations = new Queue<Storyboard>();
+            List<Storyboard> animations = new List<Storyboard>();
 
             string remainingInput = input;
             int inputLength = input.Length;
@@ -33,9 +33,9 @@ namespace SilverlightApplication6
                     Debug.WriteLine("*** follower is: " + follower.getLabelText());
 
                     // TODO add input falldown animation
-                    animations.Enqueue(currentNode.getSrcAnimation());
+                    animations.Add(currentNode.getSrcAnimation());
                     // TODO add path animation
-                    animations.Enqueue(follower.getDstAnimation());
+                    animations.Add(follower.getDstAnimation());
 
                     currentNode = follower;
                 }

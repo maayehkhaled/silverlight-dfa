@@ -23,7 +23,8 @@ namespace SilverlightApplication6
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
         private List<VisualNode> visualNodes;
-        private Queue<Storyboard> animations;
+        private List<Storyboard> animations;
+        private int step;
 
         public MainPage()
         {
@@ -55,23 +56,31 @@ inputTextBox.Text = "0101";
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-            animations = AnimationPlanner.execute(inputTextBox.Text, visualNodes[0]);
-            Storyboard first = animations.Dequeue();
-            first.Completed += new EventHandler(animationCompleted);
+            animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0]);
+
+            //if (step == 0 && animations.Count > 0)
+            //{
+ 
+            //}
+
+            step = 0;
+            Storyboard first = animations[step];
+            Debug.WriteLine("*** first is: " + first.GetValue(Storyboard.TargetNameProperty));
             first.Begin();
         }
 
         private void animationCompleted(object sender, EventArgs e)
         {
-            try
-            {
-                Storyboard next = animations.Dequeue();
-                next.Completed += new EventHandler(animationCompleted);
-                next.Begin();
-            }
-            catch (InvalidOperationException ioe)
+            step++;
+            if (step >= animations.Count)
             {
                 writeLog("All done.");
+            }
+            else
+            {
+                Storyboard next = animations[step];
+                Debug.WriteLine("*** next is: " + next.GetValue(Storyboard.TargetNameProperty));
+                next.Begin();
             }
         }
 
@@ -137,6 +146,12 @@ inputTextBox.Text = "0101";
             drawer = new GraphDrawer(visualNodes, playboard);
             drawer.drawDFA();
             writeLog("Graph drawn.");
+
+            foreach (VisualNode n in visualNodes)
+            {
+                n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
+                n.getDstAnimation().Completed += new EventHandler(animationCompleted);
+            }
         }
     }
 }

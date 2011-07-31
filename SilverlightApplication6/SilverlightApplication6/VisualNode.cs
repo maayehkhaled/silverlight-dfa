@@ -78,7 +78,7 @@ namespace SilverlightApplication6
             label = grid.Children[1] as TextBlock;
             label.Text = labelText;
 
-            Debug.WriteLine("*** ellipse name: " + ellipse.Name);
+            //Debug.WriteLine("*** ellipse name: " + ellipse.Name);
 
             grid.Width = DEFAULT_SIZE;
             grid.Height = DEFAULT_SIZE;
