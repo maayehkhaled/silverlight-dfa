@@ -67,12 +67,12 @@ namespace SilverlightApplication6
             srcAnimation = grid.Resources["srcAnimation"] as Storyboard;
             //Storyboard.SetTarget(srcAnimation, grid);
             Storyboard.SetTargetName(srcAnimation, labelText);
-            Debug.WriteLine("*** source animation children: " + srcAnimation.Children.Count);
+            //Debug.WriteLine("*** source animation children: " + srcAnimation.Children.Count);
 
             dstAnimation = grid.Resources["dstAnimation"] as Storyboard;
             //Storyboard.SetTarget(dstAnimation, grid);
             Storyboard.SetTargetName(dstAnimation, labelText);
-            Debug.WriteLine("*** destination animation children: " + dstAnimation.Children.Count);
+            //Debug.WriteLine("*** destination animation children: " + dstAnimation.Children.Count);
 
             ellipse = grid.Children[0] as Ellipse;
             label = grid.Children[1] as TextBlock;

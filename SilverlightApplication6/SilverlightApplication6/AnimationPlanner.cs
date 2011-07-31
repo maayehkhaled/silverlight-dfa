@@ -34,6 +34,7 @@ namespace SilverlightApplication6
 
                     // TODO add input falldown animation
                     animations.Add(currentNode.getSrcAnimation());
+                    //currentNode.outEdge
                     // TODO add path animation
                     animations.Add(follower.getDstAnimation());
 
