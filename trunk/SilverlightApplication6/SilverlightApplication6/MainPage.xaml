@@ -5,28 +5,28 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" x:Class="SilverlightApplication6.MainPage"
     mc:Ignorable="d"
-    d:DesignHeight="600" d:DesignWidth="553" HorizontalContentAlignment="Left">
+    d:DesignHeight="600" d:DesignWidth="600" HorizontalAlignment="Center" Height="600" Width="600">
 
-    <Grid x:Name="LayoutRoot" Background="White" Width="572">
+    <Grid x:Name="LayoutRoot" Background="Black">
         
         <!-- Graph area -->
-        <Canvas Height="414" HorizontalAlignment="Left" 
-				Margin="12,132,0,0" x:Name="playboard" 
-				VerticalAlignment="Top" Width="529" 
+        <Canvas Height="434" HorizontalAlignment="Center" 
+				Margin="12,100,12,12" x:Name="playboard" 
+				VerticalAlignment="Top" Width="550" 
 				AllowDrop="True" DragEnter="playboard_DragEnter" 
 				DragLeave="playboard_DragLeave" DragOver="playboard_DragOver" 
 				Drop="playboard_Drop" Background="LightGray">
 		</Canvas>
 
         <!-- Controls -->
-        <Grid Height="108" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="529">
+        <Grid Height="90" HorizontalAlignment="Center" Margin="12,0,12,12" VerticalAlignment="Top">
             
             <!-- Input label and textbox -->
             <sdk:Label x:Name="inputLabel" Content="Input"
                        Height="23" HorizontalAlignment="Left"
                        Margin="6,6,0,0" VerticalAlignment="Top"
                        Width="43" FontSize="13" HorizontalContentAlignment="Right"
-                       VerticalContentAlignment="Center" />
+                       VerticalContentAlignment="Center" Foreground="LawnGreen" />
             <TextBox x:Name="inputTextBox" Height="23" HorizontalAlignment="Left"
                      Margin="55,6,0,0" VerticalAlignment="Top" Width="468" />
 
@@ -46,26 +46,26 @@
 
             <!-- Speed label and slider -->
             <sdk:Label x:Name="speedLabel" Content="Speed" Height="23"
-                       HorizontalAlignment="Left" Margin="345,37,0,0"
-                       VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center" />
+                       HorizontalAlignment="Left" Margin="328,38,0,0"
+                       VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Foreground="LawnGreen" />
             <Slider x:Name="speedSlider" Height="23" HorizontalAlignment="Right" Margin="0,37,6,0" VerticalAlignment="Top" Width="139" ValueChanged="speedSlider_ValueChanged">
-                <Slider.Minimum>0</Slider.Minimum>
-                <Slider.Maximum>5000</Slider.Maximum>
-                <Slider.Value>1500</Slider.Value>
+                <Slider.Minimum>0.1</Slider.Minimum>
+                <Slider.Maximum>1.9</Slider.Maximum>
+                <Slider.Value>1</Slider.Value>
             </Slider>
 
             <!-- Stepline label and slider -->
             <sdk:Label x:Name="steplineLabel" Content="Stepline" Height="23"
                        HorizontalAlignment="Left" Margin="6,68,0,0"
-                       VerticalAlignment="Top" Width="57" HorizontalContentAlignment="Center" />
+                       VerticalAlignment="Top" Width="57" HorizontalContentAlignment="Center" Foreground="LawnGreen" />
             <Slider x:Name="steplineSlider" Height="23" HorizontalAlignment="Left"
                     Margin="55,68,0,0" VerticalAlignment="Top" Width="468" />
         
         </Grid>
 
         <!-- Log textbox -->
-        <TextBox x:Name="logbox" Height="45" HorizontalAlignment="Left" Margin="12,555,0,0"
-                 Width="529" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
+        <TextBox x:Name="logbox" Height="45" HorizontalAlignment="Center" Margin="12,540,12,12"
+                 Width="500" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
                  TextWrapping="Wrap" VerticalContentAlignment="Bottom" AcceptsReturn="False" />
     
     </Grid>
