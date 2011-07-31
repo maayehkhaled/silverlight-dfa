@@ -32,7 +32,7 @@ namespace SilverlightApplication6
 
             originalPlayboardColor = playboard.Background;
 
-            loadAndDrawDFA(App.GetResourceStream(defaultFile).Stream);
+            loadDrawAndPlan(App.GetResourceStream(defaultFile).Stream);
 
             // TODO add startup animation
 inputTextBox.Text = "0101";
@@ -45,7 +45,7 @@ inputTextBox.Text = "0101";
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == true)
             {
-                loadAndDrawDFA(openFileDialog.File.OpenRead());
+                loadDrawAndPlan(openFileDialog.File.OpenRead());
                 playboard.Background = originalPlayboardColor;
             }
             else
@@ -56,14 +56,14 @@ inputTextBox.Text = "0101";
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-            animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0]);
 
             //if (step == 0 && animations.Count > 0)
             //{
  
             //}
 
-            step = 0;
+            setControlsEnabled(false, false, false, true, false, false);
+
             Storyboard first = animations[step];
             Debug.WriteLine("*** first is: " + first.GetValue(Storyboard.TargetNameProperty));
             first.Begin();
@@ -74,11 +74,14 @@ inputTextBox.Text = "0101";
             step++;
             if (step >= animations.Count)
             {
+                step = 0;
+                setControlsEnabled(true, true, true, false, true, true);
                 writeLog("All done.");
             }
             else
             {
                 Storyboard next = animations[step];
+                steplineSlider.Value = step;
                 Debug.WriteLine("*** next is: " + next.GetValue(Storyboard.TargetNameProperty));
                 next.Begin();
             }
@@ -86,6 +89,9 @@ inputTextBox.Text = "0101";
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
+            setControlsEnabled(true, true, true, false, true, true);
+
+            animations[step].Stop();
         }
 		
         private void playboard_Drop(object sender, DragEventArgs args)
@@ -95,7 +101,7 @@ inputTextBox.Text = "0101";
                 FileInfo[] files = args.Data.GetData(DataFormats.FileDrop) as FileInfo[];
                 writeLog(files.Length + " files dropped (only the first one will be read)...");
 
-                loadAndDrawDFA(files[0].OpenRead());
+                loadDrawAndPlan(files[0].OpenRead());
                 playboard.Background = originalPlayboardColor;
             }
             else
@@ -119,7 +125,64 @@ inputTextBox.Text = "0101";
             playboard.Background = originalPlayboardColor;
         }
 
-        private void writeLog(string s) {
+        private void speedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (visualNodes != null)
+            {
+                foreach (VisualNode n in visualNodes)
+                {
+                    n.getSrcAnimation().SpeedRatio = e.NewValue;
+                    n.getDstAnimation().SpeedRatio = e.NewValue;
+                }
+            }
+        }
+
+        private void steplineSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
+        {
+            //step = e.NewValue;
+        }
+
+        private void loadDrawAndPlan(Stream stream)
+        {
+            playboard.Children.Clear();
+            step = 0;
+
+            visualNodes = XmlParser.parse(stream);
+            writeLog("File loaded.");
+            drawer = new GraphDrawer(visualNodes, playboard);
+            drawer.drawDFA();
+            writeLog("Graph drawn.");
+
+            animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0]);
+            foreach (VisualNode n in visualNodes)
+            {
+                n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
+                n.getDstAnimation().Completed += new EventHandler(animationCompleted);
+            }
+            writeLog("Plan created.");
+
+            steplineSlider.Minimum = 0;
+            steplineSlider.Maximum = animations.Count;
+            steplineSlider.Value = step;
+            steplineSlider.SmallChange = 1;
+            steplineSlider.LargeChange = 1;
+            setControlsEnabled(true, true, true, false, true, true);
+        }
+
+        private void setControlsEnabled(bool enableInputTextBox,
+            bool enableOpenButton, bool enableStartButton, bool enableStopButton,
+            bool enableSpeedSlider, bool enableSteplineSlider)
+        {
+            inputTextBox.IsEnabled = enableInputTextBox;
+            openButton.IsEnabled = enableOpenButton;
+            startButton.IsEnabled = enableStartButton;
+            stopButton.IsEnabled = enableStopButton;
+            speedSlider.IsEnabled = enableSpeedSlider;
+            steplineSlider.IsEnabled = enableSteplineSlider;
+        }
+
+        private void writeLog(string s)
+        {
             if (logbox.Text.Length > 0)
             {
                 logbox.Text += Environment.NewLine + s;
@@ -128,30 +191,8 @@ inputTextBox.Text = "0101";
             {
                 logbox.Text += s;
             }
-            
+
             logbox.SelectionStart = logbox.Text.Length;
-        }
-
-        private void speedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
-            //setExecutorDelay(e.NewValue);
-        }
-
-        private void loadAndDrawDFA(Stream stream)
-        {
-            playboard.Children.Clear();
-            visualNodes = XmlParser.parse(stream);
-            writeLog("File loaded.");
-            drawer = new GraphDrawer(visualNodes, playboard);
-            drawer.drawDFA();
-            writeLog("Graph drawn.");
-
-            foreach (VisualNode n in visualNodes)
-            {
-                n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
-                n.getDstAnimation().Completed += new EventHandler(animationCompleted);
-            }
         }
     }
 }
