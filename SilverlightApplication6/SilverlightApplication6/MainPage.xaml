@@ -50,8 +50,8 @@
                        VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Foreground="LawnGreen" />
             <Slider x:Name="speedSlider" Height="23" HorizontalAlignment="Right" Margin="0,37,6,0" VerticalAlignment="Top" Width="139" ValueChanged="speedSlider_ValueChanged">
                 <Slider.Minimum>0.1</Slider.Minimum>
-                <Slider.Maximum>1.9</Slider.Maximum>
-                <Slider.Value>1</Slider.Value>
+                <Slider.Value>2.5</Slider.Value>
+                <Slider.Maximum>4.9</Slider.Maximum>
             </Slider>
 
             <!-- Stepline label and slider -->
@@ -64,9 +64,9 @@
         </Grid>
 
         <!-- Log textbox -->
-        <TextBox x:Name="logbox" Height="45" HorizontalAlignment="Center" Margin="12,540,12,12"
+        <TextBox x:Name="logbox" Height="50" HorizontalAlignment="Center" Margin="12,540,12,12"
                  Width="500" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
-                 TextWrapping="Wrap" VerticalContentAlignment="Bottom" AcceptsReturn="False" />
+                 TextWrapping="Wrap" VerticalContentAlignment="Bottom" AcceptsReturn="False" BorderBrush="LawnGreen"/>
     
     </Grid>
 </UserControl>

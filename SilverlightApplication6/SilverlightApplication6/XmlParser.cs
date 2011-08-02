@@ -17,7 +17,7 @@ namespace SilverlightApplication6
         //private static bool initialized = false;
         //private static Uri dtd = new Uri("Input.dtd", UriKind.Relative);
 
-        public static List<VisualNode> parse(Stream stream)
+        public static List<VisualNode> parse(Stream stream, out List<string> inputAlphabet)
         {
             // TODO static initalization block
             //if (!initialized)
@@ -33,6 +33,12 @@ namespace SilverlightApplication6
 
             XElement root = XElement.Load(stream);
             IDictionary<string, VisualNode> nodes = new Dictionary<string, VisualNode>();
+            inputAlphabet = new List<string>();
+
+            foreach (XElement symbol in root.Elements("InputAlphabet").Elements("Symbol"))
+            {
+                inputAlphabet.Add(symbol.Value);
+            }
 
             foreach (XElement state in root.Elements("States").Elements("State"))
             {
@@ -86,9 +92,9 @@ namespace SilverlightApplication6
             return new List<VisualNode>(nodes.Values);
         }
 
-        public static List<VisualNode> parse(FileInfo file)
+        public static List<VisualNode> parse(FileInfo file, out List<string> inputAlphabet)
         {
-            return parse(file.OpenRead());
+            return parse(file.OpenRead(), out inputAlphabet);
         }
     }
 }
