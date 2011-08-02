@@ -24,8 +24,8 @@ namespace SilverlightApplication6
         private Grid grid;
         private Path bezier;
         private Path arrow;
-        private PathListBox pathListBox;
-        private TextBlock label;
+        private PathListBox animationPathListBox;
+        private PathListBox labelPathListBox;
         
         private Storyboard animation;
         private Brush edgeBrush;
@@ -35,14 +35,15 @@ namespace SilverlightApplication6
             grid = getVisualEdgeGrid(labelText);
             bezier = grid.FindName("bezier") as Path;
             arrow = grid.FindName("arrow") as Path;
-            pathListBox = grid.FindName("pathListBox") as PathListBox;
-            label = grid.FindName("label") as TextBlock;
-            label.Text = labelText;
+            animationPathListBox = grid.FindName("animationPathListBox") as PathListBox;
+            animationPathListBox.ItemsSource = labelText;
+            labelPathListBox = grid.FindName("labelPathListBox") as PathListBox;
+            labelPathListBox.ItemsSource = labelText;
 
             animation = grid.Resources["animation"] as Storyboard;
             edgeBrush = grid.Resources["edgeBrush"] as Brush;
 
-            Debug.WriteLine("*** symbol: " + label.Text);
+            Debug.WriteLine("*** symbol: " + labelText);
         }
 
         public void setDstNode(VisualNode dstNode)
@@ -70,20 +71,6 @@ namespace SilverlightApplication6
         public void setArrow(PathGeometry arrowGeometry)
         {
             arrow.Data = arrowGeometry;
-        }
-
-        public PathListBox getPathListBox() {
-            return pathListBox;
-        }
-
-        public void setPathListBox(PathListBox pathListBox)
-        {
-            this.pathListBox = pathListBox;
-        }
-
-        public TextBlock getTextBlock()
-        {
-            return label;
         }
 
         /* returns the storyboard for the source animation */

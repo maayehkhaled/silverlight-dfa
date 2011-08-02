@@ -8,8 +8,12 @@
     <Grid.Resources>
 
         <Storyboard x:Name="animation">
-            <DoubleAnimation Duration="0:0:4" To="1" Storyboard.TargetProperty="(PathListBox.LayoutPaths)[0].(LayoutPath.Start)" Storyboard.TargetName="pathListBox" />
-            <!--<DoubleAnimation Duration="0:0:5" To="0" Storyboard.TargetProperty="(PathListBox.LayoutPaths)[0].(LayoutPath.Start)" Storyboard.TargetName="pathListBox" />-->
+            <DoubleAnimation Duration="0:0:1" To="100"
+                             Storyboard.TargetProperty="Opacity"
+                             Storyboard.TargetName="animationPathListBox" />
+            <DoubleAnimation Duration="0:0:6" To="1"
+                             Storyboard.TargetProperty="(PathListBox.LayoutPaths)[0].(LayoutPath.Start)"
+                             Storyboard.TargetName="animationPathListBox" />
         </Storyboard>
 
         <SolidColorBrush x:Key="edgeBrush" Color="Green" />
@@ -36,12 +40,17 @@
         </Path.Data>
     </Path>-->
 
-    <ec:PathListBox x:Name="pathListBox" ItemsSource="{Binding Text, ElementName=label}" FontSize="18.667" Foreground="#FFC08C17">
+    <!--<ec:PathListBox x:Name="pathListBox" ItemsSource="{Binding Text, ElementName=label}" FontSize="18.667" Foreground="#FFC08C17">-->
+    <ec:PathListBox x:Name="animationPathListBox" FontSize="16" Opacity="0" Foreground="Red">
         <ec:PathListBox.LayoutPaths>
-            <ec:LayoutPath SourceElement="{Binding ElementName=bezier}" /> <!-- Orientation="OrientToPath" ommited for now -->
+            <ec:LayoutPath SourceElement="{Binding ElementName=bezier}" Orientation="OrientToPath"/>
         </ec:PathListBox.LayoutPaths>
     </ec:PathListBox>
 
-    <TextBlock Name="label" Foreground="Red"/>
+    <ec:PathListBox x:Name="labelPathListBox" FontSize="14" Foreground="Black">
+        <ec:PathListBox.LayoutPaths>
+            <ec:LayoutPath SourceElement="{Binding ElementName=bezier}" Start="0.5"/>
+        </ec:PathListBox.LayoutPaths>
+    </ec:PathListBox>
     
 </Grid>
