@@ -16,18 +16,12 @@ namespace SilverlightApplication6
 {
 	public class GraphDrawer
 	{
-		List<VisualNode> _visualNodes;
-        public List<VisualNode> visualNodes
-		{
-			set { _visualNodes = value; }
-			get { return _visualNodes; }
-		}
+        private List<VisualNode> visualNodes;
 
 		public Canvas dfaCanvas;
 
         public GraphDrawer(List<VisualNode> nodes, Canvas c)
 		{
-			//dfaCanvas = new Canvas();
 			dfaCanvas = c;
             visualNodes = nodes;
 		}
@@ -43,53 +37,57 @@ namespace SilverlightApplication6
 
         private void drawNode(VisualNode n)
 		{
-            Debug.WriteLine("*** drawing node: " + n.getLabelText() + ", grid parent: " + n.getGrid().Parent );
+            Debug.WriteLine("*** drawing node: " + n.getLabelText());
 			dfaCanvas.Children.Add(n.getGrid());
-            n.getGrid().SetValue(Canvas.TopProperty, n.y);
-            n.getGrid().SetValue(Canvas.LeftProperty, n.x);
+            n.getGrid().SetValue(Canvas.TopProperty, n.location.y);
+            n.getGrid().SetValue(Canvas.LeftProperty, n.location.x);
             n.getGrid().SetValue(Canvas.ZIndexProperty, 1);
 		}
 
         private void drawOutEdges(VisualNode vn)
 		{
             Debug.WriteLine("*** drawing outEdges of node: " + vn.getLabelText());
-            foreach (Tuple<VisualNode, string> m in vn.adjacenceList)
+            foreach (Tuple<VisualNode, string> t in vn.adjacenceList)
 			{
-				Tuple<Path,VisualEdge> outEdge = createOutEdge(vn, m);
-                outEdge.Item1.SetValue(Canvas.ZIndexProperty, -1);
-                dfaCanvas.Children.Add(outEdge.Item1);
+                Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints = LayoutComputer.computeEdge(vn, t.Item1);
+                VisualEdge visualEdge = createBezierArrow(t.Item2, bezierPoints);
+                visualEdge.setDstNode(t.Item1);
 
-                dfaCanvas.Children.Add(outEdge.Item2.getTextBlock());
-                outEdge.Item2.getTextBlock().SetValue(Canvas.TopProperty, outEdge.Item2.coordinates.y);
-                outEdge.Item2.getTextBlock().SetValue(Canvas.LeftProperty, outEdge.Item2.coordinates.x);
+                visualEdge.getGrid().SetValue(Canvas.ZIndexProperty, -2);
+                //visualEdge.getArrow().SetValue(Canvas.ZIndexProperty, -2);
+                //visualEdge.getTextBlock().SetValue(Canvas.ZIndexProperty, -1);
+
+                dfaCanvas.Children.Add(visualEdge.getGrid());
+                //dfaCanvas.Children.Add(visualEdge.getTextBlock());
+                //dfaCanvas.Children.Add(visualEdge.getArrow());
+                //dfaCanvas.Children.Add(visualEdge.getPathListBox());
 
 				/* Now insert the new created outEdge in the list of outEdge of VisualNode */
-				vn.outEdges.Add(outEdge);
+                vn.addDstEdge(t.Item2, visualEdge);
 			}
 		}
 
-        Tuple<Path, VisualEdge> createOutEdge(VisualNode node, Tuple<VisualNode, string> m)
-		{
-			Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints = LayoutComputer.computeEdge(node, m.Item1);
-			
-			Path path = createBezier(bezierPoints);
-			EPoint labelCoordinate = LayoutComputer.computeEdgeLabel(bezierPoints.Item2, bezierPoints.Item3);
-			VisualEdge edgeSymbol = new VisualEdge(m.Item2, labelCoordinate);
-			return new Tuple<Path,VisualEdge>(path, edgeSymbol);
-		}
+        private PathFigure createBezier(Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints)
+        {
+            PathFigure bezierFigure = new PathFigure();
+            bezierFigure.StartPoint = new Point(
+                bezierPoints.Item1.x,
+                bezierPoints.Item1.y);
+            BezierSegment bz = new BezierSegment();
+            bz.Point1 = new Point(bezierPoints.Item2.x, bezierPoints.Item2.y);
+            bz.Point2 = new Point(bezierPoints.Item3.x, bezierPoints.Item3.y);
+            bz.Point3 = new Point(bezierPoints.Item4.x, bezierPoints.Item4.y);
+            bezierFigure.Segments.Add(bz);
 
+            return bezierFigure;
+        }
 
-		Path createBezier(Tuple<EPoint,EPoint,EPoint,EPoint> bezierPoints)
+        private VisualEdge createBezierArrow(string label, Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints)
 		{
-			PathFigure bezierFigure = new PathFigure();
-			bezierFigure.StartPoint = new Point(
-				bezierPoints.Item1.x, 
-				bezierPoints.Item1.y);
-			BezierSegment bz = new BezierSegment();
-			bz.Point1 = new Point(bezierPoints.Item2.x, bezierPoints.Item2.y);
-			bz.Point2 = new Point(bezierPoints.Item3.x, bezierPoints.Item3.y);
-			bz.Point3 = new Point(bezierPoints.Item4.x, bezierPoints.Item4.y);
-			bezierFigure.Segments.Add(bz);
+            VisualEdge visualEdge = new VisualEdge(label, bezierPoints.Item1, bezierPoints.Item4);
+            visualEdge.setBezier(createBezier(bezierPoints));
+
+            PathFigure bezierFigure = createBezier(bezierPoints);
 
 			Tuple<EPoint, EPoint> arrowInfo = LayoutComputer.computeArrow(bezierPoints.Item4, bezierPoints.Item3);
 			PathFigure arrowFigure = new PathFigure();
@@ -116,23 +114,13 @@ namespace SilverlightApplication6
 			pathGeo.Figures.Add(bezierFigure);  //= pathFigCollection;
 			pathGeo.Figures.Add(arrowFigure);
 
-			/* TODO: use a static class to choose color (see Visual.cs) */
-			Path path = new Path();
-			path.Data = pathGeo;
-			path.Stroke = (SolidColorBrush)Application.Current.Resources["edgeBrush"];
-            path.StrokeThickness = 2;
+            visualEdge.setArrow(pathGeo);
 
-            PathListBox pbl = new PathListBox();
-            LayoutPath lp = new LayoutPath();
-            lp.SourceElement = path;
-            pbl.LayoutPaths.Add(lp);
-            pbl.ItemsSource = "0";
-            lp.Orientation = Microsoft.Expression.Controls.Orientation.OrientToPath;
-            dfaCanvas.Children.Add(pbl);
+            //Debug.WriteLine("*** path.Data: " + path.Data.Bounds);
 
-			return path;
+            
+
+            return visualEdge;
 		}
 	}
-
-	
 }

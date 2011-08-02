@@ -5,24 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <Application.Resources>
         
-        <SolidColorBrush x:Key="edgeBrush" Color="Green" />
-
-        <!--<ResourceDictionary>
-            
-            <ec:PathListBox x:Key="pathListBox">
-                <PathGeometry x:Name="arrowGeometry">
-                    <PathFigure x:Name="bezierFigure">
-                        <BezierSegment x:Name="bezierSegment"></BezierSegment>
-                    </PathFigure>
-                    <PathFigure x:Name="arrowFigure">
-                        <LineSegment x:Name="lineSegment1"></LineSegment>
-                        <LineSegment x:Name="lineSegment2"></LineSegment>
-                    </PathFigure>
-                </PathGeometry>
-            </ec:PathListBox>
-            
-        </ResourceDictionary>-->
-
     </Application.Resources>
 	
 </Application>

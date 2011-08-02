@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace SilverlightApplication6
 {
-    public class XmlParser
+    public static class XmlParser
     {
         // schema validation is not supported in silverlight! what an evidence of incapacity!!!
         //private static XmlPreloadedResolver resolver = new XmlPreloadedResolver();
@@ -53,9 +53,9 @@ namespace SilverlightApplication6
                     isEnd = true;
                 }
 
-                VisualNode node = new VisualNode(state.Value, x, y, isStart, isEnd);
+                VisualNode node = new VisualNode(state.Value, new EPoint(x, y), isStart, isEnd);
 
-                Debug.WriteLine("*** node read: " + node.getLabelText() + ", isStart: " + node.isStartNode + ", isEnd: " + node.isEndNode + ", x: " + node.x + ", y: " + node.y);
+                Debug.WriteLine("*** node read: " + node.getLabelText() + ", isStart: " + node.isStartNode + ", isEnd: " + node.isEndNode + ", x: " + node.location.x + ", y: " + node.location.y);
 
                 nodes.Add(state.Value, node);
             }
@@ -75,12 +75,12 @@ namespace SilverlightApplication6
                 nodes.TryGetValue(to, out toNode);
 
                 fromNode.addAdjacenceList(toNode, symbol);
-                fromNode.addDstNode(symbol, toNode);
+                //fromNode.addDstNode(symbol, toNode);
 
-                foreach (Tuple<VisualNode, string> t in fromNode.adjacenceList)
-                {
-                    Debug.WriteLine("*** added: src node: " + fromNode.getLabelText() + ", dst node: " + ((VisualNode)t.Item1).getLabelText() + ", with: " + t.Item2);
-                }
+                //foreach (Tuple<VisualNode, string> t in fromNode.adjacenceList)
+                //{
+                //    Debug.WriteLine("*** added: src node: " + fromNode.getLabelText() + ", dst node: " + ((VisualNode)t.Item1).getLabelText() + ", with: " + t.Item2);
+                //}
             }
 
             return new List<VisualNode>(nodes.Values);
