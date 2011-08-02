@@ -25,10 +25,11 @@ namespace SilverlightApplication6
         public static readonly Uri GRID_RESOURCE_URI = new Uri("VisualNodeGrid.xaml", UriKind.Relative);
         private static string gridResourceString = null;
 
-        /* x-coordinate of the topleft of the node on Silverlight Coordinate system */
-		public readonly double x;
-        /* y-coordinate of the topleft of the node on Silverlight Coordinate system */
-		public readonly double y;
+        ///* x-coordinate of the topleft of the node on Silverlight Coordinate system */
+        //public readonly double x;
+        ///* y-coordinate of the topleft of the node on Silverlight Coordinate system */
+        //public readonly double y;
+        public readonly EPoint location;
         /* is the node a start node? */
         public readonly bool isStartNode;
         /* is the node an end node? */
@@ -36,10 +37,9 @@ namespace SilverlightApplication6
 
         /* contains all nodes (states) that can be reached through this node */
         public readonly List<Tuple<VisualNode, string>> adjacenceList;
-        /* containts all out edges and their symbols */
-        public readonly List<Tuple<Path, VisualEdge>> outEdges;
         /* allows to find the next node for the given symbol string */
-        private IDictionary<string, VisualNode> dstNodes = new Dictionary<string, VisualNode>();
+        //private IDictionary<string, VisualNode> dstNodes = new Dictionary<string, VisualNode>();
+        private IDictionary<string, VisualEdge> dstEdges = new Dictionary<string, VisualEdge>();
 
         /* the grid on which the ellipse and label (textbox) are drawed */
         private Grid grid;
@@ -52,10 +52,9 @@ namespace SilverlightApplication6
         private Storyboard dstAnimation;
 
         /* constructs a new node object */
-        public VisualNode(string labelText, double x, double y, bool isStartNode, bool isEndNode)
+        public VisualNode(string labelText, EPoint location, bool isStartNode, bool isEndNode)
         {
-            this.x = x;
-            this.y = y;
+            this.location = location;
             this.isStartNode = isStartNode;
             this.isEndNode = isEndNode;
             adjacenceList = new List<Tuple<VisualNode, string>>();
@@ -74,8 +73,8 @@ namespace SilverlightApplication6
             Storyboard.SetTargetName(dstAnimation, labelText);
             //Debug.WriteLine("*** destination animation children: " + dstAnimation.Children.Count);
 
-            ellipse = grid.Children[0] as Ellipse;
-            label = grid.Children[1] as TextBlock;
+            ellipse = grid.FindName("ellipse") as Ellipse;
+            label = grid.FindName("label") as TextBlock;
             label.Text = labelText;
 
             //Debug.WriteLine("*** ellipse name: " + ellipse.Name);
@@ -84,8 +83,6 @@ namespace SilverlightApplication6
             grid.Height = DEFAULT_SIZE;
             ellipse.Width = DEFAULT_SIZE;
             ellipse.Height = DEFAULT_SIZE;
-
-            outEdges = new List<Tuple<Path, VisualEdge>>();
         }
 
         /* adds a new entry to the adjacenceList of this node */
@@ -126,15 +123,36 @@ namespace SilverlightApplication6
         }
 
         /* adds a new entry to the map of destinations nodes of this node */
-        public void addDstNode(string symbol, VisualNode node)
-        {
-            dstNodes.Add(symbol, node);
-        }
+        //public void addDstNode(string symbol, VisualNode node)
+        //{
+        //    dstNodes.Add(symbol, node);
+        //}
 
         /* retrieves, if possible, the node that can be reached through the given symbol. */
         public bool TryGetDstNode(string symbol, out VisualNode node)
         {
-            return dstNodes.TryGetValue(symbol, out node);
+            VisualEdge ve;
+            if (dstEdges.TryGetValue(symbol, out ve))
+            {
+                node = ve.getDstNode();
+                return true;
+            }
+            else
+            {
+                node = null;
+                return false;
+            }
+        }
+
+        /* adds a new entry to the map of destinations nodes of this node */
+        public void addDstEdge(string symbol, VisualEdge edge)
+        {
+            dstEdges.Add(symbol, edge);
+        }
+
+        public VisualEdge getDstEdge(string symbol)
+        {
+            return dstEdges[symbol];
         }
 
         /* returns the grid where the nodes ellipse and label are drawn on */
@@ -189,25 +207,6 @@ namespace SilverlightApplication6
             //grid.RenderTransform = new CompositeTransform();
 
             return grid;
-        }
-    }
-
-    /* presents the label of the egde (input symbol) */
-    public class VisualEdge
-    {
-        private TextBlock label;
-        public EPoint coordinates { get; set; }
-
-        public VisualEdge(string labelText, EPoint coordinates)
-        {
-            this.coordinates = coordinates;
-            label = new TextBlock();
-            label.Text = labelText;
-        }
-
-        public TextBlock getTextBlock()
-        {
-            return label;
         }
     }
 }

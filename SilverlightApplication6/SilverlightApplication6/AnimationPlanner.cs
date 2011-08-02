@@ -15,6 +15,7 @@ namespace SilverlightApplication6
 {
     public static class AnimationPlanner
     {
+
         public static List<Storyboard> createPlan(string input, VisualNode currentNode)
         {
             List<Storyboard> animations = new List<Storyboard>();
@@ -34,8 +35,7 @@ namespace SilverlightApplication6
 
                     // TODO add input falldown animation
                     animations.Add(currentNode.getSrcAnimation());
-                    //currentNode.outEdge
-                    // TODO add path animation
+                    animations.Add(currentNode.getDstEdge(symbol).getAnimation());
                     animations.Add(follower.getDstAnimation());
 
                     currentNode = follower;

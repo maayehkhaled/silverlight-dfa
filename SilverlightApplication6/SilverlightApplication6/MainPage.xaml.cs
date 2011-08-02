@@ -36,7 +36,8 @@ namespace SilverlightApplication6
             loadAndDraw(App.GetResourceStream(defaultFile).Stream);
 
             // TODO add startup animation
-//inputTextBox.Text = "0101";
+// only for debug
+inputTextBox.Text = "0101";
         }
 
         private void openButton_Click(object sender, RoutedEventArgs args)
@@ -92,6 +93,8 @@ namespace SilverlightApplication6
 
         private void animationCompleted(object sender, EventArgs e)
         {
+            Debug.WriteLine("*** animationCompleted()");
+
             step++;
             if (step >= animations.Count)
             {
@@ -155,6 +158,7 @@ namespace SilverlightApplication6
                     n.getDstAnimation().SpeedRatio = e.NewValue;
                 }
             }
+            writeLog("Speed choosen: " + e.NewValue);
         }
 
         private void steplineSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -169,17 +173,24 @@ namespace SilverlightApplication6
             step = 0;
 
             visualNodes = XmlParser.parse(stream);
-            foreach (VisualNode n in visualNodes)
-            {
-                n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
-                n.getDstAnimation().Completed += new EventHandler(animationCompleted);
-            }
             writeLog("File loaded.");
             drawer = new GraphDrawer(visualNodes, playboard);
             drawer.drawDFA();
             writeLog("Graph drawn.");
+            foreach (VisualNode n in visualNodes)
+            {
+                n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
+                n.getDstAnimation().Completed += new EventHandler(animationCompleted);
+                foreach (Tuple<VisualNode, string> t in n.adjacenceList)
+                {
+                    n.getDstEdge(t.Item2).getAnimation().Completed += new EventHandler(animationCompleted);
+                    Debug.WriteLine("*** eventhandler added for node: " + n.getLabelText() + ", edge: " + t.Item2);
+                }
+            }
+            //writeLog("Event handlers added.");
 
             setControlsEnabled(true, true, true, false, true, true);
+            writeLog("Ready.");
         }
 
         private void setControlsEnabled(bool enableInputTextBox,
@@ -196,16 +207,20 @@ namespace SilverlightApplication6
 
         private void writeLog(string s)
         {
-            if (logbox.Text.Length > 0)
+            if (logbox != null)
             {
-                logbox.Text += Environment.NewLine + s;
-            }
-            else
-            {
-                logbox.Text += s;
-            }
 
-            logbox.SelectionStart = logbox.Text.Length;
+                if (logbox.Text.Length > 0)
+                {
+                    logbox.Text += Environment.NewLine + s;
+                }
+                else
+                {
+                    logbox.Text += s;
+                }
+
+                logbox.SelectionStart = logbox.Text.Length;
+            }
         }
     }
 }

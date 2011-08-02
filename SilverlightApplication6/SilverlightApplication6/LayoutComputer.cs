@@ -11,22 +11,23 @@ using System.Diagnostics;
 
 namespace SilverlightApplication6
 {
-	class LayoutComputer
+	public static class LayoutComputer
 	{
+
         public static Tuple<EPoint, EPoint, EPoint, EPoint> computeEdge(VisualNode i, VisualNode j)
 		{
 			EPoint begin = new EPoint(
-				i.x + i.getGrid().Width / 2,
-                -(i.y + i.getGrid().Height / 2)
+				i.location.x + i.getGrid().Width / 2,
+                -(i.location.y + i.getGrid().Height / 2)
 			);
 			EPoint end = new EPoint(
-                j.x + j.getGrid().Width / 2,
-                -(j.y + j.getGrid().Height / 2)
+                j.location.x + j.getGrid().Width / 2,
+                -(j.location.y + j.getGrid().Height / 2)
 			);
 			/* move the coordinate base to begin */
 			EVector transform = new EVector(
-                i.x + i.getGrid().Width / 2,
-                -(i.y + i.getGrid().Height / 2)
+                i.location.x + i.getGrid().Width / 2,
+                -(i.location.y + i.getGrid().Height / 2)
 			);
 			begin.transformCoordinate(transform);
 			end.transformCoordinate(transform);
@@ -150,12 +151,6 @@ namespace SilverlightApplication6
 			end.y = -end.y;
 
 			return new Tuple<EPoint, EPoint>(begin, end);
-		}
-
-		public static EPoint computeEdgeLabel(EPoint helper1, EPoint helper2)
-		{
-			EPoint labelCorordinate= new EPoint( (helper1.x+helper2.x)/2 , (helper1.y+helper2.y)/2);
-			return labelCorordinate;
 		}
 	}
 }
