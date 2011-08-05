@@ -50,13 +50,13 @@ namespace SilverlightApplication6
                 else if (currentNode.isEndNode)
                 {
                     Debug.WriteLine("*** will accept...");
-                    // TODO add all good animation
+                    animations.Add(currentNode.getAcceptedAnimation());
                     break;
                 }
                 else
                 {
                     Debug.WriteLine("*** will reject");
-                    // TODO add explosion animation
+                    animations.Add(currentNode.getRejectedAnimation());
                     break;
                 }
             }

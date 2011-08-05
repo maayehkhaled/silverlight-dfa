@@ -223,8 +223,12 @@ namespace SilverlightApplication6
             {
                 n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
                 n.getDstAnimation().Completed += new EventHandler(animationCompleted);
+                n.getAcceptedAnimation().Completed += new EventHandler(animationCompleted);
+                n.getRejectedAnimation().Completed += new EventHandler(animationCompleted);
                 n.getSrcAnimation().SpeedRatio = speedSlider.Value;
                 n.getDstAnimation().SpeedRatio = speedSlider.Value;
+                n.getAcceptedAnimation().SpeedRatio = speedSlider.Value;
+                n.getRejectedAnimation().SpeedRatio = speedSlider.Value;
 
                 foreach (Tuple<VisualNode, string> t in n.adjacenceList)
                 {
