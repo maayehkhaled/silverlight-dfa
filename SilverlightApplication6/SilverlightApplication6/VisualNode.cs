@@ -21,7 +21,7 @@ namespace SilverlightApplication6
     public class VisualNode {
 
         /* default size (width/height) used for nodes grid/ellipse */
-        public static readonly double DEFAULT_SIZE = 25.0;
+        //public static readonly double DEFAULT_SIZE = 25.0;
         public static readonly Uri GRID_RESOURCE_URI = new Uri("VisualNodeGrid.xaml", UriKind.Relative);
         private static string gridResourceString = null;
 
@@ -50,6 +50,8 @@ namespace SilverlightApplication6
 
         private Storyboard srcAnimation;
         private Storyboard dstAnimation;
+        private Storyboard acceptedAnimation;
+        private Storyboard rejectedAnimation;
 
         /* constructs a new node object */
         public VisualNode(string labelText, EPoint location, bool isStartNode, bool isEndNode)
@@ -73,16 +75,19 @@ namespace SilverlightApplication6
             Storyboard.SetTargetName(dstAnimation, labelText);
             //Debug.WriteLine("*** destination animation children: " + dstAnimation.Children.Count);
 
+            acceptedAnimation = grid.Resources["acceptedAnimation"] as Storyboard;
+            rejectedAnimation = grid.Resources["rejectedAnimation"] as Storyboard;
+
             ellipse = grid.FindName("ellipse") as Ellipse;
             label = grid.FindName("label") as TextBlock;
             label.Text = labelText;
 
             //Debug.WriteLine("*** ellipse name: " + ellipse.Name);
 
-            grid.Width = DEFAULT_SIZE;
-            grid.Height = DEFAULT_SIZE;
-            ellipse.Width = DEFAULT_SIZE;
-            ellipse.Height = DEFAULT_SIZE;
+            //grid.Width = DEFAULT_SIZE;
+            //grid.Height = DEFAULT_SIZE;
+            //ellipse.Width = DEFAULT_SIZE;
+            //ellipse.Height = DEFAULT_SIZE;
         }
 
         /* adds a new entry to the adjacenceList of this node */
@@ -189,6 +194,18 @@ namespace SilverlightApplication6
         public Storyboard getDstAnimation()
         {
             return dstAnimation;
+        }
+
+        /* returns the storyboard for the accepted animation */
+        public Storyboard getAcceptedAnimation()
+        {
+            return acceptedAnimation;
+        }
+
+        /* returns the storyboard for the rejected animation */
+        public Storyboard getRejectedAnimation()
+        {
+            return rejectedAnimation;
         }
 
         /* loads a new node grid by using xamlreader */
