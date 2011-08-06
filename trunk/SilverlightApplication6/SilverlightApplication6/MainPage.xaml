@@ -28,7 +28,7 @@
                        Width="43" FontSize="13" HorizontalContentAlignment="Right"
                        VerticalContentAlignment="Center" Foreground="LawnGreen" />
             <TextBox x:Name="inputTextBox" Height="23" HorizontalAlignment="Left"
-                     Margin="55,6,0,0" VerticalAlignment="Top" Width="468" />
+                     Margin="55,6,0,0" VerticalAlignment="Top" Width="468" MaxLength="40" TextChanged="inputChanged"/>
 
             <!-- Buttons -->
             <Button x:Name="openButton" Content="Open" Height="23"
@@ -59,8 +59,12 @@
                        HorizontalAlignment="Left" Margin="6,68,0,0"
                        VerticalAlignment="Top" Width="57" HorizontalContentAlignment="Center" Foreground="LawnGreen" />
             <Slider x:Name="steplineSlider" Height="23" HorizontalAlignment="Left"
-                    Margin="55,68,0,0" VerticalAlignment="Top" Width="468" ValueChanged="steplineSlider_ValueChanged"/>
-        
+                    Margin="55,68,0,0" VerticalAlignment="Top" Width="468" ValueChanged="steplineSlider_ValueChanged">
+                <Slider.Minimum>0</Slider.Minimum>
+                <Slider.SmallChange>1</Slider.SmallChange> 
+                <Slider.LargeChange>1</Slider.LargeChange>
+            </Slider>
+
         </Grid>
 
         <!-- Log textbox -->

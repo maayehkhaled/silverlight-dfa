@@ -26,6 +26,7 @@ namespace SilverlightApplication6
         private Brush originalPlayboardColor;
         private Regex inputRegex;
         private List<VisualNode> visualNodes;
+        private List<VisualInput> visualInput = new List<VisualInput>();
         private List<Storyboard> animations;
         private int step;
 
@@ -34,17 +35,37 @@ namespace SilverlightApplication6
             InitializeComponent();
 
             originalPlayboardColor = playboard.Background;
-            inputTextBox.TextChanged += new TextChangedEventHandler(inputChanged);
-            steplineSlider.Minimum = 0;
-            steplineSlider.SmallChange = 1;
-            steplineSlider.LargeChange = 1;
+            //inputTextBox.TextChanged += new TextChangedEventHandler(inputChanged);
+            //steplineSlider.Minimum = 0;
+            //steplineSlider.SmallChange = 1;
+            //steplineSlider.LargeChange = 1;
+            for (int i = 0; i < inputTextBox.MaxLength; i++)
+            {
+                VisualInput vi = new VisualInput();
+                double fromX = 10.0 + vi.getGrid().Width * i;
+                double fromY = 10.0;
+                vi.setLocation(new EPoint(fromX, fromY));
+
+                visualInput.Add(vi);
+                //playboard.Children.Add(vi.getGrid());
+                Debug.WriteLine("*** added visual input: fromX: " + fromX + ", fromY: " + fromY);
+            }
             setControlsEnabled(false, true, false, false, false, false);
 
+            writeLog("Loading default file: " + defaultFile.OriginalString);
             loadAndDraw(App.GetResourceStream(defaultFile).Stream);
 
             // TODO add startup animation
 // only for debug
 //inputTextBox.Text = "0101";
+//for (int i = 0; i < 10; i++)
+//{
+//    VisualInput vi = visualInput[i];
+//    playboard.Children.Add(vi.getGrid());
+//    vi.getGrid().SetValue(Canvas.LeftProperty, 10.0);
+//    vi.getGrid().SetValue(Canvas.TopProperty, 10.0);
+//    Debug.WriteLine("*** added visual input to grid: " + i);
+//}
         }
 
         private void openButton_Click(object sender, RoutedEventArgs args)
@@ -73,10 +94,15 @@ namespace SilverlightApplication6
 
         private void inputChanged(object sender, TextChangedEventArgs e)
         {
+            if (inputTextBox.Text.Length == inputTextBox.MaxLength)
+            {
+                writeLog("Maximum input length reached.");
+            }
+
             if (inputRegex.IsMatch(inputTextBox.Text))
             {
                 step = 0;
-                animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0]);
+                animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0], visualInput);
                 writeLog("Plan created.");
 
                 steplineSlider.Maximum = animations.Count - 1;
@@ -110,12 +136,25 @@ namespace SilverlightApplication6
             Debug.WriteLine("*** animationCompleted()");
 
             // reset the animation to it's start state
-            (sender as Storyboard).Stop();
+            Storyboard sb = sender as Storyboard;
+            String s = Storyboard.GetTargetName(sb);
+            if (s != null && s.StartsWith("visualInput"))
+            {
+                //sb.Stop();
+            }
+            else
+            {
+                sb.Stop();
+            }
 
             step++;
             if (step >= animations.Count)
             {
                 step = 0;
+                foreach (Storyboard a in animations)
+                {
+                    a.Stop();
+                }
                 setControlsEnabled(true, true, true, false, true, true);
                 writeLog("All done.");
             }
@@ -131,6 +170,7 @@ namespace SilverlightApplication6
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
             animations[step].Stop();
+            writeLog("Stopped.");
             setControlsEnabled(true, true, true, false, true, true);
         }
 		
@@ -181,11 +221,18 @@ namespace SilverlightApplication6
                 {
                     n.getSrcAnimation().SpeedRatio = e.NewValue;
                     n.getDstAnimation().SpeedRatio = e.NewValue;
+                    n.getAcceptedAnimation().SpeedRatio = e.NewValue;
+                    n.getRejectedAnimation().SpeedRatio = e.NewValue;
                     foreach (Tuple<VisualNode, string> t in n.adjacenceList)
                     {
                         n.getDstEdge(t.Item2).getAnimation().SpeedRatio = e.NewValue;
                     }
                 }
+            }
+            foreach (VisualInput vi in visualInput)
+            {
+                vi.getConsumeAnimation().SpeedRatio = e.NewValue;
+                vi.getFadeInAnimation().SpeedRatio = e.NewValue;
             }
             writeLog("Speed altered to: " + e.NewValue);
         }
@@ -201,6 +248,13 @@ namespace SilverlightApplication6
             playboard.Children.Clear();
             step = 0;
             inputTextBox.Text = "";
+
+            // TODO a better place for this!?
+            foreach (VisualInput vi in visualInput)
+            {
+                playboard.Children.Add(vi.getGrid());
+                Debug.WriteLine("*** added visual input to grid");
+            }
 
             List<string> inputAlphabet;
             visualNodes = XmlParser.parse(stream, out inputAlphabet);
@@ -236,6 +290,13 @@ namespace SilverlightApplication6
                     n.getDstEdge(t.Item2).getAnimation().SpeedRatio = speedSlider.Value;
                     //Debug.WriteLine("*** eventhandler added for node: " + n.getLabelText() + ", edge: " + t.Item2);
                 }
+            }
+            foreach (VisualInput vi in visualInput)
+            {
+                vi.getConsumeAnimation().Completed += new EventHandler(animationCompleted);
+                vi.getConsumeAnimation().SpeedRatio = speedSlider.Value;
+                vi.getFadeInAnimation().Completed += new EventHandler(animationCompleted);
+                vi.getFadeInAnimation().SpeedRatio = speedSlider.Value;
             }
             //writeLog("Event handlers added.");
 

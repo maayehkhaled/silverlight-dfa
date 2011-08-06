@@ -213,7 +213,6 @@ namespace SilverlightApplication6
         {
             if (gridResourceString == null)
             {
-                
                 System.IO.Stream s = App.GetResourceStream(GRID_RESOURCE_URI).Stream;
                 System.IO.StreamReader sr = new System.IO.StreamReader(s);
                 gridResourceString = sr.ReadToEnd();

@@ -88,6 +88,7 @@
     <Compile Include="LayoutComputer.cs" />
     <Compile Include="SimpleUniqueRandom.cs" />
     <Compile Include="VisualEdge.cs" />
+    <Compile Include="VisualInput.cs" />
     <Compile Include="VisualNode.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -110,6 +111,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="VisualEdgeGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VisualInputGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
