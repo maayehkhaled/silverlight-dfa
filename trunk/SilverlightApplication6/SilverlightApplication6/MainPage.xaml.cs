@@ -82,7 +82,7 @@ namespace SilverlightApplication6
                 catch (Exception e)
                 {
                     playboard.Background = new SolidColorBrush(Colors.Red);
-                    writeLog("Unexcpected error: " + e.Message);
+                    writeLog("Unexpected error: " + e.Message);
                     return;
                 }
             }
