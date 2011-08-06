@@ -169,6 +169,7 @@ namespace SilverlightApplication6
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
+
             animations[step].Stop();
             writeLog("Stopped.");
             setControlsEnabled(true, true, true, false, true, true);
@@ -188,7 +189,7 @@ namespace SilverlightApplication6
                 catch (Exception e)
                 {
                     playboard.Background = new SolidColorBrush(Colors.Red);
-                    writeLog("Unexcpected error: " + e.Message);
+                    writeLog("Unexpected error: " + e.Message);
                     return;
                 }
             }
