@@ -105,8 +105,8 @@ namespace SilverlightApplication6
                 animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0], visualInput);
                 writeLog("Plan created.");
 
-                steplineSlider.Maximum = animations.Count - 1;
                 steplineSlider.Value = step;
+                steplineSlider.Maximum = animations.Count - 1;
 
                 setControlsEnabled(true, true, true, false, true, true);
             }
