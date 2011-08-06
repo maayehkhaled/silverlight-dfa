@@ -16,12 +16,19 @@ namespace SilverlightApplication6
     public static class AnimationPlanner
     {
 
-        public static List<Storyboard> createPlan(string input, VisualNode currentNode)
+        public static List<Storyboard> createPlan(string input, VisualNode currentNode, List<VisualInput> visualInput)
         {
             List<Storyboard> animations = new List<Storyboard>();
 
             string remainingInput = input;
             int inputLength = input.Length;
+            int processed = 0;
+
+            for (int i = 0; i < inputLength; i++)
+            {
+                Debug.WriteLine("*** adding fadein: " + i);
+                animations.Add(visualInput[i].getFadeInAnimation());
+            }
 
             while (remainingInput.Length > 0)
             {
@@ -33,7 +40,12 @@ namespace SilverlightApplication6
                 {
                     Debug.WriteLine("*** follower is: " + follower.getLabelText());
 
-                    // TODO add input falldown animation
+                    // quick'n'dirty falldown animations
+                    VisualInput vi = visualInput[processed];
+                    vi.setConsumeAnimationTo(currentNode.location);
+                    vi.setLabelText(symbol);
+                    animations.Add(vi.getConsumeAnimation());
+                    
                     animations.Add(currentNode.getSrcAnimation());
                     animations.Add(currentNode.getDstEdge(symbol).getAnimation());
                     animations.Add(follower.getDstAnimation());
@@ -44,7 +56,7 @@ namespace SilverlightApplication6
                 if (remainingInput.Length > 1)
                 {
                     remainingInput = remainingInput.Remove(0, 1);
-                    int processed = inputLength - remainingInput.Length;
+                    processed = inputLength - remainingInput.Length;
                     Debug.WriteLine("*** remaining: " + remainingInput.Length + " processed: " + processed);
                 }
                 else if (currentNode.isEndNode)
