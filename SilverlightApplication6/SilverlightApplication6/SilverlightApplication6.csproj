@@ -101,6 +101,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="VisualAcceptNodeGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Resource Include="images\accepted.png" />
     <Resource Include="images\rejected.png" />
     <Resource Include="images\rejected_skull.jpg" />

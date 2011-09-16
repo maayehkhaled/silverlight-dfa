@@ -40,10 +40,6 @@
             <Button x:Name="stopButton" Content="Stop" Height="23"
                     HorizontalAlignment="Right" Margin="0,37,284,0"
                     VerticalAlignment="Top" Width="75" Click="stopButton_Click" />
-            <Button x:Name="aboutButton" Content="About" Height="23"
-                    HorizontalAlignment="Right" Margin="0,37,202,0"
-                    VerticalAlignment="Top" Width="75" />
-
             <!-- Speed label and slider -->
             <sdk:Label x:Name="speedLabel" Content="Speed" Height="23"
                        HorizontalAlignment="Left" Margin="328,38,0,0"
