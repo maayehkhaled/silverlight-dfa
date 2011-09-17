@@ -16,7 +16,7 @@ namespace SilverlightApplication6
     public static class AnimationPlanner
     {
 
-        public static List<Storyboard> createPlan(string input, VisualNode currentNode, List<VisualInput> visualInput)
+        public static List<Storyboard> createPlan(string input, VisualNode currentNode, List<VisualInput> visualInput, bool flowingInput)
         {
             List<Storyboard> animations = new List<Storyboard>();
 
@@ -24,10 +24,13 @@ namespace SilverlightApplication6
             int inputLength = input.Length;
             int processed = 0;
 
-            for (int i = 0; i < inputLength; i++)
+            if (flowingInput)
             {
-                Debug.WriteLine("*** adding fadein: " + i);
-                animations.Add(visualInput[i].getFadeInAnimation());
+                for (int i = 0; i < inputLength; i++)
+                {
+                    Debug.WriteLine("*** adding fadein: " + i);
+                    animations.Add(visualInput[i].getFadeInAnimation());
+                }
             }
 
             while (remainingInput.Length > 0)
@@ -41,13 +44,18 @@ namespace SilverlightApplication6
                     Debug.WriteLine("*** follower is: " + follower.getLabelText());
 
                     // quick'n'dirty falldown animations
-                    VisualInput vi = visualInput[processed];
-                    vi.setConsumeAnimationTo(currentNode.location);
-                    vi.setLabelText(symbol);
-                    animations.Add(vi.getConsumeAnimation());
+                    if (flowingInput)
+                    {
+                        VisualInput vi = visualInput[processed];
+                        vi.setConsumeAnimationTo(currentNode.location);
+                        vi.setLabelText(symbol);
+                        animations.Add(vi.getConsumeAnimation());
+                    }
                     
                     animations.Add(currentNode.getSrcAnimation());
+
                     animations.Add(currentNode.getDstEdge(symbol).getAnimation());
+                    
                     animations.Add(follower.getDstAnimation());
 
                     currentNode = follower;

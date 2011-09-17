@@ -113,6 +113,7 @@
             <CompositeTransform/>
         </Image.RenderTransform>
         <Image.Source>/SilverlightApplication6;component/images/accepted.png</Image.Source>
+        <Canvas.ZIndex>1000</Canvas.ZIndex>
     </Image>
     <Image Name="rejectedImage" Opacity="0" Height="25" Stretch="Fill" Width="25" RenderTransformOrigin="0.5,0.5">
         <Image.RenderTransform>

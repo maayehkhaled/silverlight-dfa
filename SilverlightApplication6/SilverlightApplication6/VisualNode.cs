@@ -22,7 +22,10 @@ namespace SilverlightApplication6
 
         /* default size (width/height) used for nodes grid/ellipse */
         //public static readonly double DEFAULT_SIZE = 25.0;
-        public static readonly Uri GRID_RESOURCE_URI = new Uri("VisualNodeGrid.xaml", UriKind.Relative);
+        public static readonly Uri COMMON_GRID_RESOURCE_URI = new Uri("VisualNodeGrid.xaml", UriKind.Relative);
+        public static readonly Uri STARTEND_GRID_RESOURCE_URI = new Uri("VisualStartAndAcceptedNodeGrid.xaml", UriKind.Relative);
+        public static readonly Uri START_GRID_RESOURCE_URI = new Uri("VisualStartNodeGrid.xaml", UriKind.Relative);
+        public static readonly Uri END_GRID_RESOURCE_URI = new Uri("VisualAcceptNodeGrid.xaml", UriKind.Relative);
         private static string gridResourceString = null;
 
         ///* x-coordinate of the topleft of the node on Silverlight Coordinate system */
@@ -31,9 +34,9 @@ namespace SilverlightApplication6
         //public readonly double y;
         public readonly EPoint location;
         /* is the node a start node? */
-        public readonly bool isStartNode;
+        public readonly bool isStartNode = false;
         /* is the node an end node? */
-        public readonly bool isEndNode;
+        public readonly bool isEndNode = false;
 
         /* contains all nodes (states) that can be reached through this node */
         public readonly List<Tuple<VisualNode, string>> adjacenceList;
@@ -62,7 +65,26 @@ namespace SilverlightApplication6
             adjacenceList = new List<Tuple<VisualNode, string>>();
 
             // load grid as clone
-            grid = getVisualNodeGrid(labelText);
+            if (isStartNode && isEndNode)
+            {
+                Debug.WriteLine("*** is start and end node...");
+                grid = getVisualNodeGrid(labelText, STARTEND_GRID_RESOURCE_URI);
+            }
+            else if (isStartNode)
+            {
+                Debug.WriteLine("*** is only start node...");
+                grid = getVisualNodeGrid(labelText, START_GRID_RESOURCE_URI);
+            }
+            else if (isEndNode)
+            {
+                Debug.WriteLine("*** is only end node...");
+                grid = getVisualNodeGrid(labelText, END_GRID_RESOURCE_URI);
+            }
+            else
+            {
+                Debug.WriteLine("*** is a common node...");
+                grid = getVisualNodeGrid(labelText, COMMON_GRID_RESOURCE_URI);
+            }
 
             // initialize animations
             srcAnimation = grid.Resources["srcAnimation"] as Storyboard;
@@ -79,6 +101,7 @@ namespace SilverlightApplication6
             rejectedAnimation = grid.Resources["rejectedAnimation"] as Storyboard;
 
             ellipse = grid.FindName("ellipse") as Ellipse;
+
             label = grid.FindName("label") as TextBlock;
             label.Text = labelText;
 
@@ -209,15 +232,15 @@ namespace SilverlightApplication6
         }
 
         /* loads a new node grid by using xamlreader */
-        private static Grid getVisualNodeGrid(string label)
+        private static Grid getVisualNodeGrid(string label, Uri type)
         {
-            if (gridResourceString == null)
-            {
-                System.IO.Stream s = App.GetResourceStream(GRID_RESOURCE_URI).Stream;
+            //if (gridResourceString == null)
+            //{
+                System.IO.Stream s = App.GetResourceStream(type).Stream;
                 System.IO.StreamReader sr = new System.IO.StreamReader(s);
                 gridResourceString = sr.ReadToEnd();
-            }
-
+            //}
+                Debug.WriteLine(gridResourceString);
             Grid grid = (Grid) XamlReader.Load(gridResourceString);
             grid.Name = label;
             //grid.RenderTransform = new CompositeTransform();

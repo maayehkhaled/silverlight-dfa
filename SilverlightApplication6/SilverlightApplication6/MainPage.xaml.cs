@@ -20,7 +20,7 @@ namespace SilverlightApplication6
 {
     public partial class MainPage : UserControl
     {
-        private static Uri defaultFile = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
+        private static Uri defaultFile = new Uri("testdata/Default.xml", UriKind.Relative);
 
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
@@ -29,16 +29,14 @@ namespace SilverlightApplication6
         private List<VisualInput> visualInput = new List<VisualInput>();
         private List<Storyboard> animations;
         private int step;
+        private bool flowingInput = false;
 
         public MainPage()
         {
             InitializeComponent();
 
             originalPlayboardColor = playboard.Background;
-            //inputTextBox.TextChanged += new TextChangedEventHandler(inputChanged);
-            //steplineSlider.Minimum = 0;
-            //steplineSlider.SmallChange = 1;
-            //steplineSlider.LargeChange = 1;
+
             for (int i = 0; i < inputTextBox.MaxLength; i++)
             {
                 VisualInput vi = new VisualInput();
@@ -50,12 +48,13 @@ namespace SilverlightApplication6
                 //playboard.Children.Add(vi.getGrid());
                 Debug.WriteLine("*** added visual input: fromX: " + fromX + ", fromY: " + fromY);
             }
-            setControlsEnabled(false, true, false, false, false, false);
+            setControlsEnabled(false, true, false, false, false, false, false);
 
             writeLog("Loading default file: " + defaultFile.OriginalString);
             loadAndDraw(App.GetResourceStream(defaultFile).Stream);
 
             // TODO add startup animation
+
 // only for debug
 //inputTextBox.Text = "0101";
 //for (int i = 0; i < 10; i++)
@@ -86,10 +85,6 @@ namespace SilverlightApplication6
                     return;
                 }
             }
-            else
-            {
-                playboard.Background = new SolidColorBrush(Colors.Red);
-            }
         }
 
         private void inputChanged(object sender, TextChangedEventArgs e)
@@ -102,28 +97,45 @@ namespace SilverlightApplication6
             if (inputRegex.IsMatch(inputTextBox.Text))
             {
                 step = 0;
-                animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0], visualInput);
+                animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0], visualInput, flowingInput);
                 writeLog("Plan created.");
 
                 steplineSlider.Value = step;
                 steplineSlider.Maximum = animations.Count - 1;
 
-                setControlsEnabled(true, true, true, false, true, true);
+                if (flowingInput)
+                {
+                    foreach (VisualInput vi in visualInput)
+                    {
+                        vi.getFadeInAnimation().Stop();
+                        vi.getConsumeAnimation().Stop();
+                    }
+                    step = 0;
+                    steplineSlider.Value = step;
+                }
+
+                setControlsEnabled(true, true, true, false, true, true, false);
             }
             else if (inputTextBox.Text.Equals(""))
             {
-                setControlsEnabled(true, true, false, false, true, false);
+                foreach (VisualInput vi in visualInput)
+                {
+                    vi.getFadeInAnimation().Stop();
+                    vi.getConsumeAnimation().Stop();
+                }
+                setControlsEnabled(true, true, false, false, true, false, true);
             }
             else
             {
-                setControlsEnabled(true, true, false, false, true, false);
+                // i think this might never be reached
+                setControlsEnabled(true, true, false, false, true, false, false);
                 writeLog("Illegal input: " + inputTextBox.Text);
             }
         }
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-            setControlsEnabled(false, false, false, true, false, false);
+            setControlsEnabled(false, false, false, true, false, false, false);
 
             writeLog("Starting animation...");
             Storyboard first = animations[step];
@@ -155,7 +167,7 @@ namespace SilverlightApplication6
                 {
                     a.Stop();
                 }
-                setControlsEnabled(true, true, true, false, true, true);
+                setControlsEnabled(true, true, true, false, true, true, false);
                 writeLog("All done.");
             }
             else
@@ -169,10 +181,9 @@ namespace SilverlightApplication6
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
-
             animations[step].Stop();
             writeLog("Stopped.");
-            setControlsEnabled(true, true, true, false, true, true);
+            setControlsEnabled(true, true, true, false, true, true, false);
         }
 		
         private void playboard_Drop(object sender, DragEventArgs args)
@@ -192,10 +203,6 @@ namespace SilverlightApplication6
                     writeLog("Unexpected error: " + e.Message);
                     return;
                 }
-            }
-            else
-            {
-                playboard.Background = new SolidColorBrush(Colors.Red);
             }
         }
 
@@ -249,6 +256,10 @@ namespace SilverlightApplication6
             playboard.Children.Clear();
             step = 0;
             inputTextBox.Text = "";
+            
+            visualNodes = null;
+            //visualInput.Clear();
+            animations = null;
 
             // TODO a better place for this!?
             foreach (VisualInput vi in visualInput)
@@ -301,20 +312,32 @@ namespace SilverlightApplication6
             }
             //writeLog("Event handlers added.");
 
-            setControlsEnabled(true, true, false, false, true, false);
+            setControlsEnabled(true, true, false, false, true, false, true);
             writeLog("Ready.");
         }
 
         private void setControlsEnabled(bool enableInputTextBox, bool enableOpenButton,
             bool enableStartButton, bool enableStopButton,
-            bool enableSpeedSlider, bool enableSteplineSlider)
+            bool enableSpeedSlider, bool enableSteplineSlider,
+            bool enableInputCheckBox)
         {
             inputTextBox.IsEnabled = enableInputTextBox;
+
             openButton.IsEnabled = enableOpenButton;
             startButton.IsEnabled = enableStartButton;
             stopButton.IsEnabled = enableStopButton;
+
             speedSlider.IsEnabled = enableSpeedSlider;
-            steplineSlider.IsEnabled = enableSteplineSlider;
+            
+            if (enableSteplineSlider && flowingInput)
+            {
+                steplineSlider.IsEnabled = false;
+            }
+            else
+            {
+                steplineSlider.IsEnabled = enableSteplineSlider;
+            }
+            flowingInputCheckBox.IsEnabled = enableInputCheckBox;
         }
 
         private void writeLog(string s)
@@ -333,6 +356,18 @@ namespace SilverlightApplication6
 
                 logbox.SelectionStart = logbox.Text.Length;
             }
+        }
+
+        private void flowingInput_Checked(object sender, RoutedEventArgs e)
+        {
+            flowingInput = true;
+            writeLog("Flowing input disables stepline.");
+        }
+
+        private void flowingInput_Unchecked(object sender, RoutedEventArgs e)
+        {
+            flowingInput = false;
+            writeLog("Stepline enabled.");
         }
     }
 }
