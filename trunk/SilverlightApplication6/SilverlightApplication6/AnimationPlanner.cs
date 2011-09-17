@@ -13,9 +13,10 @@ using System.Collections.Generic;
 
 namespace SilverlightApplication6
 {
+    // static class for planning the animation sequence
     public static class AnimationPlanner
     {
-
+        // creates an animation sequence
         public static List<Storyboard> createPlan(string input, VisualNode currentNode, List<VisualInput> visualInput, bool flowingInput)
         {
             List<Storyboard> animations = new List<Storyboard>();
