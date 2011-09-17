@@ -101,9 +101,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Content Include="testdata\Default.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="VisualAcceptNodeGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -148,7 +145,6 @@
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="testdata\Automat1.xml" />
     <Content Include="testdata\HopcroftMotwaniUllman.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
