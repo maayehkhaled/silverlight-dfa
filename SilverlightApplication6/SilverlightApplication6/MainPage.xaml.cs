@@ -20,7 +20,7 @@ namespace SilverlightApplication6
 {
     public partial class MainPage : UserControl
     {
-        private static Uri defaultFile = new Uri("testdata/Default.xml", UriKind.Relative);
+        private static Uri defaultFile = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
 
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
