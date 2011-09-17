@@ -14,6 +14,7 @@ using Microsoft.Expression.Controls;
 
 namespace SilverlightApplication6
 {
+    // used to draw the graph
 	public class GraphDrawer
 	{
         private List<VisualNode> visualNodes;
