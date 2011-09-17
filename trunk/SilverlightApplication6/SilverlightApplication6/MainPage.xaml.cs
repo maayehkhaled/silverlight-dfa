@@ -20,7 +20,9 @@ namespace SilverlightApplication6
 {
     public partial class MainPage : UserControl
     {
-        private static Uri defaultFile = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
+        private static Uri defaultFile = new Uri("testdata/ModifiedHMU.xml", UriKind.Relative);
+        private static Uri hmup60File = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
+        private Dictionary<string, Uri> builtinExamples = new Dictionary<string, Uri>();
 
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
@@ -36,6 +38,12 @@ namespace SilverlightApplication6
             InitializeComponent();
 
             originalPlayboardColor = playboard.Background;
+
+            builtinExamples.Add("Example 1", defaultFile);
+            builtinExamplesComboBox.Items.Add("Example 1");
+            builtinExamples.Add("Example 2", hmup60File);
+            builtinExamplesComboBox.Items.Add("Example 2");
+            builtinExamplesComboBox.SelectedIndex = 0;
 
             for (int i = 0; i < inputTextBox.MaxLength; i++)
             {
@@ -338,6 +346,7 @@ namespace SilverlightApplication6
                 steplineSlider.IsEnabled = enableSteplineSlider;
             }
             flowingInputCheckBox.IsEnabled = enableInputCheckBox;
+            builtinExamplesComboBox.IsEnabled = enableOpenButton; // same like the open button
         }
 
         private void writeLog(string s)
@@ -368,6 +377,21 @@ namespace SilverlightApplication6
         {
             flowingInput = false;
             writeLog("Stepline enabled.");
+        }
+
+        private void builtinExamplesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                string key = ((ComboBox)sender).SelectedItem.ToString();
+                loadAndDraw(App.GetResourceStream(builtinExamples[key]).Stream);
+            }
+            catch (Exception ex)
+            {
+                playboard.Background = new SolidColorBrush(Colors.Red);
+                writeLog("Unexpected error: " + ex.Message);
+                return;
+            }
         }
     }
 }

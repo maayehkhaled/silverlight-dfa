@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<!-- This is only an example I used for the "English Communications Skill" Course -->
+<!-- This is only an example I used for the "English Communications Skill" Course (and yes, it is not a dfa) -->
 <!-- schema validation is not supported in silverlight! what an evidence of incapacity!!! -->
 <!--<FiniteAutomaton xmlns="http://silverlight.dfa/Input.xsd">-->
 <FiniteAutomaton>
