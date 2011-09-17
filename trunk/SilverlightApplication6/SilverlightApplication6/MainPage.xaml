@@ -28,23 +28,23 @@
                        Width="43" FontSize="13" HorizontalContentAlignment="Right"
                        VerticalContentAlignment="Center" Foreground="LawnGreen" />
             <TextBox x:Name="inputTextBox" Height="23" HorizontalAlignment="Left"
-                     Margin="55,6,0,0" VerticalAlignment="Top" Width="468" MaxLength="40" TextChanged="inputChanged"/>
+                     Margin="55,6,0,0" VerticalAlignment="Top" Width="348" MaxLength="40" TextChanged="inputChanged"/>
 
             <!-- Buttons -->
             <Button x:Name="openButton" Content="Open" Height="23"
-                    HorizontalAlignment="Right" Margin="0,37,448,0"
-                    VerticalAlignment="Top" Width="75" Click="openButton_Click" />
+                    HorizontalAlignment="Left" Margin="-1,37,0,0"
+                    VerticalAlignment="Top" Width="50" Click="openButton_Click" />
             <Button x:Name="startButton" Content="Start" Height="23"
-                    HorizontalAlignment="Right" Margin="0,37,366,0"
-                    VerticalAlignment="Top" Width="75" Click="startButton_Click" />
+                    HorizontalAlignment="Left" Margin="55,37,0,0"
+                    VerticalAlignment="Top" Width="50" Click="startButton_Click" />
             <Button x:Name="stopButton" Content="Stop" Height="23"
-                    HorizontalAlignment="Right" Margin="0,37,284,0"
-                    VerticalAlignment="Top" Width="75" Click="stopButton_Click" />
+                    HorizontalAlignment="Left" Margin="111,37,0,0"
+                    VerticalAlignment="Top" Width="50" Click="stopButton_Click" />
             <!-- Speed label and slider -->
             <sdk:Label x:Name="speedLabel" Content="Speed" Height="23"
-                       HorizontalAlignment="Left" Margin="328,38,0,0"
-                       VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Foreground="LawnGreen" />
-            <Slider x:Name="speedSlider" Height="23" HorizontalAlignment="Right" Margin="0,37,6,0" VerticalAlignment="Top" Width="139" ValueChanged="speedSlider_ValueChanged">
+                       HorizontalAlignment="Left" Margin="335,41,0,0"
+                       VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="LawnGreen" />
+            <Slider x:Name="speedSlider" Height="23" HorizontalAlignment="Right" Margin="0,37,0,0" VerticalAlignment="Top" Width="139" ValueChanged="speedSlider_ValueChanged">
                 <Slider.Minimum>0.1</Slider.Minimum>
                 <Slider.Value>2.5</Slider.Value>
                 <Slider.Maximum>4.9</Slider.Maximum>
@@ -52,21 +52,23 @@
 
             <!-- Stepline label and slider -->
             <sdk:Label x:Name="steplineLabel" Content="Stepline" Height="23"
-                       HorizontalAlignment="Left" Margin="6,68,0,0"
+                       HorizontalAlignment="Left" Margin="6,71,0,0"
                        VerticalAlignment="Top" Width="57" HorizontalContentAlignment="Center" Foreground="LawnGreen" />
             <Slider x:Name="steplineSlider" Height="23" HorizontalAlignment="Left"
-                    Margin="55,68,0,0" VerticalAlignment="Top" Width="468" ValueChanged="steplineSlider_ValueChanged">
+                    Margin="67,68,0,0" VerticalAlignment="Top" Width="456" ValueChanged="steplineSlider_ValueChanged">
                 <Slider.Minimum>0</Slider.Minimum>
                 <Slider.SmallChange>1</Slider.SmallChange> 
                 <Slider.LargeChange>1</Slider.LargeChange>
             </Slider>
-
+            
+            <!-- Flowing input label and checkbox -->
+            <sdk:Label x:Name="flowingInputLabel" Content="Flowing input" Margin="0,8,6,0" Height="23" HorizontalAlignment="Right"
+                       VerticalAlignment="Top" Width="76" HorizontalContentAlignment="Center" Foreground="LawnGreen"></sdk:Label>
+            <CheckBox x:Name="flowingInputCheckBox" Height="16" HorizontalAlignment="Right" Margin="0,8,88,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="LawnGreen" Width="14" Checked="flowingInput_Checked" Unchecked="flowingInput_Unchecked" />
         </Grid>
-
         <!-- Log textbox -->
         <TextBox x:Name="logbox" Height="50" HorizontalAlignment="Center" Margin="12,540,12,12"
                  Width="500" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
                  TextWrapping="Wrap" VerticalContentAlignment="Bottom" AcceptsReturn="False" BorderBrush="LawnGreen"/>
-    
     </Grid>
 </UserControl>
