@@ -53,12 +53,24 @@
 
             throw new Error(errMsg);
         }
+
+        // google big brother stuff		
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-25784873-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
     </script>
+	
 </head>
 <body>
-    <form id="form1" runat="server" style="height:100%">
-    <div id="silverlightControlHost" style="width: 100%; margin: 0">
-        <!-- width and height from below have to be synchronized with those from MainPage.xaml -->
+    <form id="form1" runat="server" style="height:85%">
+    <div id="silverlightControlHost" style="width: 100%; margin: 0; height: 100%">
+		<!-- width and height from below have to be synchronized with those from MainPage.xaml -->
         <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" style="margin: auto; width: 600px; height: 600px">
 		  <param name="source" value="SilverlightApplication6.xap"/>
 		  <param name="onError" value="onSilverlightError" />
@@ -70,5 +82,8 @@
 		  </a>
 	    </object><iframe id="_sl_historyFrame" style="visibility:hidden;height:0px;width:0px;border:0px"></iframe></div>
     </form>
+	<div align="center">
+		<a href="http://code.google.com/p/silverlight-dfa/">Get the source</a>
+	</div>
 </body>
 </html>
