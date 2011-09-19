@@ -234,6 +234,7 @@ namespace SilverlightApplication6
         /* loads a new node grid by using xamlreader */
         private static Grid getVisualNodeGrid(string label, Uri type)
         {
+            // TODO re-enable gridResourceString
             //if (gridResourceString == null)
             //{
                 System.IO.Stream s = App.GetResourceStream(type).Stream;
