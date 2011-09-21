@@ -51,6 +51,7 @@ namespace SilverlightApplication6
                         vi.setConsumeAnimationTo(currentNode.location);
                         vi.setLabelText(symbol);
                         animations.Add(vi.getConsumeAnimation());
+                        animations.Add(vi.getSearchAnimation());
                     }
                     
                     animations.Add(currentNode.getSrcAnimation());

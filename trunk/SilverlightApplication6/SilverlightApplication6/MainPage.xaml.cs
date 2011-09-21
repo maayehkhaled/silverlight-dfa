@@ -117,6 +117,7 @@ namespace SilverlightApplication6
                     {
                         vi.getFadeInAnimation().Stop();
                         vi.getConsumeAnimation().Stop();
+                        vi.getSearchAnimation().Stop();
                     }
                     step = 0;
                     steplineSlider.Value = step;
@@ -130,6 +131,7 @@ namespace SilverlightApplication6
                 {
                     vi.getFadeInAnimation().Stop();
                     vi.getConsumeAnimation().Stop();
+                    vi.getSearchAnimation().Stop();
                 }
                 setControlsEnabled(true, true, false, false, true, false, true);
             }
@@ -249,6 +251,7 @@ namespace SilverlightApplication6
             {
                 vi.getConsumeAnimation().SpeedRatio = e.NewValue;
                 vi.getFadeInAnimation().SpeedRatio = e.NewValue;
+                vi.getSearchAnimation().SpeedRatio = e.NewValue;
             }
             writeLog("Speed altered to: " + e.NewValue);
         }
@@ -264,10 +267,30 @@ namespace SilverlightApplication6
             playboard.Children.Clear();
             step = 0;
             inputTextBox.Text = "";
-            
-            visualNodes = null;
-            //visualInput.Clear();
-            animations = null;
+
+            foreach (VisualInput vi in visualInput)
+            {
+                vi.getConsumeAnimation().Completed -= animationCompleted;
+                vi.getFadeInAnimation().Completed -= animationCompleted;
+                vi.getSearchAnimation().Completed -= animationCompleted;
+                vi.getConsumeAnimation().SpeedRatio = speedSlider.Value;
+                vi.getFadeInAnimation().SpeedRatio = speedSlider.Value;
+                vi.getSearchAnimation().SpeedRatio = speedSlider.Value;
+            }
+            if (visualNodes != null)
+            {
+                visualNodes.Clear();
+            }
+            //visualNodes = null;
+            if (animations != null)
+            {
+                //foreach (Storyboard a in animations)
+                //{
+                //    a.Stop();
+                //}
+                animations.Clear();
+            }
+            //animations = null;
 
             // TODO a better place for this!?
             foreach (VisualInput vi in visualInput)
@@ -317,6 +340,8 @@ namespace SilverlightApplication6
                 vi.getConsumeAnimation().SpeedRatio = speedSlider.Value;
                 vi.getFadeInAnimation().Completed += new EventHandler(animationCompleted);
                 vi.getFadeInAnimation().SpeedRatio = speedSlider.Value;
+                vi.getSearchAnimation().Completed += new EventHandler(animationCompleted);
+                vi.getSearchAnimation().SpeedRatio = speedSlider.Value;
             }
             //writeLog("Event handlers added.");
 
@@ -385,6 +410,7 @@ namespace SilverlightApplication6
             {
                 string key = ((ComboBox)sender).SelectedItem.ToString();
                 loadAndDraw(App.GetResourceStream(builtinExamples[key]).Stream);
+                writeLog("Example changed.");
             }
             catch (Exception ex)
             {

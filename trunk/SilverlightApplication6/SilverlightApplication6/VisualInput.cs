@@ -25,6 +25,7 @@ namespace SilverlightApplication6
         private TextBlock label;
         private Storyboard consumeAnimation;
         private Storyboard fadeInAnimation;
+        private Storyboard searchAnimation;
 
         public VisualInput()
         {
@@ -37,6 +38,8 @@ namespace SilverlightApplication6
             Storyboard.SetTargetName(consumeAnimation, grid.Name);
             fadeInAnimation = grid.Resources["fadeInAnimation"] as Storyboard;
             Storyboard.SetTargetName(fadeInAnimation, grid.Name);
+            searchAnimation = grid.Resources["searchAnimation"] as Storyboard;
+            Storyboard.SetTargetName(searchAnimation, grid.Name);
         }
 
         public void setLocation(EPoint location)
@@ -83,8 +86,10 @@ namespace SilverlightApplication6
 
 
 
-            Debug.WriteLine("*** " + (consumeAnimation.Children[0] as DoubleAnimation).From
-                + " " + (consumeAnimation.Children[0] as DoubleAnimation).To);
+    //        Debug.WriteLine("*** " + (consumeAnimation.Children[0] as DoubleAnimation).From
+    //            + " " + (consumeAnimation.Children[0] as DoubleAnimation).To);
+    //        Debug.WriteLine("*** " + (consumeAnimation.Children[1] as DoubleAnimation).From
+    //+ " " + (consumeAnimation.Children[1] as DoubleAnimation).To);
         }
 
         public Storyboard getFadeInAnimation()
@@ -95,6 +100,11 @@ namespace SilverlightApplication6
         public Storyboard getConsumeAnimation()
         {
             return consumeAnimation;
+        }
+
+        public Storyboard getSearchAnimation()
+        {
+            return searchAnimation;
         }
 
         /* loads a new node grid by using xamlreader */

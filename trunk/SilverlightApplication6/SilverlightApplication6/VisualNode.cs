@@ -241,7 +241,7 @@ namespace SilverlightApplication6
                 System.IO.StreamReader sr = new System.IO.StreamReader(s);
                 gridResourceString = sr.ReadToEnd();
             //}
-                Debug.WriteLine(gridResourceString);
+                //Debug.WriteLine(gridResourceString);
             Grid grid = (Grid) XamlReader.Load(gridResourceString);
             grid.Name = label;
             //grid.RenderTransform = new CompositeTransform();
