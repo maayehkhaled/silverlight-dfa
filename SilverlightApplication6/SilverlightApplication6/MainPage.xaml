@@ -29,7 +29,7 @@
                        Width="43" FontSize="13" HorizontalContentAlignment="Right"
                        VerticalContentAlignment="Center" Foreground="LawnGreen" />
             <TextBox x:Name="inputTextBox" Height="23" HorizontalAlignment="Left"
-                     Margin="67,6,0,0" VerticalAlignment="Top" Width="348" MaxLength="40" TextChanged="inputChanged"/>
+                     Margin="67,6,0,0" VerticalAlignment="Top" Width="348" MaxLength="21" TextChanged="inputChanged"/>
 
             <!-- Buttons -->
             <Button x:Name="openButton" Content="Open" Height="23"
