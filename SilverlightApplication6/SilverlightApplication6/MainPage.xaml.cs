@@ -249,7 +249,18 @@ namespace SilverlightApplication6
                     n.getRejectedAnimation().SpeedRatio = e.NewValue;
                     foreach (Tuple<VisualNode, string> t in n.adjacenceList)
                     {
-                        n.getDstEdge(t.Item2).getAnimation().SpeedRatio = e.NewValue;
+                        if (!t.Item2.Contains('|'))
+                        {
+                            n.getDstEdge(t.Item2).getAnimation().SpeedRatio = e.NewValue;
+                        }
+                        else
+                        {
+                            string[] symbolS = t.Item2.Split('|');
+                            for (int i = 0; i < symbolS.Length; i++)
+                            {
+                                n.getDstEdge(symbolS[i]).getAnimation().SpeedRatio = e.NewValue;
+                            }
+                        }
                     }
                 }
             }
@@ -335,8 +346,21 @@ namespace SilverlightApplication6
 
                 foreach (Tuple<VisualNode, string> t in n.adjacenceList)
                 {
-                    n.getDstEdge(t.Item2).getAnimation().Completed += new EventHandler(animationCompleted);
-                    n.getDstEdge(t.Item2).getAnimation().SpeedRatio = speedSlider.Value;
+                    if (!t.Item2.Contains('|'))
+                    {
+                        n.getDstEdge(t.Item2).getAnimation().Completed += new EventHandler(animationCompleted);
+                        n.getDstEdge(t.Item2).getAnimation().SpeedRatio = speedSlider.Value;
+                    }
+                    else
+                    {
+                        string[] symbolS = t.Item2.Split('|');
+                        for (int i = 0; i < symbolS.Length; i++)
+                        {
+                            n.getDstEdge(symbolS[i]).getAnimation().Completed += new EventHandler(animationCompleted);
+                            n.getDstEdge(symbolS[i]).getAnimation().SpeedRatio = speedSlider.Value;
+                        }
+                    }
+                    
                     //Debug.WriteLine("*** eventhandler added for node: " + n.getLabelText() + ", edge: " + t.Item2);
                 }
             }
@@ -412,18 +436,18 @@ namespace SilverlightApplication6
 
         private void builtinExamplesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 string key = ((ComboBox)sender).SelectedItem.ToString();
                 loadAndDraw(App.GetResourceStream(builtinExamples[key]).Stream);
                 writeLog("Example changed.");
-            }
-            catch (Exception ex)
-            {
-                playboard.Background = new SolidColorBrush(Colors.Red);
-                writeLog("Unexpected error: " + ex.Message);
-                return;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    playboard.Background = new SolidColorBrush(Colors.Red);
+            //    writeLog("Unexpected error: " + ex.Message);
+            //    return;
+            //}
         }
     }
 }

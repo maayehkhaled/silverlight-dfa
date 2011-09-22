@@ -64,7 +64,19 @@ namespace SilverlightApplication6
                 //dfaCanvas.Children.Add(visualEdge.getPathListBox());
 
 				/* Now insert the new created outEdge in the list of outEdge of VisualNode */
-                vn.addDstEdge(t.Item2, visualEdge);
+                if (!t.Item2.Contains("|"))
+                {
+                    vn.addDstEdge(t.Item2, visualEdge);
+                }
+                else
+                {
+                    string[] symbolS = t.Item2.Split('|');
+                    for (int i = 0; i < symbolS.Length; i++)
+                    {
+                        vn.addDstEdge(symbolS[i], visualEdge);
+                    }
+                }
+                
 			}
 		}
 
