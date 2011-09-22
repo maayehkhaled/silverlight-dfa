@@ -25,8 +25,10 @@ namespace SilverlightApplication6
         private Path bezier;
         private Path arrow;
         private PathListBox animationPathListBox;
-        private PathListBox labelPathListBox;
-        
+        //private PathListBox labelPathListBox;
+		private TextBlock labelPathListBox;
+		private string edgeLabel;
+
         private Storyboard animation;
         private Brush edgeBrush;
 
@@ -37,11 +39,17 @@ namespace SilverlightApplication6
             arrow = grid.FindName("arrow") as Path;
             animationPathListBox = grid.FindName("animationPathListBox") as PathListBox;
             animationPathListBox.ItemsSource = labelText;
-            labelPathListBox = grid.FindName("labelPathListBox") as PathListBox;
-            labelPathListBox.ItemsSource = labelText;
+			edgeLabel = labelText;
+			
+			//labelPathListBox =  grid.FindName("labelPathListBox") as PathListBox;
+            //labelPathListBox.ItemsSource = edgeLabel;
 
-            animation = grid.Resources["animation"] as Storyboard;
+			labelPathListBox = grid.FindName("edgeLabelContainer") as TextBlock;
+			labelPathListBox.Text = edgeLabel;
+
+			animation = grid.Resources["animation"] as Storyboard;
             edgeBrush = grid.Resources["edgeBrush"] as Brush;
+			
 
             Debug.WriteLine("*** symbol: " + labelText);
         }
@@ -96,5 +104,7 @@ namespace SilverlightApplication6
 
             return grid;
         }
-    }
+
+		
+	}
 }
