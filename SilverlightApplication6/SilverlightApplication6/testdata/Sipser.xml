@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Modified Version of Hopcroft/Motwani/Ullman to show other node types -->
+<!-- schema validation is not supported in silverlight! what an evidence of incapacity!!! -->
+<!--<FiniteAutomaton xmlns="http://silverlight.dfa/Input.xsd">-->
+<!DOCTYPE FiniteAutomaton SYSTEM "../Input.dtd">
+<FiniteAutomaton>
+  <InputAlphabet>
+    <Symbol>0</Symbol>
+    <Symbol>1</Symbol>
+  </InputAlphabet>
+  <States>
+    <State x="200" y="150" start="Y">q1</State>
+    <State x="300" y="150" accept="Y">q2</State>
+    <State x="200" y="250">q3</State>
+    
+  </States>
+  <Transitions>
+    <Transition from="q1" symbol="b" to="q1" />
+    <Transition from="q1" symbol="a" to="q2" />
+	
+	<Transition from="q2" symbol="a" to="q3" />
+	<Transition from="q2" symbol="b" to="q3" />
+
+	  <Transition from="q3" symbol="a" to="q2" />
+	  <Transition from="q3" symbol="b" to="q1" />
+
+  </Transitions>
+</FiniteAutomaton>

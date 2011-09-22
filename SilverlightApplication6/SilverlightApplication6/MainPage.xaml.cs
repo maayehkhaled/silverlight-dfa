@@ -22,6 +22,8 @@ namespace SilverlightApplication6
     {
         private static Uri defaultFile = new Uri("testdata/ModifiedHMU.xml", UriKind.Relative);
         private static Uri hmup60File = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
+		private static Uri sipser = new Uri("testdata/Sipser.xml", UriKind.Relative);
+
         private Dictionary<string, Uri> builtinExamples = new Dictionary<string, Uri>();
 
         private GraphDrawer drawer;
@@ -44,6 +46,10 @@ namespace SilverlightApplication6
             builtinExamples.Add("Example 2", hmup60File);
             builtinExamplesComboBox.Items.Add("Example 2");
             builtinExamplesComboBox.SelectedIndex = 0;
+
+			builtinExamples.Add("Example 3", sipser);
+			builtinExamplesComboBox.Items.Add("Example 3");
+			builtinExamplesComboBox.SelectedIndex = 0;
 
             for (int i = 0; i < inputTextBox.MaxLength; i++)
             {

@@ -102,6 +102,7 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Content Include="deploy\SilverlightApplication6.html" />
+    <Content Include="testdata\Sipser.xml" />
     <Content Include="testdata\ModifiedHMU.xml" />
     <Content Include="VisualAcceptNodeGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
