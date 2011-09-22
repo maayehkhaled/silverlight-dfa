@@ -51,7 +51,7 @@ namespace SilverlightApplication6
             foreach (Tuple<VisualNode, string> t in vn.adjacenceList)
 			{
                 Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints = LayoutComputer.computeEdge(vn, t.Item1);
-                VisualEdge visualEdge = createBezierArrow(t.Item2, bezierPoints);
+                VisualEdge visualEdge = createOutEdgeWithArrow(t.Item2, bezierPoints);
                 visualEdge.setDstNode(t.Item1);
 
                 visualEdge.getGrid().SetValue(Canvas.ZIndexProperty, -2);
@@ -95,7 +95,7 @@ namespace SilverlightApplication6
             return bezierFigure;
         }
 
-        private VisualEdge createBezierArrow(string label, Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints)
+        private VisualEdge createOutEdgeWithArrow(string label, Tuple<EPoint, EPoint, EPoint, EPoint> bezierPoints)
 		{
             VisualEdge visualEdge = new VisualEdge(label, bezierPoints.Item1, bezierPoints.Item4);
             visualEdge.setBezier(createBezier(bezierPoints));
@@ -122,16 +122,13 @@ namespace SilverlightApplication6
 				arrowInfo.Item2.y
 				);
 			arrowFigure.Segments.Add(wing2);
-
+			
 			PathGeometry pathGeo = new PathGeometry();
 			pathGeo.Figures.Add(bezierFigure);  //= pathFigCollection;
 			pathGeo.Figures.Add(arrowFigure);
 
             visualEdge.setArrow(pathGeo);
-
-            //Debug.WriteLine("*** path.Data: " + path.Data.Bounds);
-
-            
+			                      
 
             return visualEdge;
 		}
