@@ -1,0 +1,84 @@
+% German and UTF-8
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[ngerman]{babel}
+
+
+
+% Hypertex
+\RequirePackage[
+ colorlinks=false
+,pdfborder={0 0 0}
+,setpagesize=false]{hyperref}
+
+% Graphic
+\RequirePackage[pdftex]{graphicx}
+\RequirePackage{epstopdf}
+\RequirePackage{url}
+
+
+% Math fonts and packages
+\RequirePackage{amsfonts,amsmath,amssymb}
+\RequirePackage{wasysym}
+\newcommand{\set}[1]{\mathbb{#1}}
+
+% Typography
+\RequirePackage{microtype}
+\RequirePackage{colortbl}
+\RequirePackage{lmodern}
+\RequirePackage{soul}
+
+%\setlength\minrowclearance{3.5pt}
+\setlength\minrowclearance{5pt}
+%\RequirePackage{inconsolata}
+%\RequirePackage[scaled]{beramono}
+\setlength{\parindent}{0pt}
+
+\RequirePackage{oldstyle}
+\RequirePackage{float}
+% url
+\RequirePackage{url}
+\RequirePackage{array}
+
+\newcolumntype{C}{>{$}c<{$}}
+\newcolumntype{L}{>{$}l<{$}}
+\newcolumntype{R}{>{$}r<{$}}
+
+% header and footer
+\RequirePackage[automark]{scrpage2}
+\pagestyle{scrheadings}
+\clearscrheadings 
+
+\ohead{\oldstylefamily\thepage}
+\rehead{\leftmark}
+\lohead{\rightmark}
+
+
+\setkomafont{pagehead}{\scshape}
+\setkomafont{pagenumber}{\oldstylefamily}
+
+\renewcommand{\sectfont}{\rmfamily\bfseries}
+\renewcommand{\descfont}{\rmfamily\bfseries}
+
+
+\usepackage[amsmath,amsthm,hyperref,thmmarks,framed]{ntheorem}
+% Definition
+\theoremindent0cm
+\theoremstyle{break}
+\theoremsymbol{\Square}
+\theorembodyfont{\normalfont}
+\theoremseparator{}
+\newtheorem{Definition}{Definition}[section]
+\newtheorem{Satz}{Satz}[section]
+\newtheorem{Beispiel}{Beispiel}[section]
+\newtheorem{Uebung}{Übung}[section]
+
+\RequirePackage{multicol}
+
+\newenvironment{ctable}[1]
+{\begin{table}[#1]\begin{center}}
+{\end{center}\end{table}}
+% index
+\RequirePackage{makeidx}
+\makeindex
+
