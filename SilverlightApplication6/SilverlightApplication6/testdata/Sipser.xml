@@ -5,13 +5,13 @@
 <!DOCTYPE FiniteAutomaton SYSTEM "../Input.dtd">
 <FiniteAutomaton>
   <InputAlphabet>
-    <Symbol>0</Symbol>
-    <Symbol>1</Symbol>
+    <Symbol>a</Symbol>
+    <Symbol>b</Symbol>
   </InputAlphabet>
   <States>
     <State x="200" y="150" start="Y">q1</State>
-    <State x="300" y="150" accept="Y">q2</State>
-    <State x="200" y="250">q3</State>
+    <State x="400" y="150" accept="Y">q2</State>
+    <State x="300" y="300">q3</State>
     
   </States>
   <Transitions>
