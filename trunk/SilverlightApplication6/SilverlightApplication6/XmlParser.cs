@@ -80,7 +80,19 @@ namespace SilverlightApplication6
                 VisualNode toNode;
                 nodes.TryGetValue(to, out toNode);
 
-                fromNode.addAdjacenceList(toNode, symbol);
+                if (!symbol.Contains("|"))
+                {
+                    fromNode.addAdjacenceList(toNode, symbol);
+                }
+                else
+                {
+                    string[] symbolS = symbol.Split('|');
+                    for (int i = 0; i < symbolS.Length; i++) {
+                        fromNode.addAdjacenceList(toNode, symbolS[i]);
+                    }
+                }
+
+                
                 //fromNode.addDstNode(symbol, toNode);
 
                 //foreach (Tuple<VisualNode, string> t in fromNode.adjacenceList)

@@ -175,11 +175,13 @@ namespace SilverlightApplication6
         /* adds a new entry to the map of destinations nodes of this node */
         public void addDstEdge(string symbol, VisualEdge edge)
         {
+            Debug.WriteLine("***************** addDstEdge(): node: " + label.Text + ", symbol: " + symbol); 
             dstEdges.Add(symbol, edge);
         }
 
         public VisualEdge getDstEdge(string symbol)
         {
+            Debug.WriteLine("***************** getDstEdge(): node: " + label.Text + ", symbol: " + symbol); 
             return dstEdges[symbol];
         }
 
