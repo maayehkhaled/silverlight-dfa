@@ -21,7 +21,7 @@ der Original-Aufgabenbeschreibung von Herrn Kretschmer.
 Die Silverlight-Anwendung liest aus einer XML-Datei die Beschreibung eines DFA
 und stellt diesen als Graph dar. Der Name der XML-Datei wird vom Benutzer
 angegeben. Der Benutzer kann jederzeit zu einem anderen Automaten wechseln,
-indem er dessen XML-Datei einliest.. 
+indem er dessen XML-Datei einliest. 
 
 Der Benutzer kann ein Eingabewort eingeben und dann die Animation starten. Dies
 kann er beliebig oft wiederholen. 
@@ -186,7 +186,7 @@ XML-Element & Bezeichnung (deutsch) & Bedeutung \\ \hline
 State       & Zustand               & 
 \begin{minipage}{0.5\textwidth}
 		Zu den oben bereits genannten Attributen werden zwei weitere, obligatorische
-		hinzugefügt: 'x' und 'y'. Sie geben die (Bildschirm-) Koordinaten des Knotens
+		hinzugefügt: \texttt{x}und \texttt{y}. Sie geben die (Bildschirm-) Koordinaten des Knotens
 		an.\vspace{1ex}
 	\end{minipage}\\ \hline
 \end{tabular}
@@ -201,13 +201,13 @@ Daher sollte nach ersten Plänen die Eingabe-Datei mittels XML-Schema validiert
 werden. Doch Nachforschungen diesbezüglich ergaben, dass Silverlight eine
 Schema-Validierung wohl nur serverseitig unterstützt, clientseitig ist
 lediglich DTD verfügbar. Und dies obwohl Silverlight selbst sehr stark auf
-XML-Techniken basiert...
+XML-Techniken basiert.
 
 Die Lösung hierfür war ebenfalls eine Absprache mit Herrn Kretschmer: Es wurde
 festgelegt, dass davon ausgegangen werden darf, dass die Eingabe-Dateien immer
 korrekt sind.
 
-Der Code für das Einlesen der Eingabe-Datei liegt in der Klasse XmlParser.cs.
+Der Code für das Einlesen der Eingabe-Datei liegt in der Klasse \texttt{XmlParser.cs}.
 
 %3.2 Darstellen des Graphen
 \subsection{Darstellen des Graphen}
@@ -278,10 +278,10 @@ Es hat sich jedoch herausgestellt, dass pro Storyboard und Objekt nur eine
 Animation pro  Eigenschaft registriert werden darf. D.h. dass nur eine
 Animationen (Veränderung) der Objekt-Eigenschaft \texttt{width} des Objektes \texttt{A}
 innerhalb eines Storyboards passieren darf.  \texttt{width} dürfte nur erhöht oder
-verringert werden. Sind die Animationen auf verschiedene Eigenschaften (z.B. x-
-und danach y-Koordinate) verteilt, gibt es keine Probleme. Allerdings schränkt
+verringert werden. Sind die Animationen auf verschiedene Eigenschaften (z.B. \texttt{x}-
+und danach  \texttt{y}-Koordinate) verteilt, gibt es keine Probleme. Allerdings schränkt
 dies die Möglichkeiten stark ein: Wenn die Animation für das Senden z.B. eine
-Veränderung der x-Koordinate beinhaltet hat, so konnte die für das Empfangen
+Veränderung der \texttt{x}-Koordinate beinhaltet hat, so konnte die für das Empfangen
 diese Koordinate nicht mehr nutzen.
 
 Unsere Lösung sieht also anders aus: Es gibt einzelne Storyboards für jede der
@@ -295,7 +295,7 @@ Nun gibt es noch eine Liste, welche die durchzuführenden Animationen
 beinhaltet. Diese Liste wird erstellt, in dem ein Algorithmus den Automaten
 passend zur Eingabe simuliert.Das Ergebnis steht also schon vor Animationsstart
 fest auch wenn dies nicht sichtbar geschieht. Der Algorithmus ist in der Klasse
-AnimationPlanner.cs implementiert.
+\texttt{AnimationPlanner.cs} implementiert.
 
 %3.3.1 'Stepline' und 'Flowing input'
 \subsubsection{\guielement{Stepline} und \guielement{Flowing input}\label{sec:3:3:1}}
@@ -324,7 +324,7 @@ haben wir sie \texttt{Stepping} und \texttt{Flowing input} genannt.
 
 Die Anwendung folgt in weiten Teilen der Silverlight-Vorgabe, dass GUI-Elemente
 in XAML und der Rest in Programmcode (\verb:C#:) geschrieben wird. So
-beherbergt die Klasse MainPage.xaml den Grundaufbau des Automaten. Die
+beherbergt die Klasse \texttt{MainPage.xaml} den Grundaufbau des Automaten. Die
 XAML-Definitionen für die Knoten liegen in \texttt{Visual*NodeGrid.xaml}, diejenigen für
 die Kanten in \texttt{VisualEdgeGrid.xaml} und die für die Eingabe (bei Verwendung von
 \texttt{Flowing input}) letztendlich in \texttt{VisualInputGrid.xaml}.
