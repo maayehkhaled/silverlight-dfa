@@ -1,0 +1,78 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" x:Class="SilverlightApplication6.MainPage"
+    mc:Ignorable="d"
+    d:DesignHeight="600" d:DesignWidth="600" HorizontalAlignment="Center" Height="600" Width="600">
+    <!-- width and height from above have to be synchronized with those from deploy/SilverlightApplication6.html -->
+
+    <Grid x:Name="LayoutRoot" Background="Black">
+        
+        <!-- Graph area -->
+        <Canvas Height="434" HorizontalAlignment="Center" 
+				Margin="12,100,12,12" x:Name="playboard" 
+				VerticalAlignment="Top" Width="550" 
+				AllowDrop="True" DragEnter="playboard_DragEnter" 
+				DragLeave="playboard_DragLeave" DragOver="playboard_DragOver" 
+				Drop="playboard_Drop" Background="LightGray">
+		</Canvas>
+
+        <!-- Controls -->
+        <Grid Height="90" HorizontalAlignment="Center" Margin="12,0,12,12" VerticalAlignment="Top">
+            
+            <!-- Input label and textbox -->
+            <sdk:Label x:Name="inputLabel" Content="Input"
+                       Height="23" HorizontalAlignment="Left"
+                       Margin="6,6,0,0" VerticalAlignment="Top"
+                       Width="43" FontSize="13" HorizontalContentAlignment="Right"
+                       VerticalContentAlignment="Center" Foreground="LawnGreen" />
+            <TextBox x:Name="inputTextBox" Height="23" HorizontalAlignment="Left"
+                     Margin="67,6,0,0" VerticalAlignment="Top" Width="348" MaxLength="21" TextChanged="inputChanged"/>
+
+            <!-- Buttons -->
+            <Button x:Name="openButton" Content="Open" Height="23"
+                    HorizontalAlignment="Left" Margin="223,37,0,0"
+                    VerticalAlignment="Top" Width="60" Click="openButton_Click" />
+            <Button x:Name="startButton" Content="Start" Height="23"
+                    HorizontalAlignment="Right" Margin="0,37,174,0"
+                    VerticalAlignment="Top" Width="60" Click="startButton_Click" />
+            <Button x:Name="stopButton" Content="Stop" Height="23"
+                    HorizontalAlignment="Right" Margin="0,37,108,0"
+                    VerticalAlignment="Top" Width="60" Click="stopButton_Click" />
+            <!-- Speed label and slider -->
+            <sdk:Label x:Name="speedLabel" Content="Speed" Height="23"
+                       HorizontalAlignment="Left" Margin="6,41,0,0"
+                       VerticalAlignment="Top" Width="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="LawnGreen" />
+            <Slider x:Name="speedSlider" Height="23" HorizontalAlignment="Right" Margin="0,37,306,0" VerticalAlignment="Top" Width="150" ValueChanged="speedSlider_ValueChanged">
+                <Slider.Minimum>0.1</Slider.Minimum>
+                <Slider.Value>2.5</Slider.Value>
+                <Slider.Maximum>4.9</Slider.Maximum>
+            </Slider>
+
+            <!-- Stepline label and slider -->
+            <sdk:Label x:Name="steplineLabel" Content="Stepline" Height="23"
+                       HorizontalAlignment="Left" Margin="6,71,0,0"
+                       VerticalAlignment="Top" Width="57" HorizontalContentAlignment="Center" Foreground="LawnGreen" />
+            <Slider x:Name="steplineSlider" Height="23" HorizontalAlignment="Left"
+                    Margin="67,68,0,0" VerticalAlignment="Top" Width="456" ValueChanged="steplineSlider_ValueChanged">
+                <Slider.Minimum>0</Slider.Minimum>
+                <Slider.SmallChange>1</Slider.SmallChange> 
+                <Slider.LargeChange>1</Slider.LargeChange>
+            </Slider>
+            
+            <!-- Flowing input label and checkbox -->
+            <sdk:Label x:Name="flowingInputLabel" Content="Flowing input" Margin="0,8,6,0" Height="23" HorizontalAlignment="Right"
+                       VerticalAlignment="Top" Width="76" HorizontalContentAlignment="Center" Foreground="LawnGreen"></sdk:Label>
+            <CheckBox x:Name="flowingInputCheckBox" Height="16" HorizontalAlignment="Right" Margin="0,8,88,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="LawnGreen" Width="14" Checked="flowingInput_Checked" Unchecked="flowingInput_Unchecked" />
+            
+            <!-- Builtin examples combobox -->
+            <ComboBox x:Name="builtinExamplesComboBox" Height="23" HorizontalAlignment="Left" Margin="421,37,0,0" VerticalAlignment="Top" Width="96" SelectionChanged="builtinExamplesComboBox_SelectionChanged" />
+        </Grid>
+        <!-- Log textbox -->
+        <TextBox x:Name="logbox" Height="50" HorizontalAlignment="Center" Margin="12,540,12,12"
+                 Width="500" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
+                 TextWrapping="Wrap" VerticalContentAlignment="Bottom" AcceptsReturn="False" BorderBrush="LawnGreen"/>
+    </Grid>
+</UserControl>
