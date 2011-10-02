@@ -114,7 +114,7 @@ namespace SilverlightApplication6
         }
 
         /* adds a new entry to the adjacenceList of this node */
-        public void addAdjacenceList(VisualNode node, string label)
+        public void addAdjacenceList(VisualNode dstNode, string label)
         /* if a node can reach another node with an edge label, add it in adjacent list
          * (with the edge label) */
         {
@@ -122,16 +122,17 @@ namespace SilverlightApplication6
             foreach (Tuple<VisualNode, string> a in adjacenceList)
             {
                 string l = a.Item1.getLabelText();
-                if (l.Equals(node.getLabelText()))// same node is already in list
+                if (l.Equals(dstNode.getLabelText()))// same node is already in list
                 {
                     /* node is allready in the adjacent list, so check if the label is the same
                      or newer */
                     if (!a.Item2.Equals(label))// same node with new label for edge
                     {
                         var newEdgeLabel = a.Item2 + "|" + label;
-                        Tuple<VisualNode, string> newAdjcent = new Tuple<VisualNode, string>(a.Item1, newEdgeLabel);
-                        adjacenceList.Add(newAdjcent);
-                        adjacenceList.Remove(a);
+                        Tuple<VisualNode, string> newAdjcent = 
+							new Tuple<VisualNode, string>(a.Item1, newEdgeLabel);
+                        adjacenceList.Add(newAdjcent);// add the new adjacent Tupel with the new label
+                        adjacenceList.Remove(a);      // and remove the old one. 
                         isAdded = true;
                         break;
                     }
@@ -145,7 +146,7 @@ namespace SilverlightApplication6
             }
             if (!isAdded)
             {
-                Tuple<VisualNode, string> t = new Tuple<VisualNode, string>(node, label);
+                Tuple<VisualNode, string> t = new Tuple<VisualNode, string>(dstNode, label);
                 adjacenceList.Add(t);
             }
         }

@@ -20,19 +20,34 @@ namespace SilverlightApplication6
 {
     public partial class MainPage : UserControl
     {
-        private static Uri defaultFile = new Uri("testdata/ModifiedHMU.xml", UriKind.Relative);
-        private static Uri hmup60File = new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
-		private static Uri sipser = new Uri("testdata/Sipser.xml", UriKind.Relative);
+        private static Uri defaultFile = 
+			new Uri("testdata/ModifiedHMU.xml", UriKind.Relative);
+        private static Uri hmup60File = 
+			new Uri("testdata/HopcroftMotwaniUllman.xml", UriKind.Relative);
+		private static Uri sipser = 
+			new Uri("testdata/Sipser.xml", UriKind.Relative);
 
         private Dictionary<string, Uri> builtinExamples = new Dictionary<string, Uri>();
 
         private GraphDrawer drawer;
         private Brush originalPlayboardColor;
+
+		/** reg to check legal input */
         private Regex inputRegex;
+
+		/** list of all presentations of states of DFA */
         private List<VisualNode> visualNodes;
+		
+		/** list of presetation of the input string */
         private List<VisualInput> visualInput = new List<VisualInput>();
+
+		/** list if all storybords, which present the moving of the input characters */
         private List<Storyboard> animations;
+
+		/* what is this? */
         private int step;
+
+		/* what is this? */
         private bool flowingInput = false;
 
         public MainPage()
@@ -43,29 +58,21 @@ namespace SilverlightApplication6
 
             builtinExamples.Add("Example 1", defaultFile);
             builtinExamplesComboBox.Items.Add("Example 1");
+			//builtinExamplesComboBox.SelectedIndex = 0;
+
             builtinExamples.Add("Example 2", hmup60File);
             builtinExamplesComboBox.Items.Add("Example 2");
-            builtinExamplesComboBox.SelectedIndex = 0;
+            //builtinExamplesComboBox.SelectedIndex = 1;
 
 			builtinExamples.Add("Example 3", sipser);
 			builtinExamplesComboBox.Items.Add("Example 3");
-			builtinExamplesComboBox.SelectedIndex = 0;
+			builtinExamplesComboBox.SelectedIndex = 2;
 
-            for (int i = 0; i < inputTextBox.MaxLength; i++)
-            {
-                VisualInput vi = new VisualInput();
-                double fromX = 10.0 + vi.getGrid().Width * i;
-                double fromY = 10.0;
-                vi.setLocation(new EPoint(fromX, fromY));
-
-                visualInput.Add(vi);
-                //playboard.Children.Add(vi.getGrid());
-                Debug.WriteLine("*** added visual input: fromX: " + fromX + ", fromY: " + fromY);
-            }
+			makePresentationOfInputString();
             setControlsEnabled(false, true, false, false, false, false, false);
 
-            writeLog("Loading default file: " + defaultFile.OriginalString);
-            loadAndDraw(App.GetResourceStream(defaultFile).Stream);
+            writeLog("Loading default file: " + sipser.OriginalString);
+            loadAndDrawDFA(App.GetResourceStream(sipser).Stream);
 
             // TODO add startup animation
 
@@ -81,6 +88,21 @@ namespace SilverlightApplication6
 //}
         }
 
+		private void makePresentationOfInputString()
+		{
+			for (int i = 0; i < inputTextBox.MaxLength; i++)
+			{
+				VisualInput vi = new VisualInput();
+				double fromX = 10.0 + vi.getGrid().Width * i;
+				double fromY = 10.0;
+				vi.setLocation(new EPoint(fromX, fromY));
+
+				visualInput.Add(vi);
+				//playboard.Children.Add(vi.getGrid());
+				Debug.WriteLine("*** added visual input: fromX: " + fromX + ", fromY: " + fromY);
+			}
+		}
+
         private void openButton_Click(object sender, RoutedEventArgs args)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -90,7 +112,7 @@ namespace SilverlightApplication6
             {
                 try
                 {
-                    loadAndDraw(openFileDialog.File.OpenRead());
+                    loadAndDrawDFA(openFileDialog.File.OpenRead());
                 }
                 catch (Exception e)
                 {
@@ -100,7 +122,8 @@ namespace SilverlightApplication6
                 }
             }
         }
-
+		
+		
         private void inputChanged(object sender, TextChangedEventArgs e)
         {
             if (inputTextBox.Text.Length == inputTextBox.MaxLength)
@@ -111,7 +134,10 @@ namespace SilverlightApplication6
             if (inputRegex.IsMatch(inputTextBox.Text))
             {
                 step = 0;
-                animations = AnimationPlanner.createPlan(inputTextBox.Text, visualNodes[0], visualInput, flowingInput);
+                animations = AnimationPlanner.createPlan(
+					inputTextBox.Text, 
+					visualNodes[0], 
+					visualInput, flowingInput);
                 writeLog("Plan created.");
 
                 steplineSlider.Value = step;
@@ -131,7 +157,7 @@ namespace SilverlightApplication6
 
                 setControlsEnabled(true, true, true, false, true, true, false);
             }
-            else if (inputTextBox.Text.Equals(""))
+            else if (inputTextBox.Text.Trim().Equals(""))
             {
                 foreach (VisualInput vi in visualInput)
                 {
@@ -144,10 +170,12 @@ namespace SilverlightApplication6
             else
             {
                 // i think this might never be reached
+				// oh ja
                 setControlsEnabled(true, true, false, false, true, false, false);
                 writeLog("Illegal input: " + inputTextBox.Text);
             }
         }
+		
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
@@ -211,7 +239,7 @@ namespace SilverlightApplication6
 
                 try
                 {
-                    loadAndDraw(files[0].OpenRead());
+                    loadAndDrawDFA(files[0].OpenRead());
                 }
                 catch (Exception e)
                 {
@@ -279,7 +307,7 @@ namespace SilverlightApplication6
             writeLog("Step: " + step);
         }
 
-        private void loadAndDraw(Stream stream)
+        private void loadAndDrawDFA(Stream stream)
         {
             playboard.Children.Clear();
             step = 0;
@@ -294,6 +322,7 @@ namespace SilverlightApplication6
                 vi.getFadeInAnimation().SpeedRatio = speedSlider.Value;
                 vi.getSearchAnimation().SpeedRatio = speedSlider.Value;
             }
+
             if (visualNodes != null)
             {
                 visualNodes.Clear();
@@ -316,8 +345,15 @@ namespace SilverlightApplication6
                 Debug.WriteLine("*** added visual input to grid");
             }
 
+			/* now begin to make a DFA */
             List<string> inputAlphabet;
             visualNodes = XmlParser.parse(stream, out inputAlphabet);
+			/* drow DFA on playboard */
+			drawer = new GraphDrawer(visualNodes, playboard);
+            drawer.drawDFA();
+            writeLog("Graph drawn.");
+
+			/* crate parten, it will be used later to check if input legal or not */
             string pattern = @"^[";
             foreach (string symbol in inputAlphabet)
             {
@@ -326,13 +362,12 @@ namespace SilverlightApplication6
             pattern += "]+$";
             Debug.WriteLine("*** pattern: " + pattern);
             inputRegex = new Regex(pattern);
-            playboard.Background = originalPlayboardColor;
-            writeLog("File loaded.");
 
-            drawer = new GraphDrawer(visualNodes, playboard);
-            drawer.drawDFA();
-            writeLog("Graph drawn.");
-            
+			/* set some optical signals to note the user that DFA drawed success */
+            playboard.Background = originalPlayboardColor;
+            //writeLog("File loaded.");
+			writeLog("DFA drawed");
+
             foreach (VisualNode n in visualNodes)
             {
                 n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
@@ -353,11 +388,11 @@ namespace SilverlightApplication6
                     }
                     else
                     {
-                        string[] symbolS = t.Item2.Split('|');
-                        for (int i = 0; i < symbolS.Length; i++)
+                        string[] symbols = t.Item2.Split('|');
+                        for (int i = 0; i < symbols.Length; i++)
                         {
-                            n.getDstEdge(symbolS[i]).getAnimation().Completed += new EventHandler(animationCompleted);
-                            n.getDstEdge(symbolS[i]).getAnimation().SpeedRatio = speedSlider.Value;
+                            n.getDstEdge(symbols[i]).getAnimation().Completed += new EventHandler(animationCompleted);
+                            n.getDstEdge(symbols[i]).getAnimation().SpeedRatio = speedSlider.Value;
                         }
                     }
                     
@@ -439,7 +474,7 @@ namespace SilverlightApplication6
             //try
             //{
                 string key = ((ComboBox)sender).SelectedItem.ToString();
-                loadAndDraw(App.GetResourceStream(builtinExamples[key]).Stream);
+                loadAndDrawDFA(App.GetResourceStream(builtinExamples[key]).Stream);
                 writeLog("Example changed.");
             //}
             //catch (Exception ex)
