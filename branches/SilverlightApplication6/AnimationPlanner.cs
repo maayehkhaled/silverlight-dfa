@@ -17,7 +17,11 @@ namespace SilverlightApplication6
     public static class AnimationPlanner
     {
         // creates an animation sequence
-        public static List<Storyboard> createPlan(string input, VisualNode currentNode, List<VisualInput> visualInput, bool flowingInput)
+        public static List<Storyboard> createPlan(
+			string input, 
+			VisualNode currentNode, 
+			List<VisualInput> visualInput, 
+			bool flowingInput)
         {
             List<Storyboard> animations = new List<Storyboard>();
 
