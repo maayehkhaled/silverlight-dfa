@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="Cartesian.cs" />
     <Compile Include="AnimationPlanner.cs" />
+    <Compile Include="Executor.cs" />
     <Compile Include="GraphDrawer.cs" />
     <Compile Include="LayoutComputer.cs" />
     <Compile Include="SimpleUniqueRandom.cs" />

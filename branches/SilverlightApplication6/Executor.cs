@@ -13,83 +13,87 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 
+//using System;
+using SCG = System.Collections.Generic;
+//using C5;
+
+//using state = System.Int32;
+//using input = System.Char;
+
 namespace SilverlightApplication6
 {
-    public class Executor
-    {
-        private VisualNode currentNode;
-        private int delay;
+	/// <summary>
+	/// Implements a deterministic finite automata (DFA)
+	/// </summary>
+	class DFA
+	{
+		/*
+		// Start state
+		public state start;
+		// Set of final states
+		public Set<state> final;
+		// Transition table
+		public SCG.SortedList<KeyValuePair<state, input>, state> transTable;
 
-        private string remainingInput;
-        private int inputLength;
+		public DFA()
+		{
+			final = new Set<state>();
 
-        public void doWork(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker worker = sender as BackgroundWorker;
+			transTable = new SCG.SortedList<KeyValuePair<state, input>, state>(new Comparer());
+		}
 
-            while (!worker.CancellationPending && remainingInput.Length > 0)
-            {
-                string symbol = remainingInput[0].ToString();
-                Debug.WriteLine("*** processing node: " + currentNode.node.nodeLabel + ", symbol: " + symbol);
+		public string Simulate(string @in)
+		{
+			state curState = start;
 
-                VisualNode follower;
-                if (currentNode.TryGetFollower(symbol, out follower))
-                {
-                    Debug.WriteLine("*** follower is: " + follower.node.nodeLabel);
+			CharEnumerator i = @in.GetEnumerator();
 
-                    worker.ReportProgress(0, currentNode);
-                    worker.ReportProgress(0, follower);
-                    currentNode = follower;
-                }
+			while (i.MoveNext())
+			{
+				KeyValuePair<state, input> transition = new KeyValuePair<state, input>(curState, i.Current);
 
-                if (remainingInput.Length > 1)
-                {
-                    remainingInput = remainingInput.Remove(0, 1);
-                    int processed = inputLength - remainingInput.Length;
-                    Debug.WriteLine("*** remaining: " + remainingInput.Length + " processed: " + processed);
-                    worker.ReportProgress(processed);
+				if (!transTable.ContainsKey(transition))
+					return "Rejected";
 
-                    System.Threading.Thread.Sleep(delay);
-                }
-                else if (currentNode.node.isEnd)
-                {
-                    Debug.WriteLine("*** accepting...");
-                    e.Result = "Accepted :-)";
-                    return;
-                }
-                else
-                {
-                    Debug.WriteLine("*** rejecting...");
-                    e.Result = "Rejected :-/";
-                    return;
-                }
-            }
+				curState = transTable[transition];
+			}
 
-            e.Cancel = true;
-        }
+			if (final.Contains(curState))
+				return "Accepted";
+			else
+				return "Rejected";
+		}
 
-        public void setStartNode(VisualNode startNode)
-        {
-            this.currentNode = startNode;
-        }
+		public void Show()
+		{
+			Console.Write("DFA start state: {0}\n", start);
+			Console.Write("DFA final state(s): ");
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void setDelay(int delay)
-        {
-            this.delay = delay;
-        }
+			SCG.IEnumerator<state> iE = final.GetEnumerator();
 
-        public void setInput(string input)
-        {
-            remainingInput = input;
-            inputLength = input.Length;
-        }
+			while (iE.MoveNext())
+				Console.Write(iE.Current + " ");
 
-        private delegate void InvokeThrowSymbolDelegate(VisualNode node);
+			Console.Write("\n\n");
 
-        private void InvokeThrowSymbol(VisualNode node)
-        {
-            //node.throwSymbol();
-        }
-    }
+			foreach (SCG.KeyValuePair<KeyValuePair<state, input>, state> kvp in transTable)
+				Console.Write("Trans[{0}, {1}] = {2}\n", kvp.Key.Key, kvp.Key.Value, kvp.Value);
+		}
+	}
+
+	/// <summary>
+	/// Implements a comparer that suits the transTable SordedList
+	/// </summary>
+	public class Comparer : SCG.IComparer<KeyValuePair<state, input>>
+	{
+		public int Compare(KeyValuePair<state, input> transition1, KeyValuePair<state, input> transition2)
+		{
+			if (transition1.Key == transition2.Key)
+				return transition1.Value.CompareTo(transition2.Value);
+			else
+				return transition1.Key.CompareTo(transition2.Key);
+		}
+	
+	*/ }
+
 }

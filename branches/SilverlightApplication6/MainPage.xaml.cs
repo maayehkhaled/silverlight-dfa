@@ -134,7 +134,7 @@ namespace SilverlightApplication6
             if (inputRegex.IsMatch(inputTextBox.Text))
             {
                 step = 0;
-                animations = AnimationPlanner.createPlan(
+                animations = AnimationPlannerOld.createPlan(
 					inputTextBox.Text, 
 					visualNodes[0], 
 					visualInput, flowingInput);
@@ -348,12 +348,12 @@ namespace SilverlightApplication6
 			/* now begin to make a DFA */
             List<string> inputAlphabet;
             visualNodes = XmlParser.parse(stream, out inputAlphabet);
-			/* drow DFA on playboard */
+			/* draw DFA on playboard */
 			drawer = new GraphDrawer(visualNodes, playboard);
             drawer.drawDFA();
             writeLog("Graph drawn.");
 
-			/* crate parten, it will be used later to check if input legal or not */
+			/* crate pattern, it will be used later to check if input legal or not */
             string pattern = @"^[";
             foreach (string symbol in inputAlphabet)
             {
@@ -368,6 +368,7 @@ namespace SilverlightApplication6
             //writeLog("File loaded.");
 			writeLog("DFA drawed");
 
+			/* set EventHandler to each stated */
             foreach (VisualNode n in visualNodes)
             {
                 n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
@@ -399,6 +400,7 @@ namespace SilverlightApplication6
                     //Debug.WriteLine("*** eventhandler added for node: " + n.getLabelText() + ", edge: " + t.Item2);
                 }
             }
+
             foreach (VisualInput vi in visualInput)
             {
                 vi.getConsumeAnimation().Completed += new EventHandler(animationCompleted);

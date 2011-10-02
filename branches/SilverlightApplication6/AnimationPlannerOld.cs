@@ -14,7 +14,7 @@ using System.Collections.Generic;
 namespace SilverlightApplication6
 {
     // static class for planning the animation sequence
-    public static class AnimationPlanner
+    public static class AnimationPlannerOld
     {
         // creates an animation sequence
         public static List<Storyboard> createPlan(
