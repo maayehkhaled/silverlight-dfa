@@ -134,7 +134,7 @@ namespace SilverlightApplication6
             if (inputRegex.IsMatch(inputTextBox.Text))
             {
                 step = 0;
-                animations = AnimationPlannerOld.createPlan(
+                animations = AnimationPlanner.createPlan(
 					inputTextBox.Text, 
 					visualNodes[0], 
 					visualInput, flowingInput);
