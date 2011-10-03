@@ -14,9 +14,14 @@ using System.Collections.Generic;
 namespace SilverlightApplication6
 {
     // static class for planning the animation sequence
-    public static class AnimationPlanner
+
+	public class AnimationPlanner<N,I> : Planner<N,I>
+		where N: VisualAnimationNode
+		where I: VisualAnimationInput
     {
+		 
         // creates an animation sequence
+		/*
         public static List<Storyboard> createPlan(
 			string input, 
 			VisualNode currentNode, 
@@ -88,6 +93,50 @@ namespace SilverlightApplication6
             }
 
             return animations;
-        }
-    }
+        }*/
+		List<Storyboard> animations;
+		public AnimationPlanner()
+		{
+			animations = new List<Storyboard>();
+		}
+
+		/* 
+		 * add an animation simulating a symbols fall down from overleft coner to 
+		 * dest. State 
+		 */
+		public void addFallDownAnimation(I symbol, N des)
+		{
+			// do nothing here
+		}
+
+		/*
+		 * add an animation simulating a symbol move from a state to a new state 
+		 */
+		public void addMoveAnimation(N quellState, N destState, I symbol)
+		{
+		}
+
+		/*
+		 * add an animation simulating state catch a symbol 
+		 */
+		public void addCatchASymbol(N dest, I symbol)
+		{
+		}
+
+		/*
+		 * add an animation simulation state accept input
+		 */
+		public void addAccept(N acceptNode)
+		{
+		}
+
+		public void addReject(N rejectNode)
+		{
+		}
+
+		public void clean(){}
+	}
+	
+
+
 }

@@ -37,7 +37,7 @@ namespace SilverlightApplication6
 
 		/** list of all presentations of states of DFA */
         //private List<VisualNode> visualNodes;
-		private List<VisualAnimationNode> visualNodes;
+		private List<VisualAnimationNode> visualAnimationNodes;
 
 		/** list of presetation of the input string */
         private List<VisualAnimationInput> visualInput = new List<VisualAnimationInput>();
@@ -48,12 +48,15 @@ namespace SilverlightApplication6
 		/* simulate the DFA. It creates necessery animations and 
 		 * saves it in the list animations over a instance of AminationPlanner.
 		 */
+		private DFA<VisualAnimationNode,VisualAnimationInput> executor;
 		
-		/*
-		private DFA<AnimationPlanner,
-			AnimationInputFactory,
-			VisualAnimationInput> executor;
-		*/
+		/* factory, which generates animation */
+		private AnimationInputFactory<VisualAnimationNode,VisualAnimationInput>
+			factory;
+	
+		/* planer, which saves all animations of a process of an input*/
+		private AnimationPlanner<VisualAnimationNode,VisualAnimationInput>
+			planner;
 
 		/* what is this? */
         private int step;
@@ -115,8 +118,9 @@ namespace SilverlightApplication6
 				visualInput.Add(vi);
 				//playboard.Children.Add(vi.getGrid());
 				Debug.WriteLine("*** added visual input: fromX: " + fromX + ", fromY: " + fromY);
+				vi.setLabelText(inputTextBox.Text[i].ToString());
 			}
-			// TODO a better place for this!?(Done)
+			// TODO (Done, I moved it here) a better place for this!?
 			foreach (VisualAnimationInput vi in visualInput)
 			{
 				playboard.Children.Add(vi.getGrid());
@@ -292,9 +296,9 @@ namespace SilverlightApplication6
 
         private void speedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (visualNodes != null)
+            if (visualAnimationNodes != null)
             {
-                foreach (VisualAnimationNode n in visualNodes)
+                foreach (VisualAnimationNode n in visualAnimationNodes)
                 {
                     n.getSrcAnimation().SpeedRatio = e.NewValue;
                     n.getDstAnimation().SpeedRatio = e.NewValue;
@@ -348,9 +352,9 @@ namespace SilverlightApplication6
                 vi.getSearchAnimation().SpeedRatio = speedSlider.Value;
             }
 
-            if (visualNodes != null)
+            if (visualAnimationNodes != null)
             {
-                visualNodes.Clear();
+                visualAnimationNodes.Clear();
             }
             //visualNodes = null;
             if (animations != null)
@@ -365,11 +369,11 @@ namespace SilverlightApplication6
 
             
 
-			/* now begin to make a DFA */
+			/* now begin to make a draw of DFA */
             List<string> inputAlphabet;
-            visualNodes = XmlParser.parse(stream, out inputAlphabet);
+            visualAnimationNodes = XmlParser.parse(stream, out inputAlphabet);
 			/* draw DFA on playboard */
-			drawer = new GraphDrawer(visualNodes, playboard);
+			drawer = new GraphDrawer(visualAnimationNodes, playboard);
             drawer.drawDFA();
             writeLog("Graph drawn.");
 
@@ -386,10 +390,17 @@ namespace SilverlightApplication6
 			/* set some optical signals to note the user that DFA drawed success */
             playboard.Background = originalPlayboardColor;
             //writeLog("File loaded.");
-			writeLog("DFA drawed");
+
+			/* cannot downcasting in C# with generic type, so I use this collection
+			 * as a dummy collection, which saves VisualAnimationNode as VisualNode.
+			 * It will be used later for DFA*/
+			List<VisualNode> visualNodes = new List<VisualNode>();
+			
+
+			writeLog("creating DFA ...");
 
 			/* set EventHandler to each stated */
-            foreach (VisualAnimationNode n in visualNodes)
+            foreach (VisualAnimationNode n in visualAnimationNodes)
             {
                 n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
                 n.getDstAnimation().Completed += new EventHandler(animationCompleted);
@@ -399,6 +410,9 @@ namespace SilverlightApplication6
                 n.getDstAnimation().SpeedRatio = speedSlider.Value;
                 n.getAcceptedAnimation().SpeedRatio = speedSlider.Value;
                 n.getRejectedAnimation().SpeedRatio = speedSlider.Value;
+				
+				// add a new reference to n
+				visualNodes.Add(n);
 
                 foreach (Tuple<VisualNode, string> t in n.adjacenceList)
                 {
@@ -431,6 +445,11 @@ namespace SilverlightApplication6
                 vi.getSearchAnimation().SpeedRatio = speedSlider.Value;
             }
             //writeLog("Event handlers added.");
+			// make a new animationfactory
+			factory = new AnimationInputFactory<VisualAnimationNode,VisualAnimationInput>();
+			factory.setInputChars(visualInput);
+
+			planner = new AnimationPlanner<VisualAnimationNode,VisualAnimationInput>();
 
             setControlsEnabled(true, true, false, false, true, false, true);
             writeLog("Ready.");
