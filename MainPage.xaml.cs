@@ -36,13 +36,24 @@ namespace SilverlightApplication6
         private Regex inputRegex;
 
 		/** list of all presentations of states of DFA */
-        private List<VisualNode> visualNodes;
-		
+        //private List<VisualNode> visualNodes;
+		private List<VisualAnimationNode> visualNodes;
+
 		/** list of presetation of the input string */
-        private List<VisualInput> visualInput = new List<VisualInput>();
+        private List<VisualAnimationInput> visualInput = new List<VisualAnimationInput>();
 
 		/** list if all storybords, which present the moving of the input characters */
         private List<Storyboard> animations;
+
+		/* simulate the DFA. It creates necessery animations and 
+		 * saves it in the list animations over a instance of AminationPlanner.
+		 */
+		
+		/*
+		private DFA<AnimationPlanner,
+			AnimationInputFactory,
+			VisualAnimationInput> executor;
+		*/
 
 		/* what is this? */
         private int step;
@@ -68,7 +79,7 @@ namespace SilverlightApplication6
 			builtinExamplesComboBox.Items.Add("Example 3");
 			builtinExamplesComboBox.SelectedIndex = 2;
 
-			makePresentationOfInputString();
+			//makePresentationOfInputString();
             setControlsEnabled(false, true, false, false, false, false, false);
 
             writeLog("Loading default file: " + sipser.OriginalString);
@@ -90,9 +101,13 @@ namespace SilverlightApplication6
 
 		private void makePresentationOfInputString()
 		{
-			for (int i = 0; i < inputTextBox.MaxLength; i++)
+			// be sure that visualInput empty
+			visualInput.Clear();
+
+			//for (int i = 0; i < inputTextBox.MaxLength; i++)
+			for (int i = 0; i < inputTextBox.Text.Length; i++)
 			{
-				VisualInput vi = new VisualInput();
+				VisualAnimationInput vi = new VisualAnimationInput();
 				double fromX = 10.0 + vi.getGrid().Width * i;
 				double fromY = 10.0;
 				vi.setLocation(new EPoint(fromX, fromY));
@@ -100,6 +115,12 @@ namespace SilverlightApplication6
 				visualInput.Add(vi);
 				//playboard.Children.Add(vi.getGrid());
 				Debug.WriteLine("*** added visual input: fromX: " + fromX + ", fromY: " + fromY);
+			}
+			// TODO a better place for this!?(Done)
+			foreach (VisualAnimationInput vi in visualInput)
+			{
+				playboard.Children.Add(vi.getGrid());
+				Debug.WriteLine("*** added visual input to grid");
 			}
 		}
 
@@ -134,18 +155,20 @@ namespace SilverlightApplication6
             if (inputRegex.IsMatch(inputTextBox.Text))
             {
                 step = 0;
+				/*
                 animations = AnimationPlanner.createPlan(
 					inputTextBox.Text, 
 					visualNodes[0], 
 					visualInput, flowingInput);
-                writeLog("Plan created.");
+				*/
+                writeLog("input changed.");
 
                 steplineSlider.Value = step;
                 steplineSlider.Maximum = animations.Count - 1;
 
                 if (flowingInput)
                 {
-                    foreach (VisualInput vi in visualInput)
+                    foreach (VisualAnimationInput vi in visualInput)
                     {
                         vi.getFadeInAnimation().Stop();
                         vi.getConsumeAnimation().Stop();
@@ -159,7 +182,7 @@ namespace SilverlightApplication6
             }
             else if (inputTextBox.Text.Trim().Equals(""))
             {
-                foreach (VisualInput vi in visualInput)
+                foreach (VisualAnimationInput vi in visualInput)
                 {
                     vi.getFadeInAnimation().Stop();
                     vi.getConsumeAnimation().Stop();
@@ -182,6 +205,8 @@ namespace SilverlightApplication6
             setControlsEnabled(false, false, false, true, false, false, false);
 
             writeLog("Starting animation...");
+			// make a new AnimationPlaner here
+
             Storyboard first = animations[step];
             Debug.WriteLine("*** first is: " + first.GetValue(Storyboard.TargetNameProperty));
             first.Begin();
@@ -269,7 +294,7 @@ namespace SilverlightApplication6
         {
             if (visualNodes != null)
             {
-                foreach (VisualNode n in visualNodes)
+                foreach (VisualAnimationNode n in visualNodes)
                 {
                     n.getSrcAnimation().SpeedRatio = e.NewValue;
                     n.getDstAnimation().SpeedRatio = e.NewValue;
@@ -292,7 +317,7 @@ namespace SilverlightApplication6
                     }
                 }
             }
-            foreach (VisualInput vi in visualInput)
+            foreach (VisualAnimationInput vi in visualInput)
             {
                 vi.getConsumeAnimation().SpeedRatio = e.NewValue;
                 vi.getFadeInAnimation().SpeedRatio = e.NewValue;
@@ -313,7 +338,7 @@ namespace SilverlightApplication6
             step = 0;
             inputTextBox.Text = "";
 
-            foreach (VisualInput vi in visualInput)
+            foreach (VisualAnimationInput vi in visualInput)
             {
                 vi.getConsumeAnimation().Completed -= animationCompleted;
                 vi.getFadeInAnimation().Completed -= animationCompleted;
@@ -338,12 +363,7 @@ namespace SilverlightApplication6
             }
             //animations = null;
 
-            // TODO a better place for this!?
-            foreach (VisualInput vi in visualInput)
-            {
-                playboard.Children.Add(vi.getGrid());
-                Debug.WriteLine("*** added visual input to grid");
-            }
+            
 
 			/* now begin to make a DFA */
             List<string> inputAlphabet;
@@ -369,7 +389,7 @@ namespace SilverlightApplication6
 			writeLog("DFA drawed");
 
 			/* set EventHandler to each stated */
-            foreach (VisualNode n in visualNodes)
+            foreach (VisualAnimationNode n in visualNodes)
             {
                 n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
                 n.getDstAnimation().Completed += new EventHandler(animationCompleted);
@@ -401,7 +421,7 @@ namespace SilverlightApplication6
                 }
             }
 
-            foreach (VisualInput vi in visualInput)
+            foreach (VisualAnimationInput vi in visualInput)
             {
                 vi.getConsumeAnimation().Completed += new EventHandler(animationCompleted);
                 vi.getConsumeAnimation().SpeedRatio = speedSlider.Value;

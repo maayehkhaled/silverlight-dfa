@@ -18,15 +18,11 @@ using System.Diagnostics;
 namespace SilverlightApplication6
 {
     /* Represents a node (state) of the DFA */
-    public class VisualNode {
+    public class VisualNode : IComparable<VisualNode>
+	{
 
         /* default size (width/height) used for nodes grid/ellipse */
-        //public static readonly double DEFAULT_SIZE = 25.0;
-        public static readonly Uri COMMON_GRID_RESOURCE_URI = new Uri("VisualNodeGrid.xaml", UriKind.Relative);
-        public static readonly Uri STARTEND_GRID_RESOURCE_URI = new Uri("VisualStartAndAcceptedNodeGrid.xaml", UriKind.Relative);
-        public static readonly Uri START_GRID_RESOURCE_URI = new Uri("VisualStartNodeGrid.xaml", UriKind.Relative);
-        public static readonly Uri END_GRID_RESOURCE_URI = new Uri("VisualAcceptNodeGrid.xaml", UriKind.Relative);
-        private static string gridResourceString = null;
+		//public static readonly double DEFAULT_SIZE = 25.0;
 
         ///* x-coordinate of the topleft of the node on Silverlight Coordinate system */
         //public readonly double x;
@@ -43,18 +39,14 @@ namespace SilverlightApplication6
         /* allows to find the next node for the given symbol string */
         //private IDictionary<string, VisualNode> dstNodes = new Dictionary<string, VisualNode>();
         private IDictionary<string, VisualEdge> dstEdges = new Dictionary<string, VisualEdge>();
+		protected string labelText;
 
-        /* the grid on which the ellipse and label (textbox) are drawed */
-        private Grid grid;
-        /* the ellipse representing the node */
-        private Ellipse ellipse;
-        /* the node's label */
-        private TextBlock label;
-
-        private Storyboard srcAnimation;
-        private Storyboard dstAnimation;
-        private Storyboard acceptedAnimation;
-        private Storyboard rejectedAnimation;
+		/* the grid on which the ellipse and label (textbox) are drawed */
+		protected Grid grid;
+		/* the ellipse representing the node */
+		protected Ellipse ellipse;
+		/* the node's label */
+		protected TextBlock label;
 
         /* constructs a new node object */
         public VisualNode(string labelText, EPoint location, bool isStartNode, bool isEndNode)
@@ -64,53 +56,7 @@ namespace SilverlightApplication6
             this.isEndNode = isEndNode;
             adjacenceList = new List<Tuple<VisualNode, string>>();
 
-            // load grid as clone
-            if (isStartNode && isEndNode)
-            {
-                Debug.WriteLine("*** is start and end node...");
-                grid = getVisualNodeGrid(labelText, STARTEND_GRID_RESOURCE_URI);
-            }
-            else if (isStartNode)
-            {
-                Debug.WriteLine("*** is only start node...");
-                grid = getVisualNodeGrid(labelText, START_GRID_RESOURCE_URI);
-            }
-            else if (isEndNode)
-            {
-                Debug.WriteLine("*** is only end node...");
-                grid = getVisualNodeGrid(labelText, END_GRID_RESOURCE_URI);
-            }
-            else
-            {
-                Debug.WriteLine("*** is a common node...");
-                grid = getVisualNodeGrid(labelText, COMMON_GRID_RESOURCE_URI);
-            }
-
-            // initialize animations
-            srcAnimation = grid.Resources["srcAnimation"] as Storyboard;
-            //Storyboard.SetTarget(srcAnimation, grid);
-            Storyboard.SetTargetName(srcAnimation, labelText);
-            //Debug.WriteLine("*** source animation children: " + srcAnimation.Children.Count);
-
-            dstAnimation = grid.Resources["dstAnimation"] as Storyboard;
-            //Storyboard.SetTarget(dstAnimation, grid);
-            Storyboard.SetTargetName(dstAnimation, labelText);
-            //Debug.WriteLine("*** destination animation children: " + dstAnimation.Children.Count);
-
-            acceptedAnimation = grid.Resources["acceptedAnimation"] as Storyboard;
-            rejectedAnimation = grid.Resources["rejectedAnimation"] as Storyboard;
-
-            ellipse = grid.FindName("ellipse") as Ellipse;
-
-            label = grid.FindName("label") as TextBlock;
-            label.Text = labelText;
-
-            //Debug.WriteLine("*** ellipse name: " + ellipse.Name);
-
-            //grid.Width = DEFAULT_SIZE;
-            //grid.Height = DEFAULT_SIZE;
-            //ellipse.Width = DEFAULT_SIZE;
-            //ellipse.Height = DEFAULT_SIZE;
+			this.labelText = labelText;
         }
 
         /* adds a new entry to the adjacenceList of this node */
@@ -126,9 +72,9 @@ namespace SilverlightApplication6
                 {
                     /* node is allready in the adjacent list, so check if the label is the same
                      or newer */
-                    if (!a.Item2.Equals(label))// same node with new label for edge
+                    if (!a.Item2.Trim().Equals(label))// same node with new label for edge
                     {
-                        var newEdgeLabel = a.Item2 + "|" + label;
+                        var newEdgeLabel = a.Item2.Trim() + "|" + label.Trim();
                         Tuple<VisualNode, string> newAdjcent = 
 							new Tuple<VisualNode, string>(a.Item1, newEdgeLabel);
                         adjacenceList.Add(newAdjcent);// add the new adjacent Tupel with the new label
@@ -151,11 +97,24 @@ namespace SilverlightApplication6
             }
         }
 
-        /* adds a new entry to the map of destinations nodes of this node */
-        //public void addDstNode(string symbol, VisualNode node)
-        //{
-        //    dstNodes.Add(symbol, node);
-        //}
+		/* adds a new entry to the map of destinations nodes of this node */
+		public void addDstEdge(string symbol, VisualEdge edge)
+		{
+			Debug.WriteLine("***************** addDstEdge(): node: " + label.Text + ", symbol: " + symbol);
+			dstEdges.Add(symbol, edge);
+		}
+
+		public VisualEdge getDstEdge(string symbol)
+		{
+			Debug.WriteLine("***************** getDstEdge(): node: " + label.Text + ", symbol: " + symbol);
+			return dstEdges[symbol];
+		}
+
+		/* returns the grid where the nodes ellipse and label are drawn on */
+		public Grid getGrid()
+		{
+			return grid;
+		}
 
         /* retrieves, if possible, the node that can be reached through the given symbol. */
         public bool TryGetDstNode(string symbol, out VisualNode node)
@@ -173,83 +132,43 @@ namespace SilverlightApplication6
             }
         }
 
-        /* adds a new entry to the map of destinations nodes of this node */
-        public void addDstEdge(string symbol, VisualEdge edge)
-        {
-            Debug.WriteLine("***************** addDstEdge(): node: " + label.Text + ", symbol: " + symbol); 
-            dstEdges.Add(symbol, edge);
-        }
-
-        public VisualEdge getDstEdge(string symbol)
-        {
-            Debug.WriteLine("***************** getDstEdge(): node: " + label.Text + ", symbol: " + symbol); 
-            return dstEdges[symbol];
-        }
-
-        /* returns the grid where the nodes ellipse and label are drawn on */
-        public Grid getGrid()
-        {
-            return grid;
-        }
-
-        /* returns the nodes ellipse object */
-        public Ellipse getEllipse()
-        {
-            return ellipse;
-        }
-
-        /* returns the textblock used for the nodes label */
-        public TextBlock getTextBlock()
-        {
-            return label;
-        }
 
         /* get the nodes label text */
         public string getLabelText()
         {
-            return label.Text;
+            return labelText;
         }
 
-        /* returns the storyboard for the source animation */
-        public Storyboard getSrcAnimation()
-        {
-            return srcAnimation;
-        }
+		/** define equal of two VisualNode */
+		public static bool operator ==(VisualNode v1, VisualNode v2)
+		{
+			return (v1.getLabelText() == v2.getLabelText());
+		}
+		public static bool operator !=(VisualNode v1, VisualNode v2)
+		{
+			return (v1.getLabelText() != v2.getLabelText());
+		}
 
-        /* returns the storyboard for the destination animation */
-        public Storyboard getDstAnimation()
-        {
-            return dstAnimation;
-        }
+		override public bool  Equals(Object o)
+		{
+			return (this == (VisualNode)o);
+		}
 
-        /* returns the storyboard for the accepted animation */
-        public Storyboard getAcceptedAnimation()
-        {
-            return acceptedAnimation;
-        }
+		override public int GetHashCode()
+		{
+			return this.labelText.GetHashCode();
+		}
 
-        /* returns the storyboard for the rejected animation */
-        public Storyboard getRejectedAnimation()
-        {
-            return rejectedAnimation;
-        }
+		/*define compareTo to order the state of machine */
+		public int CompareTo(VisualNode v1)
+		{
+			return (v1.getLabelText().CompareTo(this));
+		}
 
-        /* loads a new node grid by using xamlreader */
-        private static Grid getVisualNodeGrid(string label, Uri type)
-        {
-            // TODO re-enable gridResourceString
-            //if (gridResourceString == null)
-            //{
-                System.IO.Stream s = App.GetResourceStream(type).Stream;
-                System.IO.StreamReader sr = new System.IO.StreamReader(s);
-                gridResourceString = sr.ReadToEnd();
-            //}
-                //Debug.WriteLine(gridResourceString);
-            Grid grid = (Grid) XamlReader.Load(gridResourceString);
-            grid.Name = label;
-            //grid.RenderTransform = new CompositeTransform();
+		public override string ToString()
+		{
+			return labelText;
+		}
 
-            return grid;
-        }
     }
 }

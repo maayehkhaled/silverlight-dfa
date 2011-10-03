@@ -14,7 +14,8 @@ namespace SilverlightApplication6
 	public static class LayoutComputer
 	{
 
-        public static Tuple<EPoint, EPoint, EPoint, EPoint> computeEdge(VisualNode i, VisualNode j)
+        public static Tuple<EPoint, EPoint, EPoint, EPoint> computeEdge(
+			VisualNode i, VisualNode j)
 		{
 			EPoint begin = new EPoint(
 				i.location.x + i.getGrid().Width / 2,

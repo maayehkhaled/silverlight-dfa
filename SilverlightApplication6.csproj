@@ -83,14 +83,16 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Cartesian.cs" />
-    <Compile Include="AnimationPlanner.cs" />
-    <Compile Include="Executor.cs" />
     <Compile Include="GraphDrawer.cs" />
+    <Compile Include="AnimationFactory.cs" />
     <Compile Include="LayoutComputer.cs" />
+    <Compile Include="Planner.cs" />
     <Compile Include="SimpleUniqueRandom.cs" />
+    <Compile Include="VisualAnimationNode.cs" />
     <Compile Include="VisualEdge.cs" />
-    <Compile Include="VisualInput.cs" />
+    <Compile Include="VisualAnimationInput.cs" />
     <Compile Include="VisualNode.cs" />
+    <Compile Include="VisualInput.cs" />
     <Compile Include="XmlParser.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
