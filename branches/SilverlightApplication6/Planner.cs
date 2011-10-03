@@ -1,13 +1,15 @@
 ﻿using System;
 namespace SilverlightApplication6
 {
-	public interface Planner
+	public interface Planner<N,I>
+		where N: VisualNode 
+		where I: VisualInput
 	{
-		void addAccept(VisualNode acceptNode);
-		void addCatchASymbol(VisualNode dest, VisualAnimationInput symbol);
-		void addFallDownAnimation(VisualAnimationInput symbol, VisualNode des);
-		void addMoveAnimation(VisualNode quellState, VisualNode destState, VisualAnimationInput symbol);
-		void addReject(VisualNode rejectNode);
+		void addAccept(N acceptNode);
+		void addCatchASymbol(N dest, I symbol);
+		void addFallDownAnimation(I symbol, N des);
+		void addMoveAnimation(N quellState, N destState, I symbol);
+		void addReject(N rejectNode);
 		void clean();
 	}
 }

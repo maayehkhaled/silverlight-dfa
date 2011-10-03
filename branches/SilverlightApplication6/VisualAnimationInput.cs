@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace SilverlightApplication6
 {
-    public class VisualAnimationInput : SilverlightApplication6.VisularInput
+    public class VisualAnimationInput : VisualInput
     {
 
         public static readonly Uri GRID_RESOURCE_URI = new Uri("VisualInputGrid.xaml", UriKind.Relative);

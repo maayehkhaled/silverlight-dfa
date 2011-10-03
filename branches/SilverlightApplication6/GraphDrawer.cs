@@ -17,11 +17,12 @@ namespace SilverlightApplication6
     // used to draw the graph
 	public class GraphDrawer
 	{
-        private List<VisualNode> visualNodes;
+        private List<VisualAnimationNode> visualNodes;
 
 		public Canvas dfaCanvas;
 
-        public GraphDrawer(List<VisualNode> nodes, Canvas c)
+        //public GraphDrawer(List<VisualNode> nodes, Canvas c)
+		public GraphDrawer(List<VisualAnimationNode> nodes, Canvas c)
 		{
 			dfaCanvas = c;
             visualNodes = nodes;

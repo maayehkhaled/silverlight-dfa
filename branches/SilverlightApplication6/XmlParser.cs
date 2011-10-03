@@ -17,7 +17,7 @@ namespace SilverlightApplication6
         //private static bool initialized = false;
         //private static Uri dtd = new Uri("Input.dtd", UriKind.Relative);
 
-        public static List<VisualNode> parse(Stream stream, out List<string> inputAlphabet)
+        public static List<VisualAnimationNode> parse(Stream stream, out List<string> inputAlphabet)
         {
             // TODO static initalization block
             //if (!initialized)
@@ -32,7 +32,7 @@ namespace SilverlightApplication6
             //XElement root = XElement.Load(XmlReader.Create(file.OpenRead(), settings));
 
             XElement root = XElement.Load(stream);
-            IDictionary<string, VisualNode> nodes = new Dictionary<string, VisualNode>();
+            IDictionary<string, VisualAnimationNode> nodes = new Dictionary<string, VisualAnimationNode>();
             inputAlphabet = new List<string>();
 
             foreach (XElement symbol in root.Elements("InputAlphabet").Elements("Symbol"))
@@ -59,7 +59,7 @@ namespace SilverlightApplication6
                     isEnd = true;
                 }
 
-                VisualNode node = new VisualNode(state.Value, new EPoint(x, y), isStart, isEnd);
+                VisualAnimationNode node = new VisualAnimationNode(state.Value, new EPoint(x, y), isStart, isEnd);
 
                 Debug.WriteLine("*** node read: " + node.getLabelText() + ", isStart: " + node.isStartNode + ", isEnd: " + node.isEndNode + ", x: " + node.location.x + ", y: " + node.location.y);
 
@@ -74,10 +74,10 @@ namespace SilverlightApplication6
 
                 Debug.WriteLine("*** transition read: from: " + from + ", symbol: " + symbol + ", to: " + to);
 
-                VisualNode fromNode;
+                VisualAnimationNode fromNode;
                 nodes.TryGetValue(from, out fromNode);
 
-                VisualNode toNode;
+                VisualAnimationNode toNode;
                 nodes.TryGetValue(to, out toNode);
 
                 if (!symbol.Contains("|"))
@@ -101,10 +101,10 @@ namespace SilverlightApplication6
                 //}
             }
 
-            return new List<VisualNode>(nodes.Values);
+            return new List<VisualAnimationNode>(nodes.Values);
         }
 
-        public static List<VisualNode> parse(FileInfo file, out List<string> inputAlphabet)
+        public static List<VisualAnimationNode> parse(FileInfo file, out List<string> inputAlphabet)
         {
             return parse(file.OpenRead(), out inputAlphabet);
         }
