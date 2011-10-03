@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="DFA.cs" />
     <Compile Include="DummyFactory.cs" />
+    <Compile Include="DummyNode.cs" />
     <Compile Include="DummyPlaner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

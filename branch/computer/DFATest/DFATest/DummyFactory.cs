@@ -6,19 +6,25 @@ using SilverlightApplication6;
 
 namespace DFATest
 {
-	class DummyFactory : InputSymbolFactory<SimpleInput>
+	class DummyFactory<N,T> : AnimationFactory<N,T>
+		where T : SimpleInput
+		where N : DummyNode
 	{
 		string input;
 		public DummyFactory(String input)
 		{
 			this.input = input;
 		}
-		public SimpleInput create(int index)
+		public T createInputAnimation(int index)
 		{
-			SimpleInput s = new SimpleInput();
+			T s = (T)new SimpleInput ();
 			String label = input[index].ToString();
 			s.setLabelText(label);
 			return s;
+		}
+		public N createVisualNode(string nodeTextLabel)
+		{
+			return new DummyNode()
 		}
 	}
 }

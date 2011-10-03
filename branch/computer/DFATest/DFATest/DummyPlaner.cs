@@ -7,7 +7,9 @@ using SilverlightApplication6;
 
 namespace DFATest
 {
-	class DummyPlaner : Planner<VisualNode,SimpleInput>
+	class DummyPlaner<N,I> : Planner<N,I>
+		where N : DummyNode
+		where I : SimpleInput
 	{
 		public List<String> actions;
 		public DummyPlaner()
@@ -17,13 +19,13 @@ namespace DFATest
 		public static string head = ">>>>>>>>>>>>>>>>>>>>";
 		public static string tail = "<<<<<<<<<<<<<<<<<<<<\n";
 
-		public void addAccept(VisualNode acceptNode)
+		public void addAccept(N acceptNode)
 		{
 			actions.Add(head + "automate stop at "
 				+ acceptNode.ToString() + " with status accept" + tail);
 		}
 
-		public void addCatchASymbol(VisualNode dest, SimpleInput symbol)
+		public void addCatchASymbol(N dest, I symbol)
 		{
 			actions.Add(head + dest.ToString() 
 				+ " catch " 
@@ -31,21 +33,21 @@ namespace DFATest
 
 		}
 
-		public void addFallDownAnimation(SimpleInput symbol, VisualNode des)
+		public void addFallDownAnimation(I symbol, N des)
 		{
 			actions.Add(head + 
 				((SimpleInput)symbol).ToString() + " falls into "
 				+ des.ToString() + tail);
 		}
 
-		public void addMoveAnimation(VisualNode quellState, VisualNode destState, SimpleInput symbol)
+		public void addMoveAnimation(N quellState, N destState, I symbol)
 		{
 			actions.Add(head + "move " + 
 				((SimpleInput)symbol).ToString() + " from " + quellState +
 				" to " + destState + tail);
 		}
 
-		public void addReject(VisualNode rejectNode)
+		public void addReject(N rejectNode)
 		{
 			actions.Add(head + "automate stop at "
 				+ rejectNode.ToString() + " with status reject" + tail);

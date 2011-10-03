@@ -6,7 +6,7 @@ using System.Diagnostics;
 using SCG = System.Collections.Generic;
 //using C5;
 
-using state = SilverlightApplication6.VisualNode;
+using state = System.String;
 using input = System.Char;
 using System.IO;
 using System.Collections.Generic;
@@ -18,10 +18,7 @@ namespace SilverlightApplication6
 	/// <summary>
 	/// Implements a deterministic finite automata (DFA)
 	/// </summary>
-	class DFA<P,F,I>  
-		where P : Planner<VisualNode,I>
-		where I : VisualInput
-		where F: InputSymbolFactory<I>
+	class DFA<N,I>  where N:VisualNode	where I : VisualInput
 	{
 		// Start state
 		public state start;
@@ -30,29 +27,28 @@ namespace SilverlightApplication6
 		// Transition table
 		public SCG.IDictionary<SCG.KeyValuePair<state, input>, state> transTable;
 
-		public P plan;
+		
 
-		public DFA(List<state> visualNodes, P plan)
+		public DFA(List<VisualNode> visualNodes)
 		{
-			this.plan = plan;
 			final = new SCG.HashSet<state>();
 			transTable = new SCG.Dictionary<SCG.KeyValuePair<state, input>, state>();
 			// initial set of final states and initial the transitionTable
-			foreach (state s in visualNodes)
+			foreach (VisualNode s in visualNodes)
 			{
 				if (s.isEndNode)
 				{
 					Debug.Write(">>>>>>>>>>>>>>>>>>add " 
 						+ s.ToString() 
 						+ " to final set<<<<<<<<<<<<<<<<\n");
-					final.Add(s);
+					final.Add(s.getLabelText());
 				}
-				foreach (Tuple<state, string> a in s.adjacenceList)
+				foreach (Tuple<VisualNode, string> a in s.adjacenceList)
 				{
 					if (!a.Item2.Contains("|"))
 					{
 						transTable.Add(new SCG.KeyValuePair<state, input>(
-							s, a.Item2.ToCharArray()[0]), a.Item1);
+							s.getLabelText(), a.Item2.ToCharArray()[0]), a.Item1.getLabelText() );
 						Debug.Write(">>>>>>>>>>>>>>>>>>("
 							+ s.ToString() + " " + a.Item2 + ") -> " + a.Item1.ToString() + "\n");
 						
@@ -63,7 +59,7 @@ namespace SilverlightApplication6
 						foreach (string m in symbols)
 						{
 							transTable.Add(new SCG.KeyValuePair<state, input>(
-								s, m.ToCharArray()[0]), a.Item1);
+								s.getLabelText(), m.ToCharArray()[0]), a.Item1.getLabelText() );
 							Debug.Write(">>>>>>>>>>>>>>>>>>("
 							+ s.ToString() + " " + m + ") -> " + a.Item1.ToString() + "\n");
 							
@@ -73,17 +69,19 @@ namespace SilverlightApplication6
 				}
 			}
 			// initial the start state
-			foreach (state s in visualNodes)
+			foreach (VisualNode s in visualNodes)
 			{
 				if (s.isStartNode)
 				{
-					start = s;
+					start = s.getLabelText();
 					break;
 				}
 			}
 		}
 
-		public string Simulate(string inputString, F factory)
+		public string Simulate(string inputString,	
+			Planner<N,I> plan, 
+			AnimationFactory<N,I> factory)
 		{
 			/* initital */
 			state curState = start;
@@ -99,35 +97,40 @@ namespace SilverlightApplication6
 				SCG.KeyValuePair<state, input> transition =
 					new SCG.KeyValuePair<state, input>(curState, input[i]);
 				/*-- visual --*/
-				I s = factory.create(i);
-				plan.addFallDownAnimation(s, curState);
-				plan.addCatchASymbol(curState, s);
+				I s = factory.createInputAnimation(i);
+				N currentVisualState = factory.createVisualNode(curState);
+				plan.addFallDownAnimation(s, currentVisualState);
+				plan.addCatchASymbol(currentVisualState, s);
 				/*++ ++*/
 
 				if (!transTable.ContainsKey(transition))
 				{
 					/*-- --*/
-					plan.addReject(curState);
+					plan.addReject(currentVisualState);
 					/*++ ++*/
 					return "Rejected";
 				}
-				state old = curState;
+				
 				curState = transTable[transition];
 				/*-- --*/
-				plan.addMoveAnimation(old, curState, s);
+				N old = currentVisualState;
+				currentVisualState = factory.createVisualNode(curState);
+				plan.addMoveAnimation(old, currentVisualState, s);
 				/*++ ++*/
 			}
 
 			if (final.Contains(curState))
 			{
 				/*-- --*/
-				plan.addAccept(curState);
+				N currentVisualState = factory.createVisualNode(curState);
+				plan.addAccept(currentVisualState);
 				/*++ ++*/
 				return "Accepted";
 			}else
 			{
 				/*-- --*/
-				plan.addReject(curState);
+				N currentVisualState = factory.createVisualNode(curState);
+				plan.addReject(currentVisualState);
 				/*++ ++*/
 				return "Rejected";
 			}
