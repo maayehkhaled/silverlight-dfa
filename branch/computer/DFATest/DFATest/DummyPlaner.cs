@@ -22,35 +22,35 @@ namespace DFATest
 		public void addAccept(N acceptNode)
 		{
 			actions.Add(head + "automate stop at "
-				+ acceptNode.ToString() + " with status accept" + tail);
+				+ acceptNode.getNameOfNode() + " with status accept" + tail);
 		}
 
 		public void addCatchASymbol(N dest, I symbol)
 		{
-			actions.Add(head + dest.ToString() 
+			actions.Add(head + dest.getNameOfNode() 
 				+ " catch " 
-				+ ((SimpleInput)symbol).ToString() + tail);
+				+ symbol.ToString() + tail);
 
 		}
 
 		public void addFallDownAnimation(I symbol, N des)
 		{
 			actions.Add(head + 
-				((SimpleInput)symbol).ToString() + " falls into "
-				+ des.ToString() + tail);
+				symbol.ToString() + " falls into "
+				+ des.getNameOfNode() + tail);
 		}
 
 		public void addMoveAnimation(N quellState, N destState, I symbol)
 		{
 			actions.Add(head + "move " + 
-				((SimpleInput)symbol).ToString() + " from " + quellState +
+				symbol.ToString() + " from " + quellState +
 				" to " + destState + tail);
 		}
 
 		public void addReject(N rejectNode)
 		{
 			actions.Add(head + "automate stop at "
-				+ rejectNode.ToString() + " with status reject" + tail);
+				+ rejectNode.getNameOfNode() + " with status reject" + tail);
 		}
 
 		public void clean()

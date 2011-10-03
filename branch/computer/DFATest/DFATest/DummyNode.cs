@@ -19,7 +19,10 @@ namespace DFATest
 			return labelText;
 		}
 
-
+		public string getNameOfNode()
+		{
+			return labelText.ToUpper();
+		}
 	}
 
 }

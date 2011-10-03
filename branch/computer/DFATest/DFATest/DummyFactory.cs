@@ -11,10 +11,17 @@ namespace DFATest
 		where N : DummyNode
 	{
 		string input;
+		List<N> lstOfNode;
 		public DummyFactory(String input)
 		{
 			this.input = input;
+			lstOfNode = new List<N>();
 		}
+		public void setNode(List<N> nodes)
+		{
+			lstOfNode = nodes;
+		}
+
 		public T createInputAnimation(int index)
 		{
 			T s = (T)new SimpleInput ();
@@ -22,9 +29,17 @@ namespace DFATest
 			s.setLabelText(label);
 			return s;
 		}
+		
 		public N createVisualNode(string nodeTextLabel)
 		{
-			return new DummyNode()
+			foreach(N n in lstOfNode)
+			{
+				if (nodeTextLabel.Trim().Equals(n.getLabelText()) )
+				{
+					return n;
+				}
+			}
+			return null;
 		}
 	}
 }

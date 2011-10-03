@@ -35,14 +35,24 @@ namespace DFATest
 			visualNodes.Add(q2);
 			visualNodes.Add(q3);
 
-			var planer = new DummyPlaner<DummyNode, SimpleInput>();
-			var sipserDFA = new DFA<DummyNode,SimpleInput>(visualNodes, planer);
+			var planner = new DummyPlaner<DummyNode, SimpleInput>();
+			var sipserDFA = new DFA<DummyNode,SimpleInput>(visualNodes);
 			
 			String input = "aababba";
-			DummyFactory<SimpleInput> dfactory = new DummyFactory<SimpleInput>(input);
-			String result  = sipserDFA.Simulate(input, dfactory);
+			DummyFactory<DummyNode, SimpleInput> dfactory = 
+				new DummyFactory<DummyNode,SimpleInput>(input);
+			List<DummyNode> representer = new List<DummyNode>();
+			
+			foreach (VisualNode x in visualNodes)
+			{
+				DummyNode d = new DummyNode(x.getLabelText(), new EPoint(), x.isStartNode, x.isEndNode);
+				representer.Add(d);
+			}
+			dfactory.setNode(representer);
+
+			String result  = sipserDFA.Simulate(input, planner, dfactory);
 			Debug.WriteLine(result);
-			foreach (String action in planer.getAction())
+			foreach (String action in planner.getAction())
 			{
 				Debug.Write(action);
 			}
