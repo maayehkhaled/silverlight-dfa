@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,16 +18,35 @@ namespace SilverlightApplication6
 		where N : VisualAnimationNode
 		where I : VisualAnimationInput
 	{
-		private List<VisualAnimationInput> inputChars ;
-		 
-		public VisualAnimationInput createInputChar(int indexOfInputChar)
+		private List<I> inputChars ;
+		private List<N> nodes;
+
+		public I createInputAnimation(int indexOfInputChar)
 		{
 			return inputChars[indexOfInputChar];
 		}
 
-		public void setInputChars(List<VisualAnimationInput> input)
+		public void setInputChars(List<I> input)
 		{
 			inputChars = input;
 		}
+
+		public void setNodes(List<N> nodes)
+		{
+			this.nodes = nodes;
+		}
+
+		public N createVisualNode(string label)
+		{
+			foreach (N n in nodes)
+			{
+				if (label.Trim().Equals(n.getLabelText()))
+				{
+					return n;
+				}
+			}
+			return null;
+		}
+
 	}
 }

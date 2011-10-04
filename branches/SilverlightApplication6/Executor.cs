@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Diagnostics;
 
 using SCG = System.Collections.Generic;
@@ -38,6 +36,7 @@ namespace SilverlightApplication6
 			// initial set of final states and initial the transitionTable
 			foreach (VisualNode s in visualNodes)
 			{
+				
 				if (s.isEndNode)
 				{
 					Debug.WriteLine(">>>>>>>>>>>>>>>>>>add "

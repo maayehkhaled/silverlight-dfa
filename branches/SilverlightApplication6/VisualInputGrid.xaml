@@ -3,7 +3,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       Name="grid" RenderTransformOrigin="0.5,0.5" mc:Ignorable="d"
-      Height="25" Width="25" Opacity="0">
+      Height="25" Width="25" Opacity="255">
     
     <Canvas.ZIndex>30000</Canvas.ZIndex>
     
@@ -58,19 +58,22 @@
     <Grid.RenderTransform>
         <CompositeTransform/>
     </Grid.RenderTransform>
-    
-    <Rectangle Name="rectangle" StrokeThickness="1" Opacity="0">
-        <!-- should have the same width and height as the grid! -->
+
+	<!-- should have the same width and height as the grid! -->
+	<Rectangle Name="rectangle" StrokeThickness="1" Opacity="255">
         <Rectangle.Width>13</Rectangle.Width>
         <Rectangle.Height>13</Rectangle.Height>
         <Rectangle.Fill>
             <SolidColorBrush>
-                <Color>Black</Color>
+                <Color>Green</Color>
             </SolidColorBrush>
         </Rectangle.Fill>
-    </Rectangle>
+	</Rectangle>
 
-    <!--<TextBlock Name="label" TextAlignment="Center" VerticalAlignment="Center" Foreground="LawnGreen" />-->
-    <TextBlock Name="label" TextAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="Red" FontWeight="ExtraBold" />
-
+	<!--<TextBlock Name="label" TextAlignment="Center" VerticalAlignment="Center" Foreground="LawnGreen" />-->
+	<TextBlock Name="label" TextAlignment="Center" 
+			   VerticalAlignment="Center" 
+			   FontSize="16" Foreground="Red" 
+			   FontWeight="ExtraBold" >hallo</TextBlock>
+	
 </Grid>
