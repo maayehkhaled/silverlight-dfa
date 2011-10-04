@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -16,10 +18,14 @@ using System.Windows.Media.Animation;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 
+
+
 namespace SilverlightApplication6
 {
+	
     public partial class MainPage : UserControl
     {
+		
         private static Uri defaultFile = 
 			new Uri("testdata/ModifiedHMU.xml", UriKind.Relative);
         private static Uri hmup60File = 
@@ -69,8 +75,8 @@ namespace SilverlightApplication6
             InitializeComponent();
 
             originalPlayboardColor = playboard.Background;
-
-            builtinExamples.Add("Example 1", defaultFile);
+			
+			builtinExamples.Add("Example 1", defaultFile);
             builtinExamplesComboBox.Items.Add("Example 1");
 			//builtinExamplesComboBox.SelectedIndex = 0;
 
@@ -82,28 +88,27 @@ namespace SilverlightApplication6
 			builtinExamplesComboBox.Items.Add("Example 3");
 			builtinExamplesComboBox.SelectedIndex = 2;
 
-			//makePresentationOfInputString();
-            setControlsEnabled(false, true, false, false, false, false, false);
+			setControlsEnabled(false, true, false, false, false, false, false);
 
             writeLog("Loading default file: " + sipser.OriginalString);
             loadAndDrawDFA(App.GetResourceStream(sipser).Stream);
 
             // TODO add startup animation
-
-// only for debug
-//inputTextBox.Text = "0101";
-//for (int i = 0; i < 10; i++)
-//{
-//    VisualInput vi = visualInput[i];
-//    playboard.Children.Add(vi.getGrid());
-//    vi.getGrid().SetValue(Canvas.LeftProperty, 10.0);
-//    vi.getGrid().SetValue(Canvas.TopProperty, 10.0);
-//    Debug.WriteLine("*** added visual input to grid: " + i);
-//}
+			// only for debug 
+			//inputTextBox.Text = "0101"; 
+			//for (int i = 0; i < 10; i++) 
+			//{ 
+			//    VisualInput vi = visualInput[i]; 
+			//    playboard.Children.Add(vi.getGrid()); 
+			//    vi.getGrid().SetValue(Canvas.LeftProperty, 10.0); 
+			//    vi.getGrid().SetValue(Canvas.TopProperty, 10.0); 
+			//    Debug.WriteLine("*** added visual input to grid: " + i); 
+			//} 
         }
 
 		private void makePresentationOfInputString()
 		{
+			Debug.WriteLine("call makePresentationOfInputString");
 			// be sure that visualInput empty
 			visualInput.Clear();
 
@@ -116,15 +121,10 @@ namespace SilverlightApplication6
 				vi.setLocation(new EPoint(fromX, fromY));
 
 				visualInput.Add(vi);
-				//playboard.Children.Add(vi.getGrid());
+				
 				Debug.WriteLine("*** added visual input: fromX: " + fromX + ", fromY: " + fromY);
 				vi.setLabelText(inputTextBox.Text[i].ToString());
-			}
-			// TODO (Done, I moved it here) a better place for this!?
-			foreach (VisualAnimationInput vi in visualInput)
-			{
 				playboard.Children.Add(vi.getGrid());
-				Debug.WriteLine("*** added visual input to grid");
 			}
 		}
 
@@ -159,45 +159,18 @@ namespace SilverlightApplication6
             if (inputRegex.IsMatch(inputTextBox.Text))
             {
                 step = 0;
-				/*
-                animations = AnimationPlanner.createPlan(
-					inputTextBox.Text, 
-					visualNodes[0], 
-					visualInput, flowingInput);
-				*/
                 writeLog("input changed.");
-
-                steplineSlider.Value = step;
-                steplineSlider.Maximum = animations.Count - 1;
-
-                if (flowingInput)
-                {
-                    foreach (VisualAnimationInput vi in visualInput)
-                    {
-                        vi.getFadeInAnimation().Stop();
-                        vi.getConsumeAnimation().Stop();
-                        vi.getSearchAnimation().Stop();
-                    }
-                    step = 0;
-                    steplineSlider.Value = step;
-                }
-
+				//Do this things  later
                 setControlsEnabled(true, true, true, false, true, true, false);
             }
             else if (inputTextBox.Text.Trim().Equals(""))
             {
-                foreach (VisualAnimationInput vi in visualInput)
-                {
-                    vi.getFadeInAnimation().Stop();
-                    vi.getConsumeAnimation().Stop();
-                    vi.getSearchAnimation().Stop();
-                }
-                setControlsEnabled(true, true, false, false, true, false, true);
+                setControlsEnabled(true, true, false, false, true, false, true);	
             }
             else
             {
-                // i think this might never be reached
-				// oh ja
+                // -- i think this might never be reached
+				// -- oh ja this has been reached
                 setControlsEnabled(true, true, false, false, true, false, false);
                 writeLog("Illegal input: " + inputTextBox.Text);
             }
@@ -207,13 +180,28 @@ namespace SilverlightApplication6
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
             setControlsEnabled(false, false, false, true, false, false, false);
-
             writeLog("Starting animation...");
+			
 			// make a new AnimationPlaner here
+			String inputString = inputTextBox.Text;
+			makePresentationOfInputString();
+			planner.clean();
 
+			string result = executor.Simulate(inputString,planner,factory);
+			planner.showActionInDebug();
+			animations = planner.getAnimations();
+			
+			
+			// combine the storyboards in animations
+			 
+			foreach (Storyboard s in animations )
+			{
+				s.Completed += new EventHandler(animationCompleted);
+			}
             Storyboard first = animations[step];
-            Debug.WriteLine("*** first is: " + first.GetValue(Storyboard.TargetNameProperty));
+            //Debug.WriteLine("*** first is: " + first.GetValue(Storyboard.TargetNameProperty));
             first.Begin();
+			writeLog(result);
         }
 
         private void animationCompleted(object sender, EventArgs e)
@@ -279,20 +267,7 @@ namespace SilverlightApplication6
             }
         }
 
-        private void playboard_DragOver(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void playboard_DragEnter(object sender, DragEventArgs e)
-        {
-            playboard.Background = new SolidColorBrush(Colors.Green);
-        }
-
-        private void playboard_DragLeave(object sender, DragEventArgs e)
-        {
-            playboard.Background = originalPlayboardColor;
-        }
+        
 
         private void speedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -330,44 +305,18 @@ namespace SilverlightApplication6
             writeLog("Speed altered to: " + e.NewValue);
         }
 
-        private void steplineSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            step = (int)e.NewValue;
-            writeLog("Step: " + step);
-        }
+        
 
+		/// <summary>
+		/// load the description of a DFA in a XML file and draw it on playboard
+		/// Side effect: clear the playboard, all elements of his childeren are removed
+		/// </summary>
+		/// <param name="stream"></param>
         private void loadAndDrawDFA(Stream stream)
         {
             playboard.Children.Clear();
             step = 0;
             inputTextBox.Text = "";
-
-            foreach (VisualAnimationInput vi in visualInput)
-            {
-                vi.getConsumeAnimation().Completed -= animationCompleted;
-                vi.getFadeInAnimation().Completed -= animationCompleted;
-                vi.getSearchAnimation().Completed -= animationCompleted;
-                vi.getConsumeAnimation().SpeedRatio = speedSlider.Value;
-                vi.getFadeInAnimation().SpeedRatio = speedSlider.Value;
-                vi.getSearchAnimation().SpeedRatio = speedSlider.Value;
-            }
-
-            if (visualAnimationNodes != null)
-            {
-                visualAnimationNodes.Clear();
-            }
-            //visualNodes = null;
-            if (animations != null)
-            {
-                //foreach (Storyboard a in animations)
-                //{
-                //    a.Stop();
-                //}
-                animations.Clear();
-            }
-            //animations = null;
-
-            
 
 			/* now begin to make a draw of DFA */
             List<string> inputAlphabet;
@@ -376,6 +325,7 @@ namespace SilverlightApplication6
 			drawer = new GraphDrawer(visualAnimationNodes, playboard);
             drawer.drawDFA();
             writeLog("Graph drawn.");
+			
 
 			/* crate pattern, it will be used later to check if input legal or not */
             string pattern = @"^[";
@@ -395,66 +345,39 @@ namespace SilverlightApplication6
 			 * as a dummy collection, which saves VisualAnimationNode as VisualNode.
 			 * It will be used later for DFA*/
 			List<VisualNode> visualNodes = new List<VisualNode>();
-			
-
 			writeLog("creating DFA ...");
 
 			/* set EventHandler to each stated */
             foreach (VisualAnimationNode n in visualAnimationNodes)
-            {
-                n.getSrcAnimation().Completed += new EventHandler(animationCompleted);
-                n.getDstAnimation().Completed += new EventHandler(animationCompleted);
-                n.getAcceptedAnimation().Completed += new EventHandler(animationCompleted);
-                n.getRejectedAnimation().Completed += new EventHandler(animationCompleted);
-                n.getSrcAnimation().SpeedRatio = speedSlider.Value;
-                n.getDstAnimation().SpeedRatio = speedSlider.Value;
-                n.getAcceptedAnimation().SpeedRatio = speedSlider.Value;
-                n.getRejectedAnimation().SpeedRatio = speedSlider.Value;
-				
+            {	
 				// add a new reference to n
 				visualNodes.Add(n);
-
-                foreach (Tuple<VisualNode, string> t in n.adjacenceList)
-                {
-                    if (!t.Item2.Contains('|'))
-                    {
-                        n.getDstEdge(t.Item2).getAnimation().Completed += new EventHandler(animationCompleted);
-                        n.getDstEdge(t.Item2).getAnimation().SpeedRatio = speedSlider.Value;
-                    }
-                    else
-                    {
-                        string[] symbols = t.Item2.Split('|');
-                        for (int i = 0; i < symbols.Length; i++)
-                        {
-                            n.getDstEdge(symbols[i]).getAnimation().Completed += new EventHandler(animationCompleted);
-                            n.getDstEdge(symbols[i]).getAnimation().SpeedRatio = speedSlider.Value;
-                        }
-                    }
-                    
-                    //Debug.WriteLine("*** eventhandler added for node: " + n.getLabelText() + ", edge: " + t.Item2);
-                }
             }
 
-            foreach (VisualAnimationInput vi in visualInput)
-            {
-                vi.getConsumeAnimation().Completed += new EventHandler(animationCompleted);
-                vi.getConsumeAnimation().SpeedRatio = speedSlider.Value;
-                vi.getFadeInAnimation().Completed += new EventHandler(animationCompleted);
-                vi.getFadeInAnimation().SpeedRatio = speedSlider.Value;
-                vi.getSearchAnimation().Completed += new EventHandler(animationCompleted);
-                vi.getSearchAnimation().SpeedRatio = speedSlider.Value;
-            }
             //writeLog("Event handlers added.");
 			// make a new animationfactory
 			factory = new AnimationInputFactory<VisualAnimationNode,VisualAnimationInput>();
 			factory.setInputChars(visualInput);
-
+			factory.setNodes(visualAnimationNodes);
+			/* planer here */
 			planner = new AnimationPlanner<VisualAnimationNode,VisualAnimationInput>();
-
+			/* create DFA */
+			executor = new DFA<VisualAnimationNode, VisualAnimationInput>(visualNodes);
+			
             setControlsEnabled(true, true, false, false, true, false, true);
             writeLog("Ready.");
         }
 
+		/// <summary>
+		/// control the GUI elements
+		/// </summary>
+		/// <param name="enableInputTextBox"></param>
+		/// <param name="enableOpenButton"></param>
+		/// <param name="enableStartButton"></param>
+		/// <param name="enableStopButton"></param>
+		/// <param name="enableSpeedSlider"></param>
+		/// <param name="enableSteplineSlider"></param>
+		/// <param name="enableInputCheckBox"></param>
         private void setControlsEnabled(bool enableInputTextBox, bool enableOpenButton,
             bool enableStartButton, bool enableStopButton,
             bool enableSpeedSlider, bool enableSteplineSlider,
@@ -525,5 +448,26 @@ namespace SilverlightApplication6
             //    return;
             //}
         }
-    }
+
+		private void playboard_DragOver(object sender, DragEventArgs e)
+		{
+
+		}
+
+		private void playboard_DragEnter(object sender, DragEventArgs e)
+		{
+			playboard.Background = new SolidColorBrush(Colors.Green);
+		}
+
+		private void playboard_DragLeave(object sender, DragEventArgs e)
+		{
+			playboard.Background = originalPlayboardColor;
+		}
+
+		private void steplineSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			step = (int)e.NewValue;
+			writeLog("Step: " + step);
+		}
+	}
 }

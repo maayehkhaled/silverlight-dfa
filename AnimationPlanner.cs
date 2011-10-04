@@ -20,84 +20,17 @@ namespace SilverlightApplication6
 		where I: VisualAnimationInput
     {
 		 
-        // creates an animation sequence
-		/*
-        public static List<Storyboard> createPlan(
-			string input, 
-			VisualNode currentNode, 
-			List<VisualInput> visualInput, 
-			bool flowingInput)
-        {
-            List<Storyboard> animations = new List<Storyboard>();
-
-            string remainingInput = input;
-            int inputLength = input.Length;
-            int processed = 0;
-
-            if (flowingInput)
-            {
-                for (int i = 0; i < inputLength; i++)
-                {
-                    Debug.WriteLine("*** adding fadein: " + i);
-                    animations.Add(visualInput[i].getFadeInAnimation());
-                }
-            }
-
-            while (remainingInput.Length > 0)
-            {
-                string symbol = remainingInput[0].ToString();
-                Debug.WriteLine("*** processing node: " + currentNode.getLabelText() + ", symbol: " + symbol);
-
-                VisualNode follower;
-                if (currentNode.TryGetDstNode(symbol, out follower))
-                {
-                    Debug.WriteLine("*** follower is: " + follower.getLabelText());
-
-                    // quick'n'dirty falldown animations
-                    if (flowingInput)
-                    {
-                        VisualInput vi = visualInput[processed];
-                        vi.setConsumeAnimationTo(currentNode.location);
-                        vi.setLabelText(symbol);
-                        animations.Add(vi.getConsumeAnimation());
-                        animations.Add(vi.getSearchAnimation());
-                    }
-                    
-                    animations.Add(currentNode.getSrcAnimation());
-
-                    animations.Add(currentNode.getDstEdge(symbol).getAnimation());
-                    
-                    animations.Add(follower.getDstAnimation());
-
-                    currentNode = follower;
-                }
-
-                if (remainingInput.Length > 1)
-                {
-                    remainingInput = remainingInput.Remove(0, 1);
-                    processed = inputLength - remainingInput.Length;
-                    Debug.WriteLine("*** remaining: " + remainingInput.Length + " processed: " + processed);
-                }
-                else if (currentNode.isEndNode)
-                {
-                    Debug.WriteLine("*** will accept...");
-                    animations.Add(currentNode.getAcceptedAnimation());
-                    break;
-                }
-                else
-                {
-                    Debug.WriteLine("*** will reject");
-                    animations.Add(currentNode.getRejectedAnimation());
-                    break;
-                }
-            }
-
-            return animations;
-        }*/
+        
 		List<Storyboard> animations;
+		List<String> actions;
+
+		public static string head = ">>>>>>>>>>>>>>>>>>";
+		public static string tail = "<<<<<<<<<<<<<<<<<<";
+
 		public AnimationPlanner()
 		{
 			animations = new List<Storyboard>();
+			actions = new List<string>();
 		}
 
 		/* 
@@ -106,7 +39,12 @@ namespace SilverlightApplication6
 		 */
 		public void addFallDownAnimation(I symbol, N des)
 		{
-			// do nothing here
+			symbol.setConsumeAnimationTo(des.location);
+			animations.Add(symbol.getConsumeAnimation());
+			animations.Add(symbol.getSearchAnimation());
+
+			actions.Add(head + "Symbol " + symbol.getLabelText()
+							+ " falls into " + des.ToString() + tail);
 		}
 
 		/*
@@ -114,6 +52,9 @@ namespace SilverlightApplication6
 		 */
 		public void addMoveAnimation(N quellState, N destState, I symbol)
 		{
+			animations.Add(symbol.getFadeInAnimation());
+			actions.Add(head + "move " + symbol.getLabelText() +
+				" from " + quellState.ToString() + " to " + destState.ToString() + tail);
 		}
 
 		/*
@@ -121,6 +62,10 @@ namespace SilverlightApplication6
 		 */
 		public void addCatchASymbol(N dest, I symbol)
 		{
+			animations.Add(dest.getDstAnimation());
+
+			actions.Add(head + "state " + dest.ToString()
+				+ " catches symbol " + symbol.getLabelText() + tail);
 		}
 
 		/*
@@ -128,13 +73,36 @@ namespace SilverlightApplication6
 		 */
 		public void addAccept(N acceptNode)
 		{
+			animations.Add(acceptNode.getAcceptedAnimation());
+			actions.Add(head  + "DFA stops at " + acceptNode.ToString() 
+				+ " with status accept"+ tail);
 		}
 
 		public void addReject(N rejectNode)
 		{
+			animations.Add(rejectNode.getRejectedAnimation());
+			actions.Add(head + "DFA stops at " + rejectNode.ToString()
+				+ " with status reject" + tail);
 		}
 
-		public void clean(){}
+		public void clean()
+		{
+			animations.Clear();
+			actions.Clear();
+		}
+
+		public void showActionInDebug()
+		{
+			foreach(string s in actions)
+			{
+				Debug.WriteLine(head + s + tail);
+			}
+		}
+
+		public List<Storyboard> getAnimations()
+		{
+			return this.animations;
+		}
 	}
 	
 
